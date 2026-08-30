@@ -455,6 +455,66 @@
     ['goods.html', 'グッズ'],
     ['rules.html', 'ルール']
   ];
+  // ---------- 広告枠 ----------
+  //  data/site.js の ads に情報を入れたときだけ出る。空のあいだは枠ごと出さない。
+  const ADS = SITE.ads || {};
+  function adsOn() {
+    if (!ADS.enabled) return false;
+    if (ADS.provider === 'adsense') return !!(ADS.adsenseClient && ADS.adsenseSlot);
+    if (ADS.provider === 'custom') return !!ADS.customHtml;
+    return false;
+  }
+  // AdSense の読み込みスクリプトは1ページに1回だけ入れる
+  function adsenseLoader() {
+    if (document.getElementById('adsense-loader')) return;
+    const s = document.createElement('script');
+    s.id = 'adsense-loader';
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
+            encodeURIComponent(ADS.adsenseClient);
+    document.head.appendChild(s);
+  }
+  function adSlotEl() {
+    const box = document.createElement('div');
+    box.className = 'ad-wrap';
+    box.innerHTML = `<span class="ad-label">${esc(ADS.label || '広告')}</span>`;
+    const inner = document.createElement('div');
+    inner.className = 'ad-body';
+    box.appendChild(inner);
+
+    if (ADS.provider === 'adsense') {
+      adsenseLoader();
+      const ins = document.createElement('ins');
+      ins.className = 'adsbygoogle';
+      ins.style.display = 'block';
+      ins.setAttribute('data-ad-client', ADS.adsenseClient);
+      ins.setAttribute('data-ad-slot', ADS.adsenseSlot);
+      ins.setAttribute('data-ad-format', 'auto');
+      ins.setAttribute('data-full-width-responsive', 'true');
+      inner.appendChild(ins);
+      try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+    } else {
+      // 他社の貼り付けコード。innerHTML では <script> が動かないので入れ直す。
+      inner.innerHTML = ADS.customHtml;
+      inner.querySelectorAll('script').forEach(function (old) {
+        const s = document.createElement('script');
+        for (const a of old.attributes) s.setAttribute(a.name, a.value);
+        s.textContent = old.textContent;
+        old.replaceWith(s);
+      });
+    }
+    return box;
+  }
+  function renderAds() {
+    if (!adsOn()) return;
+    const pos = ADS.positions || ['top', 'bottom'];
+    const wrap = document.querySelector('.wrap');
+    if (!wrap) return;
+    if (pos.indexOf('top') >= 0) wrap.insertBefore(adSlotEl(), wrap.firstChild);
+    if (pos.indexOf('bottom') >= 0) wrap.appendChild(adSlotEl());
+  }
+
   function renderChrome() {
     const here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
     const active = here === 'monster.html' ? 'monsters.html' : here;
@@ -484,6 +544,7 @@
           <li><a href="rules.html#ai">生成AIの利用</a></li>
           <li><a href="rules.html#ad">広告・アフィリエイト</a></li>
           <li><a href="rules.html#privacy">おすすめ表示と履歴</a></li>
+          <li><a href="rules.html#cookie">広告とCookie</a></li>
         </ul></div>
       </div>
       <div class="legal">
@@ -493,6 +554,7 @@
       </div>
     </div>`;
     document.body.appendChild(foot);
+    renderAds();
   }
 
   // ---------- 公開 ----------
@@ -513,11 +575,11 @@
     generationOf, maxGeneration, breedRecords,
     getArc, getEnemy, getScript,
     monsterCardHtml, goodsCardHtml, episodeCardHtml,
-    renderChrome
+    renderChrome, adsOn, adSlotEl
   };
 
   document.addEventListener('DOMContentLoaded', function () {
-    document.title = (document.title ? document.title + ' | ' : '') + (SITE.siteName || '');
+    // タイトルは各ページの <title> に「ページ名｜サイト名」で入れてある（seo.py が付ける）
     renderChrome();
     if (typeof window.pageInit === 'function') window.pageInit();
   });

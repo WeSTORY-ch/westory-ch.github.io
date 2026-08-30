@@ -147,6 +147,25 @@ window.DB_SITE = {
     "ただし収録や公開のタイミング、動画の尺、ゲーム側の都合により、いただいた結果を完璧に反映できない場合があります。" +
     "反映できなかったときは、その理由を動画または最新情報でお伝えします。",
 
+  /* ▼ 広告のさしこみ口
+   * ここに審査が通った広告の情報を入れると、全ページの上と下に広告枠が出ます。
+   * 入れていないあいだ（enabled:false）は、枠ごと出ません。
+   *
+   *  provider "adsense" … Google AdSense。client と slot を入れる。
+   *                       別途 ads.txt（サイトの一番上の階層）も必要。
+   *  provider "custom"  … 忍者AdMax など他社。管理画面でもらう貼り付けコードを
+   *                       customHtml にそのまま入れる。
+   */
+  ads: {
+    enabled: false,
+    provider: "",          // "adsense" または "custom"
+    adsenseClient: "",     // 例 "ca-pub-0000000000000000"
+    adsenseSlot: "",       // 例 "1234567890"
+    customHtml: "",        // 他社からもらった貼り付けコード
+    positions: ["top", "bottom"],   // 記事の上／下
+    label: "広告"
+  },
+
   // ▼ 透明性表記
   disclaimer:
     "当サイトは個人が運営する非公式ファンサイトです。株式会社スクウェア・エニックスをはじめとする権利者様とは一切関係がありません。" +

@@ -534,3 +534,15 @@ a.vm:hover{box-shadow:var(--shadow-h)}
   .ig-avatar span{font-size:34px}
   .ig-name h1{font-size:17px}
 }
+
+/* 広告枠（data/site.js の ads を設定したときだけ出る） */
+.ad-wrap{
+  margin:18px 0;padding:10px 12px 12px;
+  border:1px solid var(--line);border-radius:14px;background:#fafafa
+}
+.ad-label{
+  display:inline-block;margin-bottom:8px;padding:2px 8px;border-radius:999px;
+  background:var(--line-soft);color:var(--muted);font-size:11px;letter-spacing:.06em
+}
+.ad-body{min-height:90px}
+.ad-body ins,.ad-body iframe,.ad-body img{max-width:100%}
