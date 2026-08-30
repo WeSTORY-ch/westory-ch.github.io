@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>名前の応募｜モンスター冒険録</title>
+<meta name="description" content="モンスターの名前を応募できるボード。ひらがな・カタカナで6文字まで、先着30件まで。気に入った名前にはハートを押せます。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/names.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="名前の応募｜モンスター冒険録">
+<meta property="og:description" content="モンスターの名前を応募できるボード。ひらがな・カタカナで6文字まで、先着30件まで。気に入った名前にはハートを押せます。">
+<meta property="og:url" content="https://contentspackage10.github.io/names.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">名前の応募</h1>
+  <p class="lead">
+    新しく仲間になったモンスターの名前を募集します。<b style="color:var(--gold)">ひらがな・カタカナで<span id="leadChars"></span>文字まで</b>、
+    応募は<b>先着<span id="leadMax"></span>件</b>までです。気に入った名前には<b>ハート</b>を押して応援できます。
+  </p>
+
+  <div class="grid g3" id="nameStats" style="margin-bottom:16px"></div>
+
+  <section class="section">
+    <div class="panel soft">
+      <h2 class="sec">応募のきまり</h2>
+      <ul id="nameRules" class="small" style="margin:0 0 8px"></ul>
+      <p class="small muted" style="margin:0" id="heartNote"></p>
+      <p class="small muted" style="margin:6px 0 0" id="ngNote"></p>
+      <p class="small muted" style="margin:6px 0 0">
+        <a href="rules.html#naming">名前のルールをくわしく見る</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="callSection">
+    <div class="spread">
+      <h2 class="sec">いま募集中</h2>
+      <span class="small muted">締切までに集まった中から、運営が1つ選びます</span>
+    </div>
+    <div id="calls"></div>
+  </section>
+
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec">決まった名前の記録</h2>
+      <span class="small muted">選ばれた名前と、そのときの応募数を残しています</span>
+    </div>
+    <div id="history"></div>
+  </section>
+
+  <section class="section">
+    <div class="panel soft">
+      <div class="spread">
+        <h3 class="sec" style="margin:0">運営用</h3>
+        <span class="badge">書き出し</span>
+      </div>
+      <p class="small muted" style="margin:8px 0 10px">
+        このブラウザに届いた応募とハートを <b>data/names.js</b> に反映するためのファイルを作ります。
+        押した内容はこのブラウザの中だけに保存されているので、<b>書き出して差し替えるまで正式な記録にはなりません</b>。
+      </p>
+      <div class="row">
+        <button class="btn ghost" onclick="exportNames()">💾 names.js を書き出し</button>
+        <button class="btn ghost" onclick="clearLocal()">このブラウザの下書きを消す</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="data/names.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+// 応募とハートは、書き出すまではこのブラウザの中だけに置いておく。
+// 形： { "N001": { entries:[{name,by,date}], hearts:{ "E001":1 } } }
+var LS_KEY='dqfan_names_v1';
+function local(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(e){ return {}; }
+}
+function saveLocal(o){ try{ localStorage.setItem(LS_KEY, JSON.stringify(o)); }catch(e){} }
+function localOf(id){
+  var L=local(); L[id]=L[id]||{entries:[],hearts:{}};
+  L[id].entries=L[id].entries||[]; L[id].hearts=L[id].hearts||{};
+  return L;
+}
+
+// 記録済み＋このブラウザの下書きを合わせた応募一覧（先着順）
+function allEntries(call){
+  var mine=(local()[call.id]||{}).entries||[];
+  return App.nameEntries(call).concat(mine.map(function(e,i){
+    return {id:'', name:e.name, by:e.by, hearts:0, date:e.date, picked:false, mine:true, mineIdx:i};
+  }));
+}
+function heartsOf(call,e){
+  var h=(local()[call.id]||{}).hearts||{};
+  return (e.hearts||0)+(e.id&&h[e.id]?1:0);
+}
+function hearted(call,e){
+  var h=(local()[call.id]||{}).hearts||{};
+  return !!(e.id&&h[e.id]);
+}
+
+function renderStats(){
+  var esc=App.esc, open=App.openNameCalls();
+  var used=open.reduce(function(n,c){ return n+allEntries(c).length; },0);
+  var max=App.naming().maxEntries||30;
+  function box(t,n,u){
+    return '<div class="panel soft"><div class="small muted">'+t+'</div>'+
+      '<div style="font-size:26px;font-weight:800">'+n+' <span class="small muted">'+u+'</span></div></div>';
+  }
+  App.$('#nameStats').innerHTML=
+    box('募集中',open.length,'件')+
+    box('いまの応募',used,'／'+max+'件')+
+    box('決まった名前',(App.NAMES.history||[]).length,'件');
+}
+
+function entryHtml(call,e,i){
+  var esc=App.esc;
+  return '<div class="panel soft" style="margin-bottom:8px">'+
+    '<div class="spread">'+
+      '<div>'+
+        '<div style="font-size:17px;font-weight:800">'+esc(e.name)+
+          (e.picked?' <span class="badge green">採用</span>':'')+
+          (e.mine?' <span class="badge live">未保存</span>':'')+'</div>'+
+        '<div class="small muted">'+(i+1)+'番目'+(e.by?'／'+esc(e.by)+' さん':'')+
+          (e.date?'／'+esc(App.fmtDate(e.date)):'')+'</div>'+
+      '</div>'+
+      '<button class="btn sm'+(hearted(call,e)?' gold':' ghost')+'"'+
+        (e.id?' onclick="toggleHeart(\''+esc(call.id)+'\',\''+esc(e.id)+'\')"':' disabled')+'>'+
+        (hearted(call,e)?'❤':'🤍')+' '+heartsOf(call,e)+'</button>'+
+    '</div></div>';
+}
+
+function callHtml(call){
+  var esc=App.esc, list=allEntries(call), max=App.naming().maxEntries||30;
+  var full=list.length>=max;
+  var mon=call.monId?App.getMon(call.monId):null;
+  var ep=call.ep?App.getEp(call.ep):null;
+  return '<div class="panel" style="margin-bottom:16px">'+
+    '<div class="row" style="margin-bottom:10px">'+
+      (mon?'<span class="mon-ico">'+App.monFace(mon)+'</span>':'')+
+      '<div>'+
+        '<div style="font-size:18px;font-weight:800">'+esc(call.target||'名前を募集中')+'</div>'+
+        '<div class="small muted">'+
+          (call.species?'種族：'+esc(call.species):'')+
+          (call.deadline?'／締切 '+esc(App.fmtDate(call.deadline)):'')+
+          (ep?'／#'+esc(ep.no):'')+'</div>'+
+      '</div>'+
+      '<span class="badge'+(full?'':' gold')+'">'+list.length+' / '+max+' 件</span>'+
+    '</div>'+
+
+    (full
+      ? '<div class="empty">先着'+max+'件に達したので、この回の受付は終了しました。ハートは引き続き押せます。</div>'
+      : '<div class="panel soft" style="margin-bottom:12px">'+
+          '<div class="row">'+
+            '<input class="sel" id="in_'+esc(call.id)+'" placeholder="ひらがな・カタカナで" maxlength="12" '+
+              'oninput="checkName(\''+esc(call.id)+'\')" style="width:auto;min-width:200px">'+
+            '<input class="sel" id="by_'+esc(call.id)+'" placeholder="お名前（任意）" maxlength="20" style="width:auto;min-width:160px">'+
+            '<button class="btn gold" onclick="submitName(\''+esc(call.id)+'\')">✏ 応募する</button>'+
+          '</div>'+
+          '<p class="small muted" id="msg_'+esc(call.id)+'" style="margin:8px 0 0">'+
+            'ひらがな・カタカナだけ、全角'+(App.naming().maxChars||6)+'文字（半角'+((App.naming().maxChars||6)*2)+'文字）までです。</p>'+
+          '<div id="code_'+esc(call.id)+'"></div>'+
+        '</div>')+
+
+    (list.length
+      ? list.map(function(e,i){ return entryHtml(call,e,i); }).join('')
+      : '<div class="empty">まだ応募がありません。いちばん乗りをどうぞ。</div>')+
+  '</div>';
+}
+
+function renderCalls(){
+  var open=App.openNameCalls();
+  App.$('#calls').innerHTML = open.length
+    ? open.map(callHtml).join('')
+    : '<div class="empty">いまは名前を募集していません。新しい仲間が増えたら、ここで募集をはじめます。'+
+      '<a href="news.html">最新情報</a>でもお知らせします。</div>';
+}
+
+function renderHistory(){
+  var esc=App.esc, h=(App.NAMES.history||[]).slice().reverse();
+  App.$('#history').innerHTML = h.length
+    ? '<div class="tl">'+h.map(function(r){
+        var mon=r.monId?App.getMon(r.monId):null;
+        return '<div class="tl-item"><div class="tl-date">'+esc(App.fmtDate(r.date)||'—')+'</div><div class="tl-body">'+
+          '<div class="row small">'+
+            '<span class="badge green">採用</span>'+
+            (mon?'<a class="badge" href="monster.html?id='+encodeURIComponent(mon.id)+'"><span class="mon-ico sm">'+
+              App.monFace(mon)+'</span><b>'+esc(r.name)+'</b></a>'
+                :'<span class="badge"><b>'+esc(r.name)+'</b></span>')+
+            '<span class="badge">応募 '+esc(r.entryCount||0)+'件</span>'+
+          '</div>'+
+          (r.note?'<p class="small muted" style="margin:6px 0 0">'+esc(r.note)+'</p>':'')+
+          '</div></div>';
+      }).join('')+'</div>'
+    : '<div class="empty">まだ名前が決まった記録はありません。</div>';
+}
+
+function checkName(callId){
+  var v=App.$('#in_'+callId).value, r=App.validateName(v);
+  var el=App.$('#msg_'+callId);
+  el.textContent=v?r.msg:'ひらがな・カタカナだけ、全角'+(App.naming().maxChars||6)+'文字（半角'+((App.naming().maxChars||6)*2)+'文字）までです。';
+  el.style.color=v?(r.ok?'#2e7d32':'#d32f2f'):'';
+  return r;
+}
+
+function submitName(callId){
+  var call=(App.NAMES.open||[]).find(function(c){ return c.id===callId; });
+  if(!call) return;
+  if(App.nameFull(call)||allEntries(call).length>=(App.naming().maxEntries||30)){
+    alert('先着'+(App.naming().maxEntries||30)+'件に達したので、この回の受付は終了しました。'); return;
+  }
+  var v=App.$('#in_'+callId).value.trim(), r=App.validateName(v);
+  if(!r.ok){ checkName(callId); return; }
+  if(allEntries(call).some(function(e){ return e.name===v; })){
+    App.$('#msg_'+callId).textContent='その名前はもう応募されています。ハートで応援してみてください。';
+    App.$('#msg_'+callId).style.color='#d32f2f'; return;
+  }
+  var by=App.$('#by_'+callId).value.trim();
+  var L=localOf(callId);
+  L[callId].entries.push({name:v, by:by, date:new Date().toISOString().slice(0,10)});
+  saveLocal(L);
+  render();
+  App.$('#code_'+callId).innerHTML=
+    '<div class="panel soft" style="margin-top:10px"><div class="row" style="align-items:center">'+
+    '<span class="badge green">応募を受け付けました</span>'+
+    '<span class="small muted">「'+App.esc(v)+'」で応募しました。締切まで何度でも見に来てください。</span>'+
+    '</div></div>';
+}
+
+function toggleHeart(callId,entryId){
+  var L=localOf(callId);
+  if(L[callId].hearts[entryId]) delete L[callId].hearts[entryId];
+  else L[callId].hearts[entryId]=1;
+  saveLocal(L);
+  render();
+}
+
+function exportNames(){
+  var L=local();
+  // 下書きの応募を entries に取り込み、ハートは加算する
+  (App.NAMES.open||[]).forEach(function(call){
+    var d=L[call.id]; if(!d) return;
+    call.entries=call.entries||[];
+    Object.keys(d.hearts||{}).forEach(function(eid){
+      var e=call.entries.find(function(x){ return x.id===eid; });
+      if(e) e.hearts=(e.hearts||0)+1;
+    });
+    (d.entries||[]).forEach(function(e,i){
+      var n=call.entries.length+1;
+      call.entries.push({id:'E'+String(n).padStart(3,'0'), name:e.name, by:e.by||'',
+        hearts:0, date:e.date, picked:false});
+    });
+  });
+  var body='/* 名前の応募データ（names.html から書き出し）\n'+
+    '   open = 募集中、history = 決まった名前の記録 */\n'+
+    'window.DB_NAMES = '+JSON.stringify(App.NAMES,null,2)+';\n';
+  var blob=new Blob([body],{type:'text/javascript;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='names.js';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){URL.revokeObjectURL(a.href)},1000);
+  localStorage.removeItem(LS_KEY);
+  render();
+  alert('names.js をダウンロードしました。\ndata/names.js に上書き保存してください。');
+}
+
+function clearLocal(){
+  if(!confirm('このブラウザに残っている応募とハートを消します。よろしいですか？')) return;
+  localStorage.removeItem(LS_KEY); render();
+}
+
+function render(){ renderStats(); renderCalls(); renderHistory(); }
+
+function pageInit(){
+  var nm=App.naming();
+  App.$('#leadChars').textContent=nm.maxChars||6;
+  App.$('#leadMax').textContent=nm.maxEntries||30;
+  App.$('#nameRules').innerHTML=(nm.rules||[]).map(function(r){ return '<li>'+r+'</li>'; }).join('');
+  App.$('#heartNote').textContent=nm.heartNote||'';
+  App.$('#ngNote').textContent=nm.ngNote||'';
+  render();
+}
+</script>
+</body>
+</html>

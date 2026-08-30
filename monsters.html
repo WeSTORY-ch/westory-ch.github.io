@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>モンスター牧場｜モンスター冒険録</title>
+<meta name="description" content="いま持っているモンスターの一覧。動画に出るパーティ3体・牧場の控え・モンスター病院・配合で旅立った仲間が分かります。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/monsters.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="モンスター牧場｜モンスター冒険録">
+<meta property="og:description" content="いま持っているモンスターの一覧。動画に出るパーティ3体・牧場の控え・モンスター病院・配合で旅立った仲間が分かります。">
+<meta property="og:url" content="https://contentspackage10.github.io/monsters.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">モンスター牧場</h1>
+  <p class="lead">
+    いま持っているモンスターの一覧です。動画に出るのは<b>パーティの3体</b>だけ。
+    その3体は<b>YouTubeのアンケート</b>で、配合と名前は<b>このサイト</b>で決めます。
+  </p>
+
+  <div class="grid g4" id="ranchStats" style="margin-bottom:16px"></div>
+
+  <div class="panel soft" style="margin-bottom:16px">
+    <div class="row">
+      <input class="search" id="q" placeholder="名前・種族・スキルでしぼりこむ" oninput="renderRanch()" style="flex:1;min-width:220px">
+      <select class="sel" id="sort" onchange="renderRanch()" style="width:auto">
+        <option value="lv">レベルが高い順</option>
+        <option value="lvA">レベルが低い順</option>
+        <option value="rank">ランク順</option>
+        <option value="name">名前順</option>
+        <option value="new">登場が新しい順</option>
+      </select>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec">いまのパーティ（<span id="pCount"></span>／<span id="pMax"></span>体）</h2>
+      <a class="btn ghost sm" href="rules.html#party">パーティのルール</a>
+    </div>
+    <p class="small muted" style="margin:0 0 10px">
+      この3体だけが動画のバトルに出ます。だれを入れるかは毎回アンケートで決めています。
+      <b>レベルが上がるのもこの3体だけ</b>で、負けた回は経験値がもらえません。
+    </p>
+    <div class="grid g4" id="partyList"></div>
+    <div class="vote-box" style="margin-top:14px">
+      <h3>▶ 次のパーティを決める</h3>
+      <p class="small" style="margin:0 0 10px">だれを入れるかは<b>YouTubeのアンケート</b>で受け付けます。締切は次の動画の公開まで。</p>
+      <div class="row">
+        <a class="yt-btn" id="partyPollBtn" href="#" target="_blank" rel="noopener">▶ YouTubeのアンケートで投票</a>
+        <a class="btn ghost sm" href="scout.html">🎯 スカウトの3択を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">牧場でお留守番している仲間</h2>
+    <p class="small muted" style="margin:0 0 10px">元気だけれど、今回はパーティに入っていない子です。次のアンケートで選ばれれば出番があります。</p>
+    <div class="grid g4" id="benchList"></div>
+  </section>
+
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec" id="hospTitle">モンスター病院</h2>
+      <a class="btn ghost sm" href="rules.html#hospital">人生縛りのルール</a>
+    </div>
+    <p class="small muted" style="margin:0 0 10px" id="hospNote"></p>
+    <div class="grid g4" id="hospList"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">配合で旅立った仲間</h2>
+    <p class="small muted" style="margin:0 0 10px">配合の親になった子は手元からいなくなりますが、力は子どもへ受け継がれます。<a href="tree.html">家系図</a>でたどれます。</p>
+    <div class="grid g4" id="retiredList"></div>
+  </section>
+
+  <section class="section">
+    <div class="panel">
+      <h2 class="sec">配合できるモンスター</h2>
+      <p class="small muted" style="margin:0 0 10px">レベル<span id="minLv"></span>以上で配合できます。動画1本でレベル+<span id="perV"></span>。</p>
+      <div id="breedable"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="spread"><h2 class="sec">関連グッズ</h2><a class="btn ghost sm" href="goods.html">一覧 →</a></div>
+    <p class="pr-note">PR：アフィリエイト広告を含みます。</p>
+    <div class="grid g4" id="recGoods"></div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+var RANK_ORDER={SS:-1,S:0,A:1,B:2,C:3,D:4,E:5,F:6};
+// 検索と並べ替えは4つのセクション共通で使う
+function applyQS(list){
+  var q=(App.$('#q').value||'').trim().toLowerCase(), sort=App.$('#sort').value;
+  var out=list.filter(function(m){
+    if(!q) return true;
+    var hay=[m.name,m.species,m.family,m.rank,
+      (m.skills||[]).map(function(s){return s.name+s.desc}).join(''),
+      (m.traits||[]).join(''),(m.tags||[]).join('')].join(' ').toLowerCase();
+    return hay.indexOf(q)>=0;
+  });
+  return out.sort(function(a,b){
+    if(sort==='lv') return (b.level||0)-(a.level||0);
+    if(sort==='lvA') return (a.level||0)-(b.level||0);
+    if(sort==='rank') return (RANK_ORDER[a.rank]||9)-(RANK_ORDER[b.rank]||9);
+    if(sort==='name') return String(a.name).localeCompare(String(b.name),'ja');
+    return String(b.birthEp||'').localeCompare(String(a.birthEp||''));
+  });
+}
+function fill(sel,list,empty){
+  App.$(sel).innerHTML = list.length ? list.map(App.monsterCardHtml).join('')
+    : '<div class="empty" style="grid-column:1/-1">'+App.esc(empty)+'</div>';
+}
+function renderRanch(){
+  // パーティだけは枠の順（1・2・3）を崩さないので並べ替えの対象にしない
+  var q=(App.$('#q').value||'').trim();
+  var party=App.partyMons();
+  if(q) party=applyQS(party);
+  fill('#partyList',party,'パーティがまだ決まっていません。');
+  fill('#benchList',applyQS(App.benchMons()),'お留守番している仲間はいません。');
+  fill('#hospList',applyQS(App.hospitalMons()),'いまモンスター病院にいる子はいません。みんな無事です。');
+  fill('#retiredList',applyQS(App.retiredMons()),'まだ配合で旅立った仲間はいません。');
+}
+function renderStats(){
+  var esc=App.esc;
+  function box(t,n,u){
+    return '<div class="panel soft"><div class="small muted">'+t+'</div>'+
+      '<div style="font-size:26px;font-weight:800">'+n+' <span class="small muted">'+u+'</span></div></div>';
+  }
+  App.$('#ranchStats').innerHTML =
+    box('動画に出るパーティ',App.partyMons().length+' / '+App.partySize(),'体')+
+    box('牧場でお留守番',App.benchMons().length,'体')+
+    box('モンスター病院',App.hospitalMons().length,'体')+
+    box('配合で旅立った仲間',App.retiredMons().length,'体');
+}
+function pageInit(){
+  var esc=App.esc, S=App.SITE;
+  App.$('#minLv').textContent=S.rules.breedMinLevel;
+  App.$('#perV').textContent=S.rules.levelPerVideo;
+  App.$('#pCount').textContent=App.partyMons().length;
+  App.$('#pMax').textContent=App.partySize();
+  App.$('#hospTitle').textContent=(S.hospital&&S.hospital.label)||'モンスター病院';
+  App.$('#hospNote').textContent=((S.hospital&&S.hospital.rule)||'')+' '+((S.hospital&&S.hospital.revive)||'');
+  renderStats();
+  renderRanch();
+
+  // パーティ投票は受付中の動画へ、無ければチャンネルへ
+  var pollEp=App.EPISODES.filter(function(e){return e.voteStatus==='受付中'&&e.voteType==='party'})[0]
+          || App.EPISODES.filter(function(e){return e.voteStatus==='受付中'})[0];
+  App.$('#partyPollBtn').href = pollEp ? App.ytWatch(pollEp) : (S.channelUrl||'#');
+
+  var b=App.MONSTERS.filter(App.canBreed), nb=App.MONSTERS.filter(function(m){return !App.canBreed(m)});
+  App.$('#breedable').innerHTML =
+    (b.length?'<div class="row" style="margin-bottom:10px">'+b.map(function(m){
+      return '<a class="badge gold" href="monster.html?id='+encodeURIComponent(m.id)+'">'+esc(m.emoji||'')+' '+esc(m.name)+' Lv.'+esc(m.level)+'</a>';
+    }).join('')+'</div><a class="btn gold" href="breed.html">⚗ 配合の組み合わせに投票する</a>'
+    :'<p class="muted small" style="margin:0">まだ配合できるモンスターがいません。</p>')+
+    (nb.length?'<p class="small muted" style="margin:14px 0 4px">あと少しで配合できる仲間</p><div class="row">'+nb
+      .sort(function(a,b){return (b.level||0)-(a.level||0)})
+      .map(function(m){
+        return '<span class="badge">'+esc(m.emoji||'')+' '+esc(m.name)+' Lv.'+esc(m.level)+' … あと動画'+App.videosToBreed(m)+'本</span>';
+      }).join('')+'</div>':'');
+
+  App.$('#recGoods').innerHTML = App.recommendGoods(4).map(App.goodsCardHtml).join('');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>アイテム｜モンスター冒険録</title>
+<meta name="description" content="いま持っているアイテムと、ショート動画の合計再生数でもらえるアイテムの基準。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/items.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="アイテム｜モンスター冒険録">
+<meta property="og:description" content="いま持っているアイテムと、ショート動画の合計再生数でもらえるアイテムの基準。">
+<meta property="og:url" content="https://contentspackage10.github.io/items.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">アイテム</h1>
+  <p class="lead">
+    アイテムは<b style="color:var(--gold)">ショート動画の合計再生数</b>でもらえます。
+    動画1本ごとではなく、これまでの再生数を全部足した数で判定します。
+    いま何を何個持っているかは、このページでいつでも確認できます。
+  </p>
+
+  <div class="grid g3" id="itemStats" style="margin-bottom:16px"></div>
+
+  <section class="section">
+    <div class="panel">
+      <h2 class="sec">いま持っているアイテム</h2>
+      <p class="small muted" style="margin:0 0 10px">
+        使ったぶんは自動で減ります。肉は<a href="scout.html">スカウト</a>のときに弱い順から自動で消費されます。
+      </p>
+      <div id="bag"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="panel">
+      <div class="spread">
+        <h2 class="sec">つぎにもらえるアイテム</h2>
+        <span class="small muted" id="viewsDate"></span>
+      </div>
+      <div id="nextTier"></div>
+    </div>
+  </section>
+
+  <section class="section" id="tiers">
+    <h2 class="sec">もらえる基準（合計再生数）</h2>
+    <p class="small muted" style="margin:0 0 10px" id="viewNote"></p>
+    <div class="panel soft"><div id="tierList"></div></div>
+    <p class="small muted" style="margin:10px 0 0" id="progressNote"></p>
+    <p class="small muted" style="margin:6px 0 0" id="inflNote"></p>
+  </section>
+
+  <section class="section">
+    <div class="panel">
+      <h2 class="sec">アイテムの使いかた</h2>
+      <ul id="useNotes" style="margin:0"></ul>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="data/scout.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+function box(t,n,u){
+  return '<div class="panel soft"><div class="small muted">'+t+'</div>'+
+    '<div style="font-size:26px;font-weight:800">'+n+' <span class="small muted">'+u+'</span></div></div>';
+}
+function barHtml(now,goal){
+  var p=goal?Math.min(100,Math.round(now/goal*1000)/10):0;
+  return '<div class="row"><div class="bar"><i style="width:'+p+'%"></i></div>'+
+    '<span class="small muted">'+p+'%</span></div>';
+}
+function pageInit(){
+  var esc=App.esc, vi=App.viewItems(), tiers=App.itemTiers(), v=App.totalViews();
+  var got=tiers.filter(function(t){return t.got}).length;
+
+  App.$('#itemStats').innerHTML=
+    box('ショート合計再生数',App.fmtViews(v),'回')+
+    box('到達した基準',got+' / '+tiers.length,'個')+
+    box('持っているアイテム',App.itemTotal(),'個');
+
+  // 手持ち
+  var bag=App.itemBag(), have=bag.filter(function(x){return x.count>0});
+  App.$('#bag').innerHTML = have.length
+    ? '<div class="row">'+bag.map(function(x){
+        return '<span class="badge'+(x.count?' green':'')+'"><b>'+esc(x.name)+'</b>'+
+          '<span class="muted small">'+x.count+'個</span></span>';
+      }).join('')+'</div>'
+    : '<div class="empty">まだアイテムを持っていません。合計再生数が最初の基準に届くともらえます。</div>';
+
+  // つぎの目標
+  var nx=App.nextItemTier();
+  App.$('#nextTier').innerHTML = nx
+    ? '<div class="row" style="margin-bottom:8px">'+
+        '<span class="badge gold"><b>'+esc(nx.item)+'</b><span class="muted small">'+esc(nx.use)+'</span></span>'+
+        '<span class="small muted">合計 '+App.fmtViews(nx.views)+'回で入手（あと '+App.fmtViews(Math.max(0,nx.views-v))+'回）</span>'+
+      '</div>'+barHtml(v,nx.views)
+    : '<div class="empty">すべての基準に到達しました。新しい基準はお知らせでご案内します。</div>';
+  App.$('#viewsDate').textContent = App.SCOUT.viewsDate
+    ? App.fmtDate(App.SCOUT.viewsDate)+' 時点の集計' : '集計はまだ反映されていません';
+
+  // 基準一覧
+  App.$('#viewNote').innerHTML = vi.note||'';
+  App.$('#progressNote').textContent = vi.progressNote||'';
+  App.$('#inflNote').textContent = vi.inflationNote||'';
+  App.$('#tierList').innerHTML = tiers.length
+    ? '<div class="row">'+tiers.map(function(t){
+        return '<span class="badge'+(t.got?' green':'')+'"><b>合計'+App.fmtViews(t.views)+'再生</b>'+
+          esc(t.item)+'<span class="muted small">'+esc(t.use)+(t.got?'／入手済み':'')+'</span></span>';
+      }).join('')+'</div>'
+    : '<div class="empty">基準はまだ設定されていません。</div>';
+
+  App.$('#useNotes').innerHTML=Object.keys(vi.useNotes||{}).map(function(k){
+    return '<li><b>'+esc(k)+'</b>：'+esc(vi.useNotes[k])+'</li>';
+  }).join('');
+}
+</script>
+</body>
+</html>

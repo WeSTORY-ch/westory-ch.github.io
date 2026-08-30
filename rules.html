@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ルールと方針｜モンスター冒険録</title>
+<meta name="description" content="投票のルール、配合のルール、生成AIの利用方針、広告表記、おすすめ表示について。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/rules.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="ルールと方針｜モンスター冒険録">
+<meta property="og:description" content="投票のルール、配合のルール、生成AIの利用方針、広告表記、おすすめ表示について。">
+<meta property="og:url" content="https://contentspackage10.github.io/rules.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">ルールと方針</h1>
+  <p class="lead">この企画は視聴者投票で進行します。安心して参加していただくため、ルールと運営方針を公開しています。</p>
+
+  <div class="row" style="margin-bottom:20px">
+    <a class="btn ghost sm" href="#vote">投票</a>
+    <a class="btn ghost sm" href="#naming">名前の応募</a>
+    <a class="btn ghost sm" href="#party">パーティ</a>
+    <a class="btn ghost sm" href="#level">レベル</a>
+    <a class="btn ghost sm" href="#scout">スカウト</a>
+    <a class="btn ghost sm" href="#breed">配合</a>
+    <a class="btn ghost sm" href="#hospital">人生縛り</a>
+    <a class="btn ghost sm" href="#items">アイテム</a>
+    <a class="btn ghost sm" href="#editorial">編集部の決定</a>
+    <a class="btn ghost sm" href="#transparency">透明性</a>
+    <a class="btn ghost sm" href="#ai">生成AI</a>
+    <a class="btn ghost sm" href="#ad">広告</a>
+    <a class="btn ghost sm" href="#privacy">おすすめ表示</a>
+  </div>
+
+  <section class="section" id="vote">
+    <div class="panel">
+      <h2 class="sec">どこで決めるか</h2>
+      <div id="voteMap"></div>
+      <ul style="margin-top:14px">
+        <li>1本の動画につき、1人1票を目安にお願いします。</li>
+        <li>締切は各動画の概要欄・当サイトの<a href="news.html">最新情報</a>に記載します。</li>
+        <li>結果は次の動画と当サイトで発表します。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="naming">
+    <div class="panel">
+      <h2 class="sec">名前の応募ルール</h2>
+      <p class="small muted" style="margin:0 0 10px">
+        名前と配合は<b>このサイト</b>から、パーティとスカウトは<b>YouTubeのアンケート</b>で決めます。
+      </p>
+      <ul id="nameRules"></ul>
+      <p class="small muted" style="margin:0" id="nameHeartNote"></p>
+      <p class="small muted" style="margin:6px 0 0" id="nameNgNote"></p>
+      <p style="margin:10px 0 0"><a class="btn gold" href="names.html">✏ 名前の応募ボードへ</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="party">
+    <div class="panel">
+      <h2 class="sec">パーティのルール</h2>
+      <ul>
+        <li>動画のバトルに出られるのは<b><span id="pSize"></span>体まで</b>です。</li>
+        <li>その<span id="pSize2"></span>体は<b>毎回アンケートで決めます</b>。人気の子ばかりにならないよう、結果はそのまま反映します。</li>
+        <li>選ばれなかった仲間は<a href="monsters.html">モンスター牧場</a>でお留守番します。次の回で選ばれれば出番があります。</li>
+        <li>いま誰がパーティにいるかは<a href="monsters.html">モンスター牧場</a>でいつでも確認できます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="level">
+    <div class="panel">
+      <h2 class="sec">レベル</h2>
+      <ul>
+        <li>動画1本につき、レベルが<b>+<span id="perV"></span></b>されます。</li>
+        <li id="lvPartyLi"></li>
+        <li id="lvLoseLi"></li>
+        <li>毎回の動画に<b>スカウトチャンス</b>があります。仲間が増えると配合の選択肢も増えます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="scout">
+    <div class="panel">
+      <h2 class="sec">スカウトのルール</h2>
+      <div class="steps" id="scoutSteps"></div>
+      <ul style="margin-top:14px">
+        <li id="scoutReflectLi"></li>
+        <li>肉は<b>弱い順に自動で消費</b>されます。どれを使うか選ぶ必要はありません。</li>
+        <li>3択の内容と結果は、すべて<a href="scout.html">スカウトページ</a>に記録として残します。</li>
+      </ul>
+      <div id="scoutRates" style="margin-top:6px"></div>
+      <p style="margin:12px 0 0"><a class="btn gold" href="scout.html">🎯 スカウトページへ</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="breed">
+    <div class="panel">
+      <h2 class="sec">配合のルール</h2>
+      <ul>
+        <li><b>レベル<span id="minLv"></span></b>から配合できます。</li>
+        <li>父と母の組み合わせは視聴者投票で決めます。候補が多い場合は<a href="breed.html">配合投票ページ</a>で父・母を選んでコードを作ってください。</li>
+        <li>生まれる子どものモンスターは、両親の系統をもとに<b>編集部が独自にランダム決定</b>します。</li>
+        <li>ただし<b>投票してくださった方の意図はできる限り汲みます</b>。「この系統が見たい」「この見た目を期待している」といった一言を添えていただけると反映しやすくなります。</li>
+        <li>生まれた子どもの名前とスキルは、あらためて投票で決めます。</li>
+      </ul>
+      <p><a class="btn gold" href="breed.html">⚗ 配合投票ページへ</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="hospital">
+    <div class="panel">
+      <h2 class="sec">人生縛り（<span id="hospLabel"></span>）</h2>
+      <ul>
+        <li id="hospRule"></li>
+        <li id="hospRevive"></li>
+        <li>やられてしまった仲間は<b>もう動画に戻ってきません</b>。だから1戦1戦が本番です。</li>
+        <li>いま誰が入院しているかは<a href="monsters.html">モンスター牧場</a>で確認できます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="items">
+    <div class="panel">
+      <h2 class="sec">アイテムのもらいかた</h2>
+      <p class="small muted" style="margin:0 0 10px" id="viewNote"></p>
+      <div id="viewTiers"></div>
+      <p class="small" style="margin:12px 0 0"><b>使いかた</b></p>
+      <ul id="useNotes" style="margin-top:4px"></ul>
+      <p class="small muted" style="margin:0" id="inflNote"></p>
+      <p style="margin:10px 0 0"><a class="btn gold" href="items.html">🎒 いまの合計再生数と手持ちを見る</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="editorial">
+    <div class="panel">
+      <h2 class="sec">編集部の決定について</h2>
+      <ul>
+        <li>誹謗中傷・差別的表現・過度に性的な表現・実在の人物や団体を想起させる名称など、<b>不適切な投票は無効</b>とします。</li>
+        <li>他者の権利を侵害するおそれのある名称も採用しません。</li>
+        <li>締切までに有効な票が集まらなかった場合は、<b>編集部が決定</b>します。</li>
+        <li>同数の場合は、投稿が早かったものを優先します。</li>
+        <li>判断に迷うケースは、動画内で理由を説明したうえで決定します。</li>
+      </ul>
+      <p class="small" style="margin:10px 0 0"><b>アンケートの反映について</b></p>
+      <p class="small muted" style="margin:4px 0 0" id="pollNotice"></p>
+    </div>
+  </section>
+
+  <section class="section" id="transparency">
+    <div class="panel">
+      <h2 class="sec">透明性について</h2>
+      <p id="disc" class="small"></p>
+      <ul>
+        <li>当サイト・当チャンネルは<b>個人が運営する非公式のファン企画</b>です。権利者様の公式チャンネル・公式サイトではありません。</li>
+        <li>登場するモンスターの名前・設定は本企画のオリジナル要素を含み、公式設定とは異なります。</li>
+        <li>権利者様からご連絡をいただいた場合は、<b>速やかに該当コンテンツの修正または削除</b>を行います。</li>
+        <li>投票の集計方法・締切・結果はすべて公開します。集計を恣意的に操作することはしません。</li>
+      </ul>
+      <p class="small muted" style="margin:0">
+        ご連絡先：<span id="contact">（ここに連絡用のメールアドレスやフォームURLを記載してください）</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="ai">
+    <div class="panel">
+      <h2 class="sec">生成AIの利用について</h2>
+      <p id="ainote" class="small"></p>
+      <ul>
+        <li>使用した箇所（画像・音声・編集補助など）は<b>各動画の概要欄に明記</b>します。</li>
+        <li>既存作品の画風・キャラクターをそのまま再現することを目的とした生成は行いません。</li>
+        <li>視聴者が「実写・実在」と誤認するような使い方はしません。</li>
+        <li>プラットフォームの合成コンテンツ開示ルールに従い、必要な開示設定を行います。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="ad">
+    <div class="panel">
+      <h2 class="sec">広告・アフィリエイトについて</h2>
+      <p id="adnote" class="small"></p>
+      <ul>
+        <li>商品リンクには<b>「PR」表記</b>を付けています。</li>
+        <li>リンク経由の購入で運営者が紹介料を得る場合があります。購入者の負担が増えることはありません。</li>
+        <li>紹介料の有無で紹介する順番を不当に操作しません。おすすめ順は閲覧履歴と人気度のみで計算しています。</li>
+        <li>価格・在庫は変動します。最終的な内容は各販売サイトでご確認ください。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="privacy">
+    <div class="panel">
+      <h2 class="sec">おすすめ表示と履歴について</h2>
+      <ul>
+        <li>おすすめ順は、<b>お使いのブラウザ内（localStorage）</b>に保存した記録だけで計算しています。</li>
+        <li>保存しているのは「見たモンスター／グッズのID」「押した商品リンクの回数」「そこから作られたタグの重み」のみです。</li>
+        <li>この情報がサーバーへ送信されることはありません。氏名・メールアドレスなどの個人情報も取得していません。</li>
+        <li>履歴のリセット、パーソナライズのオフは<a href="goods.html#privacyBox">グッズページ</a>からいつでも行えます。</li>
+      </ul>
+      <div class="row">
+        <button class="btn sm" onclick="App.track.reset();alert('履歴をリセットしました');">履歴をリセット</button>
+        <a class="btn sm ghost" href="goods.html#privacyBox">設定を開く</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="data/scout.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+function pageInit(){
+  var S=App.SITE, esc=App.esc;
+  App.$('#perV').textContent=S.rules.levelPerVideo;
+  App.$('#minLv').textContent=S.rules.breedMinLevel;
+  App.$('#pSize').textContent=App.partySize();
+  App.$('#pSize2').textContent=App.partySize();
+  App.$('#disc').textContent=S.disclaimer||'';
+  App.$('#ainote').textContent=S.aiNotice||'';
+  App.$('#adnote').textContent=S.adNotice||'';
+  App.$('#pollNotice').textContent=S.pollNotice||'';
+  App.$('#voteMap').innerHTML=App.voteMapHtml();
+  App.$('#lvPartyLi').innerHTML='<b>レベルが上がるのはパーティの'+App.partySize()+'体だけ</b>です。'+
+    esc((S.rules.levelUpNote||'').replace(/^レベルが上がるのは、その回のパーティに入っている3体だけです。/,''));
+  App.$('#lvLoseLi').innerHTML='<b>負けた回は経験値がもらえません。</b>レベルも上がらず、そのモンスターは'+
+    esc((S.hospital&&S.hospital.label)||'モンスター病院')+'へ送られます。';
+
+  var nm=S.naming||{rules:[]};
+  App.$('#nameRules').innerHTML=(nm.rules||[]).map(function(r){ return '<li>'+r+'</li>'; }).join('');
+  App.$('#nameHeartNote').textContent=nm.heartNote||'';
+  App.$('#nameNgNote').textContent=nm.ngNote||'';
+
+  var h=S.hospital||{};
+  App.$('#hospLabel').textContent=h.label||'モンスター病院';
+  App.$('#hospRule').textContent=h.rule||'';
+  App.$('#hospRevive').textContent=h.revive||'';
+
+  var sc=App.scoutCfg();
+  App.$('#scoutSteps').innerHTML=(sc.steps||[]).map(function(s,i){
+    return '<div class="step"><span class="n">'+(i+1)+'</span><span class="tx">'+s+'</span></div>';
+  }).join('');
+  App.$('#scoutReflectLi').textContent=sc.reflect||'';
+  // 肉の上乗せぶんをメーターで見せる
+  var meat=App.meatList(), mx=meat.reduce(function(n,m){return Math.max(n,m.add)},0.5);
+  App.$('#scoutRates').innerHTML='<div class="meter">'+meat.map(function(m){
+    return '<div class="mt"><span class="nm">'+esc(m.item)+'</span>'+
+      '<span class="bar"><i style="width:'+Math.round(m.add/mx*100)+'%"></i></span>'+
+      '<span class="pc">+'+Math.round(m.add*100)+'%</span><span class="have"></span></div>';
+  }).join('')+'</div>';
+
+  var vi=S.viewItems||{tiers:[],useNotes:{}};
+  App.$('#viewNote').innerHTML=(vi.note||'')+'<br>'+esc(vi.progressNote||'');
+  App.$('#inflNote').textContent=vi.inflationNote||'';
+  App.$('#viewTiers').innerHTML='<div class="row">'+App.itemTiers().map(function(t){
+    return '<span class="badge'+(t.got?' green':' gold')+'"><b>合計'+App.fmtViews(t.views)+'再生</b>'+esc(t.item)+
+      '<span class="muted small">'+esc(t.use)+(t.got?'／入手済み':'')+'</span></span>';
+  }).join('')+'</div>';
+  App.$('#useNotes').innerHTML=Object.keys(vi.useNotes||{}).map(function(k){
+    return '<li><b>'+esc(k)+'</b>：'+esc(vi.useNotes[k])+'</li>';
+  }).join('');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>家系図｜モンスター冒険録</title>
+<meta name="description" content="配合で受け継がれてきたモンスターの家系図。両親・子ども・世代をたどれます。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/tree.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="家系図｜モンスター冒険録">
+<meta property="og:description" content="配合で受け継がれてきたモンスターの家系図。両親・子ども・世代をたどれます。">
+<meta property="og:url" content="https://contentspackage10.github.io/tree.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">家系図</h1>
+  <p class="lead">
+    ここに載るのは<b style="color:var(--gold)">動画で配合が確定し、実際に実行されたもの</b>だけです。投票の途中経過や候補は記録しません。
+    いちばん上が選んだ本人で、そのすぐ下に<b>父と母</b>、さらに下にその親…と<b>先祖をさかのぼって</b>並びます。
+    配合を1回重ねるごとに世代が1つ進みます。ノードをクリックすると詳細ページへ移動します。
+  </p>
+
+  <div class="grid g3" id="treeStats" style="margin-bottom:16px"></div>
+
+  <div class="panel soft" style="margin-bottom:16px">
+    <div class="row">
+      <label class="fl" style="margin:0">だれの家系を見る？</label>
+      <select class="sel" id="rootSel" onchange="renderTree()" style="width:auto;min-width:220px"></select>
+      <span class="tree-legend">
+        <span>⭐ スカウト（親なし＝第1世代）</span>
+        <span>👶 配合で誕生</span>
+        <span>👑 選択中</span>
+      </span>
+    </div>
+    <p class="small muted" style="margin:8px 0 0" id="rootNote"></p>
+  </div>
+
+  <div class="panel">
+    <div class="tree-scroll" id="treeWrap"></div>
+  </div>
+
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec">配合の記録</h2>
+      <span class="small muted">確定・実行された配合だけを古い順に記録しています</span>
+    </div>
+    <div id="records"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">世代別リスト</h2>
+    <div id="gens"></div>
+  </section>
+
+  <section class="section">
+    <div class="panel">
+      <h2 class="sec">次の配合を決めるのはあなた</h2>
+      <p class="small muted" style="margin:0 0 10px">レベル<span id="minLv"></span>以上のモンスターから父と母を選んで投票できます。生まれる種族は『テリーのワンダーランド3D』の実際の配合データで決まるので、投票する前に配合投票ページで確認できます。</p>
+      <div class="row"><a class="btn gold" href="breed.html">⚗ 配合投票ページへ</a><a class="btn ghost" href="rules.html#breed">配合ルール</a></div>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+var focusId='';
+// 家系図は「本人 → 父と母 → その親…」と先祖をさかのぼって描く。
+// 以前は片方の親だけを使って子孫方向に並べていたため、親のいない子まで
+// 下にぶら下がって世代が積み上がって見えていた。
+function parentsOf(m){
+  if(!m || !m.parents) return [];
+  var f=App.getMon(m.parents.father), mo=App.getMon(m.parents.mother);
+  return [['♂ 父',f],['♀ 母',mo]].filter(function(p){ return !!p[1]; });
+}
+function nodeHtml(m,role){
+  var esc=App.esc;
+  var mark=m.parents?'👶':'⭐';
+  return '<a class="node'+(m.id===focusId?' me':'')+'" href="monster.html?id='+encodeURIComponent(m.id)+'">'+
+    (role?'<span class="sub role">'+esc(role)+'</span>':'')+
+    '<span class="em">'+App.monFace(m)+'</span>'+
+    '<span class="nm">'+esc(m.name)+'</span>'+
+    '<span class="sub">'+esc(m.species)+'</span>'+
+    '<span class="sub">'+mark+' 第'+esc(App.generationOf(m))+'世代 ／ Lv.'+esc(m.level||0)+'</span>'+
+    '</a>';
+}
+function subtree(m,role,depth){
+  if(depth>12) return '';
+  var ps=parentsOf(m);
+  return '<li class="'+(ps.length===1?'only':'')+'">'+nodeHtml(m,role)+
+    (ps.length?'<ul class="'+(ps.length===1?'single':'')+'">'+
+      ps.map(function(p){ return subtree(p[1],p[0],depth+1); }).join('')+'</ul>':'')+
+    '</li>';
+}
+function renderTree(){
+  var sel=App.$('#rootSel').value, esc=App.esc;
+  var m=App.getMon(sel);
+  focusId=sel;
+  if(!m){ App.$('#treeWrap').innerHTML='<div class="empty">モンスターが登録されていません。</div>'; return; }
+  App.$('#rootNote').innerHTML = m.parents
+    ? esc(m.name)+' は配合で生まれた第'+esc(App.generationOf(m))+'世代です。下に父と母、さらにその先祖が並びます。'
+    : esc(m.name)+' はスカウトで仲間になった第1世代なので、先祖はいません。';
+  App.$('#treeWrap').innerHTML =
+    '<div class="tree"><ul class="rootlv" style="padding-top:0">'+subtree(m,'',0)+'</ul></div>';
+}
+function renderGens(){
+  var esc=App.esc, map={};
+  App.MONSTERS.forEach(function(m){ var g=App.generationOf(m); (map[g]=map[g]||[]).push(m); });
+  App.$('#gens').innerHTML = Object.keys(map).sort(function(a,b){return a-b}).map(function(g){
+    return '<div class="panel soft" style="margin-bottom:10px"><div class="row">'+
+      '<span class="badge gold">第'+esc(g)+'世代</span>'+
+      '<span class="small muted">'+(g==='1'?'スカウトで仲間になった世代（両親なし）':'配合を'+(g-1)+'回かさねて生まれた世代')+'</span>'+
+      map[g].map(function(m){
+        return '<a class="badge" href="monster.html?id='+encodeURIComponent(m.id)+'">'+
+          '<span class="mon-ico sm">'+App.monFace(m)+'</span>'+esc(m.name)+' Lv.'+esc(m.level||0)+'</a>';
+      }).join('')+'</div></div>';
+  }).join('');
+}
+function renderRecords(){
+  var esc=App.esc, recs=App.breedRecords();
+  App.$('#records').innerHTML = recs.length
+    ? '<div class="tl">'+recs.map(function(r,i){
+        var ep=App.getEp(r.ep);
+        function side(m,role){
+          return m ? '<a class="badge" href="monster.html?id='+encodeURIComponent(m.id)+'">'+esc(role)+
+                     '<span class="mon-ico sm">'+App.monFace(m)+'</span>'+esc(m.name)+
+                     '<span class="muted small">（'+esc(m.species)+'）</span></a>'
+                   : '<span class="badge">'+esc(role)+' 記録なし</span>';
+        }
+        return '<div class="tl-item"><div class="tl-date">'+(ep?esc(App.fmtDate(ep.date)):'#'+(i+1))+'</div><div class="tl-body">'+
+          '<div class="row small" style="margin-bottom:4px"><span class="badge green">配合 '+(i+1)+'回目</span>'+
+          '<span class="badge gold">'+esc(r.type)+'</span><span class="badge">第'+esc(r.gen)+'世代</span>'+
+          (ep?'<span class="badge">#'+esc(ep.no)+'</span>':'')+'</div>'+
+          '<div class="row small">'+side(r.father,'♂')+side(r.mother,'♀')+
+            '<span class="dot" style="color:var(--gold)">→</span>'+
+            '<a class="badge" href="monster.html?id='+encodeURIComponent(r.child.id)+'"><b>'+esc(r.child.name)+'</b>'+
+            '<span class="muted small">（'+esc(r.child.species)+'）</span></a></div>'+
+          (r.child.note?'<p class="small muted" style="margin:6px 0 0">'+esc(r.child.note)+'</p>':'')+
+          (ep?'<p style="margin:6px 0 0"><a class="btn sm" href="'+esc(App.ytWatch(ep))+'" target="_blank" rel="noopener">▶ 配合した動画を見る</a></p>':'')+
+          '</div></div>';
+      }).join('')+'</div>'
+    : '<div class="empty">まだ配合は実行されていません。投票で組み合わせが決まり、動画で配合すると、ここに記録されます。</div>';
+}
+function renderStats(){
+  var esc=App.esc, n=App.breedRecords().length;
+  App.$('#treeStats').innerHTML =
+    '<div class="panel soft"><div class="small muted">配合した回数</div><div style="font-size:26px;font-weight:800">'+n+' <span class="small muted">回</span></div></div>'+
+    '<div class="panel soft"><div class="small muted">いまの世代</div><div style="font-size:26px;font-weight:800">第'+esc(App.maxGeneration())+' <span class="small muted">世代</span></div></div>'+
+    '<div class="panel soft"><div class="small muted">記録されている仲間</div><div style="font-size:26px;font-weight:800">'+App.MONSTERS.length+' <span class="small muted">体</span></div></div>';
+}
+function pageInit(){
+  App.$('#minLv').textContent=App.SITE.rules.breedMinLevel;
+  var id=App.qs('id');
+  // 増えすぎを防ぐため、まずは今のパーティ3体。その下にそれ以外を並べる。
+  var party=App.partyMons(), rest=App.MONSTERS.filter(function(m){ return party.indexOf(m)<0; });
+  function opts(list){
+    return list.map(function(m){
+      return '<option value="'+App.esc(m.id)+'"'+(m.id===id?' selected':'')+'>'+App.esc(m.name)+'（'+App.esc(m.species)+'）</option>';
+    }).join('');
+  }
+  App.$('#rootSel').innerHTML=
+    (party.length?'<optgroup label="いまのパーティ">'+opts(party)+'</optgroup>':'')+
+    (rest.length?'<optgroup label="そのほかの仲間">'+opts(rest)+'</optgroup>':'');
+  // 指定がなければ、先祖をたどれる子（配合生まれ）を初期表示にする
+  if(!App.getMon(id)){
+    var first=(party.filter(function(m){return m.parents})[0])||party[0]||App.MONSTERS[0];
+    if(first) App.$('#rootSel').value=first.id;
+  }
+  renderStats();
+  renderTree();
+  renderRecords();
+  renderGens();
+}
+</script>
+<style>
+/* 最上段（先祖）には親への接続線を出さない */
+.tree > ul.rootlv::before{display:none}
+.tree > ul.rootlv > li::before{display:none}
+.tree > ul.rootlv{gap:44px;align-items:flex-start}
+</style>
+</body>
+</html>

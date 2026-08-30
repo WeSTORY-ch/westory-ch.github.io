@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>物語｜モンスター冒険録</title>
+<meta name="description" content="主人公とモンスターたちの旅の記録。章ごとのあらすじと、これまでの出来事をまとめています。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/story.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="物語｜モンスター冒険録">
+<meta property="og:description" content="主人公とモンスターたちの旅の記録。章ごとのあらすじと、これまでの出来事をまとめています。">
+<meta property="og:url" content="https://contentspackage10.github.io/story.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">物語</h1>
+  <p class="lead" id="lead"></p>
+
+  <section class="section">
+    <div class="panel" id="heroBox"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">章</h2>
+    <div class="g2" id="arcs"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">これまでの旅</h2>
+    <div id="log"></div>
+    <p class="small muted" id="logEmpty" style="display:none">
+      あらすじはこれから追加していきます。最新の動画は<a href="news.html">最新情報</a>から。
+    </p>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">立ちはだかったモンスター</h2>
+    <div class="g4" id="enemies"></div>
+  </section>
+
+  <section class="section">
+    <div class="vote-box">
+      <h2 class="sec" style="margin-top:0">次の一手はあなたが決めます</h2>
+      <p class="small">配合と名前は<b>このサイト</b>、パーティとスカウトは<b>YouTubeのアンケート</b>で決めます。</p>
+      <div class="row">
+        <a class="btn gold" href="breed.html">⚗ 配合投票へ</a>
+        <a class="btn gold" href="names.html">✏ 名前の応募へ</a>
+        <a class="btn ghost" href="monsters.html">モンスター牧場</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+function pageInit(){
+  var S = App.STORY, esc = App.esc;
+
+  App.$('#lead').textContent = (S.world && S.world.setting) || '';
+
+  // 主人公
+  var p = S.protagonist || {};
+  App.$('#heroBox').innerHTML =
+    '<div class="two-col">' +
+      '<div>' +
+        '<h2 class="sec" style="margin-top:0">主人公　' + esc(p.name || '') + '</h2>' +
+        '<p class="small muted" style="margin:0 0 8px">' + esc(p.age || '') + '／' + esc(p.role || '') + '</p>' +
+        '<p style="margin:0 0 8px">' + esc(p.goal || '') + '</p>' +
+        '<p class="small muted" style="margin:0">' + esc(p.look || '') + '</p>' +
+      '</div>' +
+      '<div>' +
+        '<h2 class="sec" style="margin-top:0">この物語のきまり</h2>' +
+        '<ul class="small" style="margin:0;padding-left:1.2em">' +
+          '<li>1本の動画で、モンスターのレベルが <b>+' + esc((App.SITE.rules||{}).levelPerVideo || 4) + '</b></li>' +
+          '<li>配合は <b>レベル' + esc((App.SITE.rules||{}).breedMinLevel || 10) + '</b> から</li>' +
+          '<li>毎回スカウトチャンスがあります（結果は次の回で分かります）</li>' +
+          '<li>負けても物語は続きます</li>' +
+        '</ul>' +
+      '</div>' +
+    '</div>';
+
+  // 章
+  App.$('#arcs').innerHTML = (S.arcs || []).map(function(a){
+    return '<div class="panel">' +
+      '<div class="row small"><span class="badge gold">第' + esc(a.epFrom) + '話〜第' + esc(a.epTo) + '話</span></div>' +
+      '<h3 style="margin:8px 0 6px">' + esc(a.title) + '</h3>' +
+      '<p style="margin:0 0 6px">' + esc(a.logline) + '</p>' +
+      '<p class="small muted" style="margin:0">目標：' + esc(a.goal) + '</p>' +
+    '</div>';
+  }).join('') || '<p class="small muted">章はこれから追加します。</p>';
+
+  // これまでの旅（scripts を話数順に）
+  var keys = Object.keys(S.scripts || {}).sort();
+  if(!keys.length){ App.$('#logEmpty').style.display = ''; }
+  App.$('#log').innerHTML = keys.map(function(k){
+    var s = S.scripts[k], ep = App.getEp(k), arc = App.getArc(s.arcId);
+    var en = App.getEnemy(s.battleEnemyId);
+    var win = s.outcome === 'win';
+    return '<div class="tl-item">' +
+      '<div class="tl-date">' + esc(ep ? ('#' + ep.no) : k) + '</div>' +
+      '<div>' +
+        '<div class="row small">' +
+          (arc ? '<span class="badge">' + esc(arc.title) + '</span>' : '') +
+          '<span class="badge ' + (win ? 'green' : '') + '">' + (win ? '勝利' : '敗北') + '</span>' +
+          (s.breed ? '<span class="badge gold">配合</span>' : '') +
+          (en ? '<span class="badge">' + esc(en.name) + '</span>' : '') +
+        '</div>' +
+        '<p class="title" style="margin:6px 0 4px">' + esc(s.title || (ep ? ep.title : '')) + '</p>' +
+        '<p class="small" style="margin:0">' + esc(s.summary || s.logline || '') + '</p>' +
+        (s.voteReflect ? '<p class="small muted" style="margin:4px 0 0">' + esc(s.voteReflect) + '</p>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  // 敵
+  App.$('#enemies').innerHTML = (S.enemies || []).map(function(e){
+    return '<div class="card">' +
+      '<div class="body">' +
+        '<div class="row small">' +
+          '<span class="fam ' + esc(e.family) + '">' + esc(e.family) + '</span>' +
+          '<span class="rank ' + esc(e.rank) + '">' + esc(e.rank) + '</span>' +
+          (e.boss ? '<span class="badge gold">ボス</span>' : '') +
+        '</div>' +
+        '<p class="title" style="margin:6px 0 2px">' + esc(e.name) + '</p>' +
+        '<p class="small muted" style="margin:0 0 6px">Lv.' + esc(e.level) + '／弱点：' + esc(e.weak) + '</p>' +
+        '<p class="small" style="margin:0">' + esc(e.look) + '</p>' +
+        '<div class="foot small muted">' + esc((e.skills||[]).join('・')) + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+</script>
+</body>
+</html>

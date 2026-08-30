@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>グッズ｜モンスター冒険録</title>
+<meta name="description" content="モンスター系グッズのまとめ。閲覧傾向に合わせておすすめを並べ替えます。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/goods.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="グッズ｜モンスター冒険録">
+<meta property="og:description" content="モンスター系グッズのまとめ。閲覧傾向に合わせておすすめを並べ替えます。">
+<meta property="og:url" content="https://contentspackage10.github.io/goods.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">グッズ</h1>
+  <p class="lead">動画に登場したモンスターにちなんだグッズを集めました。あなたが見たページの傾向にあわせて並び順が変わります。</p>
+
+  <p class="pr-note" id="prNote">PR：当サイトはAmazonアソシエイト・楽天アフィリエイト等のアフィリエイトプログラムに参加しています。リンク経由の購入で運営者が収益を得る場合があります。</p>
+
+  <div class="panel soft" style="margin-bottom:16px">
+    <div class="row">
+      <input class="search" id="q" placeholder="商品名・キーワードで検索" oninput="renderGoods()" style="flex:1;min-width:220px">
+      <select class="sel" id="sort" onchange="renderGoods()" style="width:auto">
+        <option value="rec">あなたへのおすすめ順</option>
+        <option value="pop">人気順</option>
+        <option value="name">名前順</option>
+      </select>
+    </div>
+    <div class="filters" id="catFilters" style="margin:12px 0 0"></div>
+  </div>
+
+  <section class="section" id="pickupSec">
+    <h2 class="sec">ピックアップ</h2>
+    <div class="grid g4" id="pickup"></div>
+  </section>
+
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec" id="listTitle">すべてのグッズ</h2>
+      <span class="small muted" id="count"></span>
+    </div>
+    <div class="grid g4" id="list"></div>
+  </section>
+
+  <section class="section">
+    <div class="panel" id="privacyBox">
+      <h2 class="sec">おすすめ表示について</h2>
+      <p class="small muted" style="margin:0 0 8px">
+        当サイトのおすすめ順は、この端末のブラウザ内（localStorage）に保存した「見たモンスター・見たグッズ・押したリンク」の記録だけで計算しています。
+        サーバーに送信することはなく、個人を特定する情報も収集しません。
+      </p>
+      <p class="small" id="prefState" style="margin:0 0 10px"></p>
+      <div class="row">
+        <button class="btn sm" onclick="resetPrefs()">履歴をリセット</button>
+        <button class="btn sm ghost" id="optBtn" onclick="toggleOpt()"></button>
+        <a class="btn sm ghost" href="rules.html#privacy">くわしく</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+var catF='all';
+function setCat(c){catF=c;renderChips();renderGoods();}
+function renderChips(){
+  var cats=['all'].concat(Array.from(new Set(App.GOODS.map(function(g){return g.category}))));
+  App.$('#catFilters').innerHTML=cats.map(function(c){
+    return '<span class="chip'+(catF===c?' on':'')+'" onclick="setCat(\''+c+'\')">'+(c==='all'?'すべて':App.esc(c))+'</span>';
+  }).join('');
+}
+function renderPickup(filtering){
+  // 絞り込み中はピックアップを隠す（隠さないと画面が変わって見えないため）
+  var pick=App.GOODS.filter(function(g){return g.pickup});
+  if(filtering||!pick.length){ App.$('#pickupSec').style.display='none'; return; }
+  App.$('#pickupSec').style.display='';
+  App.$('#pickup').innerHTML=pick.map(App.goodsCardHtml).join('');
+}
+function renderGoods(){
+  var q=(App.$('#q').value||'').trim().toLowerCase();
+  var sort=App.$('#sort').value;
+  renderPickup(catF!=='all'||!!q);
+  var base = sort==='rec' ? App.recommendGoods(App.GOODS.length) : App.GOODS.slice();
+  if(sort==='pop') base.sort(function(a,b){return (b.popularity||0)-(a.popularity||0)});
+  if(sort==='name') base.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'ja')});
+  var list=base.filter(function(g){
+    if(catF!=='all'&&g.category!==catF) return false;
+    if(!q) return true;
+    return [g.name,g.category,g.desc,(g.tags||[]).join(''),g.keyword].join(' ').toLowerCase().indexOf(q)>=0;
+  });
+  App.$('#count').textContent=list.length+' 件';
+  App.$('#listTitle').textContent =
+    catF!=='all' ? catF + 'のグッズ'
+    : q ? '「'+q+'」の検索結果'
+    : (sort==='rec' && App.hasHistory() ? 'あなたへのおすすめ順' : 'すべてのグッズ');
+  App.$('#list').innerHTML = list.length ? list.map(App.goodsCardHtml).join('')
+    : '<div class="empty" style="grid-column:1/-1">該当する商品がありません。</div>';
+  // 表示された商品を軽く履歴に反映（上位3件のみ）
+  list.slice(0,3).forEach(function(g){ App.track.viewGoods(g); });
+  renderPrefState();
+}
+function renderPrefState(){
+  var p=App.track.get();
+  App.$('#prefState').innerHTML = p.optOut
+    ? '現在<b>おすすめのパーソナライズはオフ</b>です（人気順で表示しています）。'
+    : (App.hasHistory()
+      ? 'いまの傾向：'+App.topInterests(4).map(function(t){return '<span class="badge gold">'+App.esc(t)+'</span>'}).join(' ')
+      : 'まだ履歴がありません。モンスターやグッズを見ると、おすすめが変化します。');
+  App.$('#optBtn').textContent = p.optOut ? 'パーソナライズをオンにする' : 'パーソナライズをオフにする';
+}
+function resetPrefs(){ App.track.reset(); renderGoods(); }
+function toggleOpt(){ var p=App.track.get(); App.track.setOptOut(!p.optOut); renderGoods(); }
+function pageInit(){
+  renderChips();
+  renderGoods();
+}
+</script>
+</body>
+</html>

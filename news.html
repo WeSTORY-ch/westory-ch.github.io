@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>最新情報｜モンスター冒険録</title>
+<meta name="description" content="動画の更新情報・投票の受付状況・投票結果のお知らせ。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/news.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="最新情報｜モンスター冒険録">
+<meta property="og:description" content="動画の更新情報・投票の受付状況・投票結果のお知らせ。">
+<meta property="og:url" content="https://contentspackage10.github.io/news.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">最新情報</h1>
+  <p class="lead">動画の更新・投票の受付・結果発表をまとめています。</p>
+
+  <div class="filters" id="filters"></div>
+
+  <section class="section" id="voteSec">
+    <h2 class="sec">投票受付中</h2>
+    <div id="openVotes"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">タイムライン</h2>
+    <div class="tl" id="timeline"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec">動画一覧</h2>
+    <div class="grid g4" id="epGrid"></div>
+  </section>
+
+  <section class="section">
+    <div class="panel">
+      <h2 class="sec">どこで決めるか</h2>
+      <div id="voteMap"></div>
+      <p class="small muted" style="margin:10px 0 0">締切は次の動画の公開まで。最多票をそのまま採用し、このサイトと次の動画で発表します。</p>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+var newsFilter='all';
+function setNewsFilter(f){ newsFilter=f; renderTimeline(); renderFilters(); }
+function renderFilters(){
+  var fs=[['all','すべて'],['動画','動画'],['投票','投票'],['お知らせ','お知らせ'],['ルール','ルール']];
+  App.$('#filters').innerHTML = fs.map(function(f){
+    return '<span class="chip'+(newsFilter===f[0]?' on':'')+'" onclick="setNewsFilter(\''+f[0]+'\')">'+App.esc(f[1])+'</span>';
+  }).join('');
+}
+function renderTimeline(){
+  var esc=App.esc, items=[];
+  App.EPISODES.forEach(function(e){
+    items.push({date:e.date,type:'動画',title:'#'+e.no+' '+e.title,body:e.summary||'',ep:e,
+      extra:(e.result?'結果：'+e.result:''), status:e.voteStatus});
+  });
+  App.NEWS.forEach(function(n){
+    items.push({date:n.date,type:n.type,title:n.title,body:n.body,ep:n.epId?App.getEp(n.epId):null,link:n.link});
+  });
+  items.sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
+  var list = items.filter(function(i){return newsFilter==='all'||i.type===newsFilter});
+  App.$('#timeline').innerHTML = list.length ? list.map(function(i){
+    return '<div class="tl-item"><div class="tl-date">'+esc(App.fmtDate(i.date))+'</div><div class="tl-body">'+
+      '<div class="row small" style="margin-bottom:3px"><span class="badge'+(i.type==='投票'?' live':(i.type==='動画'?' cyan':''))+'">'+esc(i.type)+'</span>'+
+      (i.status==='受付中'?'<span class="badge live">投票受付中</span>':'')+
+      (i.status==='結果発表'?'<span class="badge green">結果発表</span>':'')+'</div>'+
+      '<h3>'+esc(i.title)+'</h3><p>'+esc(i.body)+'</p>'+
+      (i.extra?'<p class="small" style="color:var(--gold);margin-top:4px">'+esc(i.extra)+'</p>':'')+
+      '<div class="row" style="margin-top:8px">'+
+        (i.ep?'<a class="yt-btn" href="'+esc(App.ytWatch(i.ep))+'" target="_blank" rel="noopener" onclick="App.track.viewEpisode(App.getEp(\''+esc(i.ep.id)+'\'))">▶ 動画を見る／投票する</a>':'')+
+        (i.link?'<a class="btn sm" href="'+esc(i.link)+'">くわしく</a>':'')+
+      '</div></div></div>';
+  }).join('') : '<div class="empty">該当する情報はありません。</div>';
+}
+function pageInit(){
+  var esc=App.esc;
+  renderFilters();
+  renderTimeline();
+
+  var open = App.EPISODES.filter(function(e){return e.voteStatus==='受付中'});
+  App.$('#openVotes').innerHTML = open.length
+    ? '<div class="grid g2">'+open.map(function(e){
+        var typ={name:'名前を決める',skill:'スキルを決める',breed:'配合を決める',
+                 party:'パーティを決める',scout:'誰をスカウトする？'}[e.voteType]||'投票';
+        return '<div class="vote-box"><div class="row"><span class="badge live">受付中</span><span class="badge gold">'+esc(typ)+'</span>'+
+          (e.voteDeadline?'<span class="badge">締切 '+esc(App.fmtDate(e.voteDeadline))+'</span>':'')+'</div>'+
+          '<h3 style="margin:8px 0 4px">'+esc(e.title)+'</h3>'+
+          '<p class="small" style="margin:0 0 10px">'+esc(e.voteNote||'')+'</p>'+
+          voteBtn(e)+'</div>';
+      }).join('')+'</div>'
+    : '<div class="empty">現在受付中の投票はありません。</div>';
+
+  var eps=App.EPISODES.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
+  App.$('#epGrid').innerHTML = eps.map(App.episodeCardHtml).join('');
+  App.$('#voteMap').innerHTML = App.voteMapHtml();
+}
+// 投票の種類ごとに、Webへ送るかYouTubeへ送るかを切り替える
+function voteBtn(e){
+  var esc=App.esc, web={name:['names.html','✏ 名前を応募する'],breed:['breed.html','⚗ 父と母を選んで投票する']}[e.voteType];
+  return web
+    ? '<div class="row"><a class="btn gold" href="'+web[0]+'">'+esc(web[1])+'</a>'+
+      '<a class="btn ghost sm" href="'+esc(App.ytWatch(e))+'" target="_blank" rel="noopener">動画を見る</a></div>'
+    : '<a class="yt-btn" href="'+esc(App.ytWatch(e))+'" target="_blank" rel="noopener">▶ YouTubeのアンケートで投票</a>';
+}
+</script>
+</body>
+</html>

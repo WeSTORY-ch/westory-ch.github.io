@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>スキル図鑑｜モンスター冒険録</title>
+<meta name="description" content="テリーのワンダーランド3Dのスキル一覧。どのスキルがどの特技をいくつのSPで覚えるか、どの種族が持っているかをまとめています。">
+<!-- seo:start -->
+<link rel="canonical" href="https://contentspackage10.github.io/skills.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="モンスター冒険録">
+<meta property="og:title" content="スキル図鑑｜モンスター冒険録">
+<meta property="og:description" content="テリーのワンダーランド3Dのスキル一覧。どのスキルがどの特技をいくつのSPで覚えるか、どの種族が持っているかをまとめています。">
+<meta property="og:url" content="https://contentspackage10.github.io/skills.html">
+<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="page">スキル図鑑</h1>
+  <p class="lead">
+    モンスターが覚える<b>スキル</b>の一覧です。スキルにはそれぞれ覚える<b>特技</b>があり、
+    バトルでためた<b>SP</b>をふりわけると、必要SPの少ないものから順番に覚えます。
+  </p>
+
+  <div class="panel soft" style="margin-bottom:16px">
+    <div class="row">
+      <input class="search" id="q" placeholder="スキル名・特技名・効果・モンスター名でさがす" oninput="renderList()" style="flex:1;min-width:220px">
+      <select class="sel" id="sort" onchange="renderList()" style="width:auto">
+        <option value="mons">持っている種族が多い順</option>
+        <option value="name">名前順</option>
+        <option value="tech">覚える特技が多い順</option>
+      </select>
+    </div>
+    <p class="small muted" style="margin:8px 0 0" id="count"></p>
+  </div>
+
+  <div id="detail"></div>
+
+  <section class="section">
+    <h2 class="sec">スキル一覧</h2>
+    <div class="grid g4" id="list"></div>
+  </section>
+
+</div>
+
+<script src="data/site.js"></script>
+<script src="data/monsters.js"></script>
+<script src="data/teri.js"></script>
+<script src="data/mondex.js"></script>
+<script src="data/skills.js"></script>
+<script src="data/episodes.js"></script>
+<script src="data/goods.js"></script>
+<script src="data/news.js"></script>
+<script src="data/story.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+var ALL=[], PICK='';
+
+// 覚える特技は必要SPの少ない順（＝実際に覚える順）でならべる
+function techsHtml(techs){
+  var esc=App.esc;
+  if(!techs||!techs.length) return '<div class="empty">覚える特技のデータがありません。</div>';
+  return '<div class="techs">'+techs.slice().sort(function(a,b){return (a.sp||0)-(b.sp||0)}).map(function(t){
+    return '<div class="tech"><span class="sp">'+esc(t.sp||0)+'</span>'+
+      '<span class="nm">'+esc(t.t)+'</span>'+
+      (t.e?'<span class="ef">'+esc(t.e)+'</span>':'')+'</div>';
+  }).join('')+'</div>';
+}
+
+// その種族をうちの牧場で飼っていれば、詳細ページへつなぐ
+function monLink(species){
+  var esc=App.esc;
+  var mine=App.MONSTERS.filter(function(m){return m.species===species})[0];
+  return mine
+    ? '<a class="badge gold" href="monster.html?id='+encodeURIComponent(mine.id)+'">'+esc(mine.name)+'（'+esc(species)+'）</a>'
+    : '<span class="badge">'+esc(species)+'</span>';
+}
+
+function renderDetail(){
+  var esc=App.esc, box=App.$('#detail');
+  var s=ALL.filter(function(x){return x.name===PICK})[0];
+  if(!s){ box.innerHTML=''; return; }
+  box.innerHTML =
+    '<section class="section"><div class="panel">'+
+      '<div class="spread">'+
+        '<h2 class="sec" style="margin:0">'+esc(s.name)+'</h2>'+
+        '<button class="btn ghost sm" onclick="pick(\'\')">閉じる</button>'+
+      '</div>'+
+      '<p class="small muted" style="margin:6px 0 12px">'+
+        '覚える特技 '+s.techs.length+'個 ／ このスキルを持つ種族 '+s.mons.length+'体 ／ '+
+        '全部おぼえるのに必要なSP '+s.techs.reduce(function(n,t){return Math.max(n,t.sp||0)},0)+'</p>'+
+      techsHtml(s.techs)+
+      '<p class="small muted" style="margin:16px 0 6px">このスキルを持つモンスター</p>'+
+      '<div class="row">'+s.mons.map(monLink).join('')+'</div>'+
+    '</div></section>';
+  box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function pick(name){
+  PICK=(PICK===name?'':name);
+  renderDetail();
+  renderList();
+  var u=location.pathname+(PICK?'?s='+encodeURIComponent(PICK):'');
+  history.replaceState(null,'',u);
+}
+
+function renderList(){
+  var esc=App.esc;
+  var q=(App.$('#q').value||'').trim().toLowerCase(), sort=App.$('#sort').value;
+  var list=ALL.filter(function(s){
+    if(!q) return true;
+    var hay=(s.name+' '+s.mons.join(' ')+' '+
+      s.techs.map(function(t){return t.t+' '+t.e}).join(' ')).toLowerCase();
+    return hay.indexOf(q)>=0;
+  });
+  if(sort==='name') list=list.slice().sort(function(a,b){return a.name.localeCompare(b.name,'ja')});
+  if(sort==='tech') list=list.slice().sort(function(a,b){return b.techs.length-a.techs.length});
+  App.$('#count').textContent='スキル '+ALL.length+'種類 ／ 特技 '+
+    ALL.reduce(function(n,s){return n+s.techs.length},0)+'個'+
+    (q?'　いま表示中：'+list.length+'種類':'');
+  App.$('#list').innerHTML = list.length ? list.map(function(s){
+    return '<div class="panel'+(s.name===PICK?' soft':'')+'" style="cursor:pointer" onclick="pick('+JSON.stringify(s.name).replace(/"/g,'&quot;')+')">'+
+      '<b class="dot" style="font-size:17px">'+esc(s.name)+'</b>'+
+      '<p class="small muted" style="margin:4px 0 8px">特技'+s.techs.length+'個 ／ '+s.mons.length+'体が持つ</p>'+
+      '<div class="row">'+s.techs.slice()
+        .sort(function(a,b){return (a.sp||0)-(b.sp||0)}).slice(0,3)
+        .map(function(t){return '<span class="badge">'+esc(t.t)+'</span>'}).join('')+
+        (s.techs.length>3?'<span class="badge">ほか'+(s.techs.length-3)+'個</span>':'')+
+      '</div>'+
+    '</div>';
+  }).join('') : '<div class="empty" style="grid-column:1/-1">見つかりませんでした。</div>';
+}
+
+function pageInit(){
+  ALL=App.allSkills();
+  PICK=App.qs('s')||'';
+  renderDetail();
+  renderList();
+}
+</script>
+</body>
+</html>
