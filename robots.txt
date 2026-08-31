@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /studio/
 Disallow: /admin.html
 Allow: /
-Sitemap: https://contentspackage10.github.io/sitemap.xml
+Sitemap: https://westory-ch.github.io/sitemap.xml

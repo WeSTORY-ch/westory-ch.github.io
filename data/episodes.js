@@ -7,12 +7,16 @@
    youtubeId  : YouTubeの動画ID（https://www.youtube.com/watch?v=★ここ★）
    date       : 公開日 YYYY-MM-DD
    summary    : あらすじ
-   voteType   : "name"(名前) / "skill"(スキル) / "breed"(配合) / "scout"(スカウト) / "none"
-                ※ 名前は names.html の応募ボード、スキルと配合はYouTubeコメントで受け付けます
+   voteType   : "name"(モンスターの名前) / "battle"(次に戦う相手) /
+                "breed"(配合の組み合わせ) / "skill"(継承するスキル) / "none"
+                ※ name と battle は<動画のコメント欄>で受け付けます
+                   （battle は固定コメント1件＋返信6件へのいいね）
+                ※ breed と skill は<このサイトに貼った応募フォーム>で受け付けます
+                   （概要欄からフォームへは直接飛ばしません）
    voteStatus : "受付中" / "締切" / "結果発表"
    voteDeadline: 締切 YYYY-MM-DD
-   voteNote   : 投票のやり方の一言
-   result     : 投票結果（決まったら記入）
+   voteNote   : 参加のしかたの一言
+   result     : 決まった結果（決まったら記入。最終判断は制作者）
    monsters   : 登場モンスターID
    tags       : おすすめ表示に使うタグ
 

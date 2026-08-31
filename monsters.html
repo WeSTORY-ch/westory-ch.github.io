@@ -3,17 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>モンスター牧場｜モンスター冒険録</title>
+<title>モンスター牧場｜WeSTORY</title>
 <meta name="description" content="いま持っているモンスターの一覧。動画に出るパーティ3体・牧場の控え・モンスター病院・配合で旅立った仲間が分かります。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/monsters.html">
+<link rel="canonical" href="https://westory-ch.github.io/monsters.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="モンスター牧場｜モンスター冒険録">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="モンスター牧場｜WeSTORY">
 <meta property="og:description" content="いま持っているモンスターの一覧。動画に出るパーティ3体・牧場の控え・モンスター病院・配合で旅立った仲間が分かります。">
-<meta property="og:url" content="https://contentspackage10.github.io/monsters.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:url" content="https://westory-ch.github.io/monsters.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -22,8 +25,9 @@
 
   <h1 class="page">モンスター牧場</h1>
   <p class="lead">
-    いま持っているモンスターの一覧です。動画に出るのは<b>パーティの3体</b>だけ。
-    その3体は<b>YouTubeのアンケート</b>で、配合と名前は<b>このサイト</b>で決めます。
+    いま持っているモンスターの一覧です。動画に出るのは<b>サイズに関係なく3体</b>だけ。
+    メンバーは<b>制作者が決めます</b>（コメント欄の要望は参考にしますが、必ず通るとは限りません）。
+    名前と次に戦う相手は<b>動画のコメント欄</b>、配合先と継承スキルは<b>このサイトの応募フォーム</b>で決めます。
   </p>
 
   <div class="grid g4" id="ranchStats" style="margin-bottom:16px"></div>
@@ -47,23 +51,23 @@
       <a class="btn ghost sm" href="rules.html#party">パーティのルール</a>
     </div>
     <p class="small muted" style="margin:0 0 10px">
-      この3体だけが動画のバトルに出ます。だれを入れるかは毎回アンケートで決めています。
-      <b>レベルが上がるのもこの3体だけ</b>で、負けた回は経験値がもらえません。
+      この3体だけが動画のバトルに出ます。<b>レベルが上がるのもこの3体だけ</b>で、負けた回は経験値がもらえません。
+      さらに負けると、この3体から<b>ランダムで1体</b>がモンスター病院へ送られます。
     </p>
     <div class="grid g4" id="partyList"></div>
     <div class="vote-box" style="margin-top:14px">
-      <h3>▶ 次のパーティを決める</h3>
-      <p class="small" style="margin:0 0 10px">だれを入れるかは<b>YouTubeのアンケート</b>で受け付けます。締切は次の動画の公開まで。</p>
+      <h3><span class="ic" data-ic="party"></span>パーティの決め方</h3>
+      <p class="small" style="margin:0 0 10px" id="partyRuleNote"></p>
       <div class="row">
-        <a class="yt-btn" id="partyPollBtn" href="#" target="_blank" rel="noopener">▶ YouTubeのアンケートで投票</a>
-        <a class="btn ghost sm" href="scout.html">🎯 スカウトの3択を見る</a>
+        <a class="yt-btn" id="partyPollBtn" href="#" target="_blank" rel="noopener"><span class="ic" data-ic="youtube"></span>コメント欄で要望を伝える</a>
+        <a class="btn ghost sm" href="scout.html"><span class="ic" data-ic="battle"></span>次に戦う相手を見る</a>
       </div>
     </div>
   </section>
 
   <section class="section">
     <h2 class="sec">牧場でお留守番している仲間</h2>
-    <p class="small muted" style="margin:0 0 10px">元気だけれど、今回はパーティに入っていない子です。次のアンケートで選ばれれば出番があります。</p>
+    <p class="small muted" style="margin:0 0 10px">元気だけれど、今回はパーティに入っていない子です。次の回で選ばれれば出番があります。</p>
     <div class="grid g4" id="benchList"></div>
   </section>
 
@@ -85,7 +89,7 @@
   <section class="section">
     <div class="panel">
       <h2 class="sec">配合できるモンスター</h2>
-      <p class="small muted" style="margin:0 0 10px">レベル<span id="minLv"></span>以上で配合できます。動画1本でレベル+<span id="perV"></span>。</p>
+      <p class="small muted" style="margin:0 0 10px">レベル<span id="minLv"></span>以上で配合できます。戦闘に1回勝つとレベル+<span id="perV"></span>。</p>
       <div id="breedable"></div>
     </div>
   </section>
@@ -155,7 +159,7 @@ function renderStats(){
 function pageInit(){
   var esc=App.esc, S=App.SITE;
   App.$('#minLv').textContent=S.rules.breedMinLevel;
-  App.$('#perV').textContent=S.rules.levelPerVideo;
+  App.$('#perV').textContent=S.rules.levelPerWin;
   App.$('#pCount').textContent=App.partyMons().length;
   App.$('#pMax').textContent=App.partySize();
   App.$('#hospTitle').textContent=(S.hospital&&S.hospital.label)||'モンスター病院';
@@ -163,21 +167,22 @@ function pageInit(){
   renderStats();
   renderRanch();
 
-  // パーティ投票は受付中の動画へ、無ければチャンネルへ
-  var pollEp=App.EPISODES.filter(function(e){return e.voteStatus==='受付中'&&e.voteType==='party'})[0]
-          || App.EPISODES.filter(function(e){return e.voteStatus==='受付中'})[0];
+  // パーティの要望はコメント欄。最新の受付中の回へ、無ければチャンネルへ
+  App.$('#partyRuleNote').innerHTML=(S.rules&&S.rules.partyNote)||'';
+  var pollEp=App.EPISODES.filter(function(e){return e.voteStatus==='受付中'})
+    .sort(function(a,b){return (b.date||'').localeCompare(a.date||'')})[0];
   App.$('#partyPollBtn').href = pollEp ? App.ytWatch(pollEp) : (S.channelUrl||'#');
 
   var b=App.MONSTERS.filter(App.canBreed), nb=App.MONSTERS.filter(function(m){return !App.canBreed(m)});
   App.$('#breedable').innerHTML =
     (b.length?'<div class="row" style="margin-bottom:10px">'+b.map(function(m){
-      return '<a class="badge gold" href="monster.html?id='+encodeURIComponent(m.id)+'">'+esc(m.emoji||'')+' '+esc(m.name)+' Lv.'+esc(m.level)+'</a>';
-    }).join('')+'</div><a class="btn gold" href="breed.html">⚗ 配合の組み合わせに投票する</a>'
+      return '<a class="badge gold" href="monster.html?id='+encodeURIComponent(m.id)+'">'+esc(m.name)+' Lv.'+esc(m.level)+'</a>';
+    }).join('')+'</div><a class="btn gold" href="breed.html">配合表を見て応募する</a>'
     :'<p class="muted small" style="margin:0">まだ配合できるモンスターがいません。</p>')+
     (nb.length?'<p class="small muted" style="margin:14px 0 4px">あと少しで配合できる仲間</p><div class="row">'+nb
       .sort(function(a,b){return (b.level||0)-(a.level||0)})
       .map(function(m){
-        return '<span class="badge">'+esc(m.emoji||'')+' '+esc(m.name)+' Lv.'+esc(m.level)+' … あと動画'+App.videosToBreed(m)+'本</span>';
+        return '<span class="badge">'+esc(m.name)+' Lv.'+esc(m.level)+' … あと'+App.winsToBreed(m)+'勝</span>';
       }).join('')+'</div>':'');
 
   App.$('#recGoods').innerHTML = App.recommendGoods(4).map(App.goodsCardHtml).join('');

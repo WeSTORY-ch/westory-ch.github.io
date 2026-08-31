@@ -3,17 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ルールと方針｜モンスター冒険録</title>
+<title>ルールと方針｜WeSTORY</title>
 <meta name="description" content="投票のルール、配合のルール、生成AIの利用方針、広告表記、おすすめ表示について。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/rules.html">
+<link rel="canonical" href="https://westory-ch.github.io/rules.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="ルールと方針｜モンスター冒険録">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="ルールと方針｜WeSTORY">
 <meta property="og:description" content="投票のルール、配合のルール、生成AIの利用方針、広告表記、おすすめ表示について。">
-<meta property="og:url" content="https://contentspackage10.github.io/rules.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:url" content="https://westory-ch.github.io/rules.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -21,18 +24,19 @@
 <div class="wrap">
 
   <h1 class="page">ルールと方針</h1>
-  <p class="lead">この企画は視聴者投票で進行します。安心して参加していただくため、ルールと運営方針を公開しています。</p>
+  <p class="lead">この企画は視聴者のみなさんの投票で進行します。安心して参加していただくため、ルールと制作方針を公開しています。</p>
 
   <div class="row" style="margin-bottom:20px">
-    <a class="btn ghost sm" href="#vote">投票</a>
-    <a class="btn ghost sm" href="#naming">名前の応募</a>
+    <a class="btn ghost sm" href="#vote">参加のしかた</a>
+    <a class="btn ghost sm" href="#naming">名前</a>
     <a class="btn ghost sm" href="#party">パーティ</a>
     <a class="btn ghost sm" href="#level">レベル</a>
-    <a class="btn ghost sm" href="#scout">スカウト</a>
-    <a class="btn ghost sm" href="#breed">配合</a>
+    <a class="btn ghost sm" href="#scout">次に戦う相手</a>
+    <a class="btn ghost sm" href="#breed">配合とスキル</a>
     <a class="btn ghost sm" href="#hospital">人生縛り</a>
     <a class="btn ghost sm" href="#items">アイテム</a>
-    <a class="btn ghost sm" href="#editorial">編集部の決定</a>
+    <a class="btn ghost sm" href="#cautions">注意ごと</a>
+    <a class="btn ghost sm" href="#editorial">制作者の決定</a>
     <a class="btn ghost sm" href="#transparency">透明性</a>
     <a class="btn ghost sm" href="#ai">生成AI</a>
     <a class="btn ghost sm" href="#ad">広告</a>
@@ -41,11 +45,13 @@
 
   <section class="section" id="vote">
     <div class="panel">
-      <h2 class="sec">どこで決めるか</h2>
+      <h2 class="sec">参加のしかた（どこで決めるか）</h2>
       <div id="voteMap"></div>
       <ul style="margin-top:14px">
+        <li><b>名前</b>と<b>次に戦う相手</b>は<b>YouTubeのコメント欄</b>で受け付けます。</li>
+        <li><b>配合先</b>と<b>継承スキル</b>は<b>このサイト</b>の応募フォームで受け付けます。動画の概要欄からフォームへは直接飛べません。</li>
         <li>1本の動画につき、1人1票を目安にお願いします。</li>
-        <li>締切は各動画の概要欄・当サイトの<a href="news.html">最新情報</a>に記載します。</li>
+        <li>締切は各動画と当サイトの<a href="index.html#news">お知らせ</a>に記載します。</li>
         <li>結果は次の動画と当サイトで発表します。</li>
       </ul>
     </div>
@@ -53,14 +59,14 @@
 
   <section class="section" id="naming">
     <div class="panel">
-      <h2 class="sec">名前の応募ルール</h2>
+      <h2 class="sec">名前のルール</h2>
       <p class="small muted" style="margin:0 0 10px">
-        名前と配合は<b>このサイト</b>から、パーティとスカウトは<b>YouTubeのアンケート</b>で決めます。
+        名前は<b>動画のコメント欄</b>だけで受け付けます。このサイトからは応募できません。
       </p>
       <ul id="nameRules"></ul>
       <p class="small muted" style="margin:0" id="nameHeartNote"></p>
       <p class="small muted" style="margin:6px 0 0" id="nameNgNote"></p>
-      <p style="margin:10px 0 0"><a class="btn gold" href="names.html">✏ 名前の応募ボードへ</a></p>
+      <p style="margin:10px 0 0"><a class="btn gold" href="names.html"><span class="ic" data-ic="pen"></span>名前の募集ページへ</a></p>
     </div>
   </section>
 
@@ -68,8 +74,8 @@
     <div class="panel">
       <h2 class="sec">パーティのルール</h2>
       <ul>
-        <li>動画のバトルに出られるのは<b><span id="pSize"></span>体まで</b>です。</li>
-        <li>その<span id="pSize2"></span>体は<b>毎回アンケートで決めます</b>。人気の子ばかりにならないよう、結果はそのまま反映します。</li>
+        <li>動画のバトルに出られるのは<b><span id="pSize"></span>体まで</b>です。モンスターの<b>サイズには関係ありません</b>。</li>
+        <li id="partyLi"></li>
         <li>選ばれなかった仲間は<a href="monsters.html">モンスター牧場</a>でお留守番します。次の回で選ばれれば出番があります。</li>
         <li>いま誰がパーティにいるかは<a href="monsters.html">モンスター牧場</a>でいつでも確認できます。</li>
       </ul>
@@ -80,39 +86,60 @@
     <div class="panel">
       <h2 class="sec">レベル</h2>
       <ul>
-        <li>動画1本につき、レベルが<b>+<span id="perV"></span></b>されます。</li>
+        <li><b>戦闘に1回勝つ</b>と、レベルが<b>+<span id="perV"></span></b>されます。</li>
+        <li id="lvWinLi"></li>
+        <li id="lvUnitLi"></li>
         <li id="lvPartyLi"></li>
         <li id="lvLoseLi"></li>
-        <li>毎回の動画に<b>スカウトチャンス</b>があります。仲間が増えると配合の選択肢も増えます。</li>
+        <li>スカウトのイベントは<b>毎回あるとは限りません</b>。仲間が増えると配合の選択肢も増えます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="sp">
+    <div class="panel">
+      <h2 class="sec">スキルポイント</h2>
+      <ul>
+        <li id="spLevelLi"></li>
+        <li id="spBreedLi"></li>
+        <li id="spAutoLi"></li>
+        <li id="spConsultLi"></li>
       </ul>
     </div>
   </section>
 
   <section class="section" id="scout">
     <div class="panel">
-      <h2 class="sec">スカウトのルール</h2>
+      <h2 class="sec">次に戦う相手のルール</h2>
       <div class="steps" id="scoutSteps"></div>
       <ul style="margin-top:14px">
+        <li id="scoutEveryLi"></li>
+        <li id="scoutTriesLi"></li>
         <li id="scoutReflectLi"></li>
         <li>肉は<b>弱い順に自動で消費</b>されます。どれを使うか選ぶ必要はありません。</li>
-        <li>3択の内容と結果は、すべて<a href="scout.html">スカウトページ</a>に記録として残します。</li>
+        <li id="scoutResultLi"></li>
       </ul>
       <div id="scoutRates" style="margin-top:6px"></div>
-      <p style="margin:12px 0 0"><a class="btn gold" href="scout.html">🎯 スカウトページへ</a></p>
+      <p style="margin:12px 0 0"><a class="btn gold" href="scout.html"><span class="ic" data-ic="battle"></span>次に戦う相手のページへ</a></p>
     </div>
   </section>
 
   <section class="section" id="breed">
     <div class="panel">
-      <h2 class="sec">配合のルール</h2>
+      <h2 class="sec">配合とスキルのルール</h2>
       <ul>
         <li><b>レベル<span id="minLv"></span></b>から配合できます。</li>
-        <li>父と母の組み合わせは視聴者投票で決めます。候補が多い場合は<a href="breed.html">配合投票ページ</a>で父・母を選んでコードを作ってください。</li>
-        <li>生まれる子どものモンスターは、両親の系統をもとに<b>編集部が独自にランダム決定</b>します。</li>
-        <li>ただし<b>投票してくださった方の意図はできる限り汲みます</b>。「この系統が見たい」「この見た目を期待している」といった一言を添えていただけると反映しやすくなります。</li>
-        <li>生まれた子どもの名前とスキルは、あらためて投票で決めます。</li>
+        <li>生まれる子は『テリーのワンダーランド3D』の<b>実際の配合データ</b>どおりです。父と母を選ぶとその場で種族名が出るので、<a href="breed.html">配合表</a>で確かめてから応募できます。</li>
+        <li>父と母の組み合わせは<b>このサイトの応募フォーム</b>で受け付けます。既にあるデータから選ぶ形式なので、Googleフォームを使います。</li>
+        <li><b>配合先は通常のゲームとは異なる場合があります</b>。演出や物語の都合で調整することがあります。</li>
+        <li>配合すると<b>親はいなくなります</b>。<a href="tree.html">家系図</a>には記録として残ります。</li>
+        <li><b>スキルは1体につき2つまで</b>です。もらった子もスカウトした子も、最初は1つしか持っていません。</li>
+        <li>スキルの投票を行うのは、<b>配合で継承できる候補が2つを超えたときだけ</b>です。候補が2つ以下ならそのまま引き継がれます。</li>
+        <li><b>個体値アップ系のスキルは考慮しません</b>。</li>
       </ul>
-      <p><a class="btn gold" href="breed.html">⚗ 配合投票ページへ</a></p>
+      <p class="small muted" style="margin:0 0 10px" id="formPeriod"></p>
+      <p class="small muted" style="margin:0 0 10px" id="formAnon"></p>
+      <div class="row" id="formCta"></div>
     </div>
   </section>
 
@@ -122,7 +149,7 @@
       <ul>
         <li id="hospRule"></li>
         <li id="hospRevive"></li>
-        <li>やられてしまった仲間は<b>もう動画に戻ってきません</b>。だから1戦1戦が本番です。</li>
+        <li id="hospLife"></li>
         <li>いま誰が入院しているかは<a href="monsters.html">モンスター牧場</a>で確認できます。</li>
       </ul>
     </div>
@@ -136,21 +163,29 @@
       <p class="small" style="margin:12px 0 0"><b>使いかた</b></p>
       <ul id="useNotes" style="margin-top:4px"></ul>
       <p class="small muted" style="margin:0" id="inflNote"></p>
-      <p style="margin:10px 0 0"><a class="btn gold" href="items.html">🎒 いまの合計再生数と手持ちを見る</a></p>
+      <p style="margin:10px 0 0"><a class="btn gold" href="items.html"><span class="ic" data-ic="box"></span>いまの合計再生数と手持ちを見る</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="cautions">
+    <div class="panel">
+      <h2 class="sec">参加する前に知っておいてほしいこと</h2>
+      <ul id="cautionList"></ul>
     </div>
   </section>
 
   <section class="section" id="editorial">
     <div class="panel">
-      <h2 class="sec">編集部の決定について</h2>
+      <h2 class="sec">制作者の決定について</h2>
       <ul>
         <li>誹謗中傷・差別的表現・過度に性的な表現・実在の人物や団体を想起させる名称など、<b>不適切な投票は無効</b>とします。</li>
         <li>他者の権利を侵害するおそれのある名称も採用しません。</li>
-        <li>締切までに有効な票が集まらなかった場合は、<b>編集部が決定</b>します。</li>
+        <li>投票は多数決ですが、<b>最終的な判断は制作者</b>が行います。票がいちばん多いものが必ず選ばれるとは限りません。</li>
+        <li>締切までに有効な票が集まらなかった場合も、<b>制作者が決定</b>します。</li>
         <li>同数の場合は、投稿が早かったものを優先します。</li>
         <li>判断に迷うケースは、動画内で理由を説明したうえで決定します。</li>
       </ul>
-      <p class="small" style="margin:10px 0 0"><b>アンケートの反映について</b></p>
+      <p class="small" style="margin:10px 0 0"><b>投票の反映について</b></p>
       <p class="small muted" style="margin:4px 0 0" id="pollNotice"></p>
     </div>
   </section>
@@ -166,7 +201,7 @@
         <li>投票の集計方法・締切・結果はすべて公開します。集計を恣意的に操作することはしません。</li>
       </ul>
       <p class="small muted" style="margin:0">
-        ご連絡先：<span id="contact">（ここに連絡用のメールアドレスやフォームURLを記載してください）</span>
+        ご連絡先：<span id="contact"><a href="mailto:oasic.muselol@gmail.com">oasic.muselol@gmail.com</a></span>
       </p>
     </div>
   </section>
@@ -244,34 +279,56 @@
 <script>
 function pageInit(){
   var S=App.SITE, esc=App.esc;
-  App.$('#perV').textContent=S.rules.levelPerVideo;
+  App.$('#perV').textContent=S.rules.levelPerWin;
   App.$('#minLv').textContent=S.rules.breedMinLevel;
   App.$('#pSize').textContent=App.partySize();
-  App.$('#pSize2').textContent=App.partySize();
+  App.$('#partyLi').innerHTML=S.rules.partyNote||'';
+  App.$('#cautionList').innerHTML=(S.cautions||[]).map(function(c){ return '<li>'+c+'</li>'; }).join('');
   App.$('#disc').textContent=S.disclaimer||'';
   App.$('#ainote').textContent=S.aiNotice||'';
   App.$('#adnote').textContent=S.adNotice||'';
   App.$('#pollNotice').textContent=S.pollNotice||'';
   App.$('#voteMap').innerHTML=App.voteMapHtml();
-  App.$('#lvPartyLi').innerHTML='<b>レベルが上がるのはパーティの'+App.partySize()+'体だけ</b>です。'+
-    esc((S.rules.levelUpNote||'').replace(/^レベルが上がるのは、その回のパーティに入っている3体だけです。/,''));
-  App.$('#lvLoseLi').innerHTML='<b>負けた回は経験値がもらえません。</b>レベルも上がらず、そのモンスターは'+
-    esc((S.hospital&&S.hospital.label)||'モンスター病院')+'へ送られます。';
+  App.$('#lvWinLi').innerHTML=S.rules.winOnlyNote||'';
+  App.$('#lvUnitLi').innerHTML=S.rules.battleUnitNote||'';
+  App.$('#lvPartyLi').innerHTML=S.rules.levelUpNote||'';
+  App.$('#lvLoseLi').innerHTML='<b>負けた戦闘は経験値がもらえません。</b>レベルも上がらず、そのときのパーティから'+
+    '<b>ランダムで1体</b>が'+esc((S.hospital&&S.hospital.label)||'モンスター病院')+'へ送られます。';
+
+  var sp=S.skillPoint||{};
+  App.$('#spLevelLi').innerHTML=sp.levelNote||'';
+  App.$('#spBreedLi').innerHTML=sp.breedNote||'';
+  App.$('#spAutoLi').innerHTML=sp.autoNote||'';
+  App.$('#spConsultLi').innerHTML=sp.consultNote||'';
 
   var nm=S.naming||{rules:[]};
   App.$('#nameRules').innerHTML=(nm.rules||[]).map(function(r){ return '<li>'+r+'</li>'; }).join('');
   App.$('#nameHeartNote').textContent=nm.heartNote||'';
   App.$('#nameNgNote').textContent=nm.ngNote||'';
 
+  // 応募フォーム（配合先・継承スキル）。URL未設定のあいだは「準備中」を出す
+  var fm=App.forms();
+  App.$('#formPeriod').innerHTML=fm.periodNote||'';
+  App.$('#formAnon').textContent=fm.anonNote||'';
+  var fcta=[];
+  if(App.formUrl('breed')) fcta.push('<a class="btn gold" href="'+esc(App.formUrl('breed'))+'" target="_blank" rel="noopener">'+App.icon('breed')+'配合先の応募フォーム</a>');
+  if(App.formUrl('skill')) fcta.push('<a class="btn gold" href="'+esc(App.formUrl('skill'))+'" target="_blank" rel="noopener">'+App.icon('skill')+'継承スキルの応募フォーム</a>');
+  fcta.push('<a class="btn ghost" href="breed.html">'+App.icon('flask')+'配合表を見る</a>');
+  App.$('#formCta').innerHTML=(fcta.length>1?'':'<span class="badge">'+esc(fm.preparingNote||'')+'</span>')+fcta.join('');
+
   var h=S.hospital||{};
   App.$('#hospLabel').textContent=h.label||'モンスター病院';
-  App.$('#hospRule').textContent=h.rule||'';
-  App.$('#hospRevive').textContent=h.revive||'';
+  App.$('#hospRule').innerHTML=h.rule||'';
+  App.$('#hospRevive').innerHTML=h.revive||'';
+  App.$('#hospLife').textContent=h.lifeNote||'';
 
   var sc=App.scoutCfg();
   App.$('#scoutSteps').innerHTML=(sc.steps||[]).map(function(s,i){
     return '<div class="step"><span class="n">'+(i+1)+'</span><span class="tx">'+s+'</span></div>';
   }).join('');
+  App.$('#scoutEveryLi').innerHTML=S.rules.scoutNote||'';
+  App.$('#scoutTriesLi').innerHTML=sc.triesNote||'';
+  App.$('#scoutResultLi').innerHTML=sc.resultNote||'';
   App.$('#scoutReflectLi').textContent=sc.reflect||'';
   // 肉の上乗せぶんをメーターで見せる
   var meat=App.meatList(), mx=meat.reduce(function(n,m){return Math.max(n,m.add)},0.5);
@@ -284,10 +341,7 @@ function pageInit(){
   var vi=S.viewItems||{tiers:[],useNotes:{}};
   App.$('#viewNote').innerHTML=(vi.note||'')+'<br>'+esc(vi.progressNote||'');
   App.$('#inflNote').textContent=vi.inflationNote||'';
-  App.$('#viewTiers').innerHTML='<div class="row">'+App.itemTiers().map(function(t){
-    return '<span class="badge'+(t.got?' green':' gold')+'"><b>合計'+App.fmtViews(t.views)+'再生</b>'+esc(t.item)+
-      '<span class="muted small">'+esc(t.use)+(t.got?'／入手済み':'')+'</span></span>';
-  }).join('')+'</div>';
+  App.$('#viewTiers').innerHTML=App.tierLadderHtml();
   App.$('#useNotes').innerHTML=Object.keys(vi.useNotes||{}).map(function(k){
     return '<li><b>'+esc(k)+'</b>：'+esc(vi.useNotes[k])+'</li>';
   }).join('');

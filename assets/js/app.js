@@ -31,6 +31,62 @@
     return p.length === 3 ? `${p[0]}.${p[1]}.${p[2]}` : d;
   };
 
+  /* ---------- アイコン ----------
+     絵文字は端末ごとに絵柄も大きさも変わって揃わないので使いません。
+     ここにある線画（24x24・線幅1.7・角丸）だけを使います。
+     色は currentColor＝置いた場所の文字色をそのまま継ぐので、CSS 側で色を決められます。 */
+  const ICONS = {
+    play:    '<path d="M8.5 5.5 19 12 8.5 18.5Z" fill="currentColor" stroke="none"/>',
+    battle:  '<path d="M4 4h3l11 11M20 4h-3L6 15"/><path d="M6 15l-2 2 3 3 2-2M18 15l2 2-3 3-2-2"/>',
+    pen:     '<path d="M4 20l.9-3.6L16 5.3a2 2 0 0 1 2.8 2.8L7.6 19.1Z"/><path d="M14.4 6.9l2.7 2.7"/>',
+    breed:   '<path d="M7 3c0 5.5 10 7.5 10 13M17 3c0 5.5-10 7.5-10 13"/><path d="M8.4 7h7.2M7.2 11h9.6M8.4 15h7.2"/><path d="M7 19v2M17 19v2"/>',
+    skill:   '<path d="M12 3.2 13.7 9 19.5 10.7 13.7 12.4 12 18.2 10.3 12.4 4.5 10.7 10.3 9Z"/><path d="M18.5 16.3l.7 2.2 2.2.7-2.2.7-.7 2.2-.7-2.2-2.2-.7 2.2-.7Z"/>',
+    leaf:    '<path d="M20 4c0 9-6.6 15.5-15 15.5C5 10.5 11.6 4 20 4Z"/><path d="M4 20 13 11"/>',
+    meat:    '<path d="M14.6 4.2a4.4 4.4 0 0 1 5.2 5.2L11 18.2a4 4 0 1 1-5.2-5.2Z"/><path d="m5.8 13 5.2 5.2"/>',
+    medal:   '<circle cx="12" cy="14.5" r="5"/><path d="M8.6 9.8 6 3h12l-2.6 6.8"/><path d="M12 12.4l.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2L9.1 14.6l2-.3Z"/>',
+    box:     '<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5Z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>',
+    check:   '<path d="m5 12.6 4.6 4.6L19 6.8"/>',
+    level:   '<path d="M4 19h16"/><path d="m5 15 4.5-5 3.5 3L20 5"/><path d="M15.5 5H20v4.5"/>',
+    flask:   '<path d="M10 3v6.2L4.9 17a2 2 0 0 0 1.7 3h10.8a2 2 0 0 0 1.7-3L14 9.2V3"/><path d="M8.6 3h6.8M7.3 14h9.4"/>',
+    down:    '<path d="m6 9.5 6 6 6-6"/>',
+    right:   '<path d="M4.5 12h15"/><path d="m13.5 6 6 6-6 6"/>',
+    star:    '<path d="m12 3.5 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/>',
+    egg:     '<path d="M12 3.2c3.8 0 6.8 5.6 6.8 10.1a6.8 6.8 0 0 1-13.6 0C5.2 8.8 8.2 3.2 12 3.2Z"/>',
+    crest:   '<path d="M12 3 20 6v6.2c0 4.4-3.2 7.5-8 8.8-4.8-1.3-8-4.4-8-8.8V6Z"/><path d="M12 8.2 13.4 11l2.9.4-2.1 2 .5 2.9-2.7-1.4-2.7 1.4.5-2.9-2.1-2 2.9-.4Z"/>',
+    crown:   '<path d="M4 17h16"/><path d="m4 17-1.2-8L8 12l4-6.5L16 12l5.2-3-1.2 8Z"/>',
+    eye:     '<path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3.1"/>',
+    like:    '<path d="M7 21V9.6l4.6-6.4a2 2 0 0 1 3.4 1.9L14 9.6h5a2 2 0 0 1 2 2.4l-1.5 7A2 2 0 0 1 17.5 21Z"/><path d="M7 9.6H3.5V21H7"/>',
+    youtube: '<rect x="2.5" y="5" width="19" height="14" rx="4.2"/><path d="M10.3 9.2 15.4 12l-5.1 2.8Z" fill="currentColor" stroke="none"/>',
+    cross:   '<path d="M9.5 3.5h5v6h6v5h-6v6h-5v-6h-6v-5h6Z"/>',
+    party:   '<circle cx="8" cy="9" r="3"/><circle cx="17" cy="10" r="2.4"/><path d="M2.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"/><path d="M15.5 20c0-2.6 1.4-4.4 3-4.4s3 1.4 3 4.4"/>',
+    book:    '<path d="M4 4.5h5.5A2.5 2.5 0 0 1 12 7v13a2.2 2.2 0 0 0-2.2-2.2H4Z"/><path d="M20 4.5h-5.5A2.5 2.5 0 0 0 12 7v13a2.2 2.2 0 0 1 2.2-2.2H20Z"/>',
+    tree:    '<path d="M9 4.5h6v4H9Z"/><path d="M2.5 15.5h6v4h-6ZM15.5 15.5h6v4h-6Z"/><path d="M12 8.5v3.5M5.5 15.5V12h13v3.5"/>',
+    search:  '<circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.4 15.4 5 5"/>',
+    question:'<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.3 2.4c-.6.2-.9.8-.9 1.5v.4"/><path d="M12 17.2h.01"/>',
+    gift:    '<path d="M3.5 9.5h17v3.2h-17ZM5 12.7h14V20H5Z"/><path d="M12 9.5V20"/><path d="M12 9.5C10 6 8.6 4 7.2 4a2.2 2.2 0 0 0 0 4.4h9.6a2.2 2.2 0 0 0 0-4.4C15.4 4 14 6 12 9.5Z"/>',
+    target:  '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>',
+    hands:   '<path d="M3 12.5 7.5 8l3.4 3.4a2 2 0 0 0 2.8 0L17 8l4 4.5"/><path d="M7.5 8 4 11.5 8.5 16l2-2M17 8l3.5 3.5L16 16l-2-2"/>',
+    auto:    '<rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4.2v3.8M9.5 12.5h.01M14.5 12.5h.01M9.5 16h5"/>'
+  };
+  // 使い方: icon('battle') / icon('leaf','use') → <svg class="ic use">…</svg>
+  function svgFor(name, cls) {
+    const d = ICONS[name];
+    if (!d) return '';
+    return '<svg' + (cls ? ' class="' + cls + '"' : '') + ' viewBox="0 0 24 24" aria-hidden="true" ' +
+      'fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
+      d + '</svg>';
+  }
+  function icon(name, cls) {
+    return svgFor(name, 'ic' + (cls ? ' ' + cls : ''));
+  }
+  // data-ic="名前" が付いた要素に線画を流し込む（HTML に直接書けるようにするため）
+  // 中の svg には ic を付けない。付けると外側の .ic のサイズ指定と二重にかかってはみ出す
+  function hydrateIcons(root) {
+    (root || document).querySelectorAll('[data-ic]').forEach(el => {
+      el.innerHTML = svgFor(el.getAttribute('data-ic'));
+    });
+  }
+
   // ---------- YouTube ----------
   const ytWatch = (ep) => ep && ep.youtubeId
     ? `https://www.youtube.com/watch?v=${encodeURIComponent(ep.youtubeId)}`
@@ -183,25 +239,13 @@
   const retiredMons = () => MONSTERS.filter(m => m.status === '配合済み');
   const inHospital = (m) => !!m && m.status === '入院中';
 
-  // ---------- 名前の応募 ----------
-  const naming = () => SITE.naming || { maxEntries: 30, maxChars: 6 };
-  // 半角=1・全角=2 で数える。全角6文字＝12幅＝半角なら12文字ぶん。
-  const nameWidth = (s) => Array.from(s || '')
-    .reduce((n, ch) => n + (/[\u0020-\u007E\uFF61-\uFF9F]/.test(ch) ? 1 : 2), 0);
-  // 使える文字はひらがな・カタカナ（長音符・半角カナ・全角スペースなしを含む）だけ
-  const NAME_CHARSET = /^[ぁ-ゖァ-ヺーゝゞヽヾ\uFF66-\uFF9F]+$/;
-  function validateName(s) {
-    const v = (s || '').trim();
-    const cfg = naming();
-    const max = (cfg.maxChars || 6) * 2;
-    if (!v) return { ok: false, msg: '名前を入力してください。' };
-    if (!NAME_CHARSET.test(v)) return { ok: false, msg: '使えるのは ひらがな・カタカナ だけです（漢字・英数字・記号は使えません）。' };
-    if (nameWidth(v) > max) return { ok: false, msg: `長すぎます。全角${cfg.maxChars || 6}文字（半角${max}文字）までです。` };
-    return { ok: true, msg: 'この名前で応募できます。' };
-  }
+  // ---------- 名前の募集（受付は YouTube のコメント欄） ----------
+  const naming = () => SITE.naming || { maxChars: 6 };
   const openNameCalls = () => (NAMES.open || []).filter(c => c.status !== '締切');
-  const nameEntries = (call) => (call && call.entries) || [];
-  const nameFull = (call) => nameEntries(call).length >= (naming().maxEntries || 30);
+
+  // ---------- 応募フォーム（配合先・継承スキル） ----------
+  const forms = () => SITE.forms || {};
+  const formUrl = (key) => (forms()[key + 'Url'] || '').trim();
 
   // ---------- どこで投票するか（site.js の polls が唯一の正解） ----------
   const polls = () => SITE.polls || [];
@@ -212,9 +256,9 @@
     const where = SITE.pollWhere || {};
     return `<div class="votemap">${list.map(p => {
       const w = where[p.where] || { label: p.where };
-      const body = `<span class="ic">${esc(p.icon || '')}</span><span>
+      const body = `<span class="vmic">${icon(p.icon || 'question')}</span><span>
         <span class="nm">${esc(p.what)}</span>
-        <span class="wh">${p.where === 'youtube' ? '▶ ' : ''}${esc(w.label)}</span>
+        <span class="wh">${p.where === 'youtube' ? icon('youtube') : ''}${esc(w.label)}</span>
         <span class="cap">${esc(p.note || '')}</span></span>`;
       if (p.where === 'youtube') {
         return `<a class="vm yt" href="${esc(SITE.channelUrl || '#')}" target="_blank" rel="noopener">${body}</a>`;
@@ -223,7 +267,7 @@
     }).join('')}</div>`;
   }
 
-  // ---------- スカウト（動画の最後の3択アンケート） ----------
+  // ---------- 次に戦う相手（動画の最後の6択／固定コメントの返信にいいね） ----------
   const scoutCfg = () => SITE.scout || { levels: [], meat: [] };
   const scoutNow = () => SCOUT.current || { choices: [] };
   // 弱い順（上乗せの小さい順）に並べた肉。手持ち個数つき
@@ -232,6 +276,12 @@
     .map(mt => Object.assign({}, mt, { have: (SCOUT.items || {})[mt.item] || 0 }));
   const scoutHistory = () => (SCOUT.history || []).slice().reverse();
   const pct = (x) => Math.round(Number(x || 0) * 1000) / 10 + '%';
+  // 種族名 → 正面アイコン。牧場に居る子は名鑑の img を優先する
+  const monImg = (name) => {
+    if (!name) return '';
+    const m = MONSTERS.find(x => x.species === name || x.name === name);
+    return (m && m.img) || ('assets/mon/' + name + '.png');
+  };
 
   // ---------- アイテム（ショート動画の合計再生数でもらえる） ----------
   const viewItems = () => SITE.viewItems || { tiers: [], useNotes: {} };
@@ -254,6 +304,39 @@
     if (n >= 10000) return (Math.round(n / 1000) / 10) + '万';
     return n.toLocaleString('ja-JP');
   };
+  // 用途ごとの見た目（色分けの根拠を1か所にまとめる）
+  const USE_FACE = {
+    '回復': { cls: 'heal',   ic: 'flask' },
+    'スカウト': { cls: 'scout', ic: 'meat' },
+    '復帰': { cls: 'revive', ic: 'leaf' },
+    '交換': { cls: 'trade',  ic: 'medal' }
+  };
+  // 合計再生数の達成度を「上から順に登っていくはしご」で見せる。
+  // got = 到達済み / now = 次の目標（ここだけ進み具合のバーを出す）/ far = まだ先
+  function tierLadderHtml() {
+    const v = totalViews();
+    const list = itemTiers();
+    const next = nextItemTier();
+    if (!list.length) return '<div class="empty">基準はまだ設定されていません。</div>';
+    return '<div class="ladder">' + list.map((t, i) => {
+      const face = USE_FACE[t.use] || { cls: 'etc', ic: 'box' };
+      const isNext = !!next && t.views === next.views;
+      const state = t.got ? 'got' : (isNext ? 'now' : 'far');
+      const prev = i ? list[i - 1].views : 0;
+      const p = Math.max(0, Math.min(100, Math.round((v - prev) / (t.views - prev) * 100)));
+      const right = t.got
+        ? '<span class="st ok">入手済み</span>'
+        : '<span class="st">あと ' + fmtViews(t.views - v) + '回</span>' +
+          (isNext ? '<span class="tbar"><i style="width:' + p + '%"></i></span>' : '');
+      return '<div class="tier ' + state + '">' +
+        '<span class="dot">' + (t.got ? icon('check') : (isNext ? icon('play') : '')) + '</span>' +
+        '<span class="goal">' + fmtViews(t.views) + '<small>再生</small></span>' +
+        '<span class="what"><b>' + esc(t.item) + '</b>' +
+          '<span class="use ' + face.cls + '">' + icon(face.ic) + esc(t.use) + '</span></span>' +
+        '<span class="right">' + right + '</span>' +
+        '</div>';
+    }).join('') + '</div>';
+  }
 
   // ---------- 配合エンジン（テリーのワンダーランド3D の実データに基づく） ----------
   const TERI_IX = {};
@@ -385,19 +468,22 @@
   const getEnemy = (id) => (STORY.enemies || []).find(e => e.id === id) || null;
   const getScript = (epId) => (STORY.scripts || {})[epId] || null;
   const canBreed = (m) => (m.level || 0) >= (SITE.rules ? SITE.rules.breedMinLevel : 10);
-  const videosToBreed = (m) => {
+  // 配合できるレベルまで、あと何回「勝つ」必要があるか。動画の本数ではなく戦闘の回数で数える
+  const winsToBreed = (m) => {
     const need = (SITE.rules ? SITE.rules.breedMinLevel : 10) - (m.level || 0);
-    const per = (SITE.rules ? SITE.rules.levelPerVideo : 4) || 4;
+    const per = (SITE.rules ? SITE.rules.levelPerWin : 4) || 4;
     return need <= 0 ? 0 : Math.ceil(need / per);
   };
+  // 画像が無いときは線画のシルエットを出す。絵文字は端末ごとに絵柄が変わるので使わない
   const monFace = (m) => m && m.img
-    ? `<img src="${esc(m.img)}" alt="${esc(m.name)}">` : `<span>${esc((m && m.emoji) || '❓')}</span>`;
+    ? `<img src="${esc(m.img)}" alt="${esc(m.name)}">` : `<span class="ph">${icon('egg')}</span>`;
   const goodsFace = (g) => g && g.img
-    ? `<img src="${esc(g.img)}" alt="${esc(g.name)}">` : `<span>${esc((g && g.emoji) || '🎁')}</span>`;
+    ? `<img src="${esc(g.img)}" alt="${esc(g.name)}">` : `<span class="ph">${icon('gift')}</span>`;
 
   // ---------- カード ----------
   function monsterCardHtml(m) {
-    const kid = m.parents ? '👶' : '⭐';
+    // 配合で生まれた子は「かけ合わせ」、最初からいる子/スカウトは「星」
+    const kid = m.parents ? icon('breed') : icon('star');
     return `<a class="card mcard" href="monster.html?id=${encodeURIComponent(m.id)}">
       <div class="face">${monFace(m)}<span class="lv">Lv.${esc(m.level || 0)}</span><span class="gen" title="${m.parents ? '配合で誕生' : '初期メンバー/スカウト'}">${kid}</span></div>
       <div class="body">
@@ -430,7 +516,7 @@
         : ep.voteStatus ? `<span class="badge">${esc(ep.voteStatus)}</span>` : '';
     return `<a class="card" href="${esc(ytWatch(ep))}" target="_blank" rel="noopener"
         onclick="App.track.viewEpisode(App.getEp('${esc(ep.id)}'))">
-      <div class="thumb">${th ? `<img src="${esc(th)}" alt="">` : `<span>▶</span>`}<div class="play"><span>▶</span></div></div>
+      <div class="thumb">${th ? `<img src="${esc(th)}" alt="">` : `<span class="ph">${icon('play')}</span>`}<div class="play">${icon('play')}</div></div>
       <div class="body">
         <div class="row small"><span class="badge gold">#${esc(ep.no)}</span>${st}</div>
         <p class="title">${esc(ep.title)}</p>
@@ -443,14 +529,13 @@
   // ---------- ヘッダー / フッター ----------
   const NAV = [
     ['index.html', 'ホーム'],
-    ['news.html', '最新情報'],
-    ['story.html', '物語'],
+    ['story.html', 'ぼうけんの記録'],
     ['monsters.html', 'モンスター牧場'],
     ['skills.html', 'スキル'],
     ['tree.html', '家系図'],
-    ['breed.html', '配合投票'],
-    ['names.html', '名前の応募'],
-    ['scout.html', 'スカウト'],
+    ['breed.html', '配合表と応募'],
+    ['names.html', '名前の募集'],
+    ['scout.html', '次に戦う相手'],
     ['items.html', 'アイテム'],
     ['goods.html', 'グッズ'],
     ['rules.html', 'ルール']
@@ -521,11 +606,11 @@
     const head = document.createElement('header');
     head.className = 'site';
     head.innerHTML = `<div class="hd">
-      <a class="logo" href="index.html"><span class="crest">🐲</span><b>${esc(SITE.siteName || 'モンスター冒険録')}</b></a>
+      <a class="logo" href="index.html"><img src="assets/brand/logo_header.png" alt="${esc(SITE.siteName || 'WeSTORY')}"><b>${esc(SITE.siteName || 'WeSTORY')}</b></a>
       <nav class="main">
         ${NAV.map(([h, t]) => `<a href="${h}" class="${h === active ? 'on' : ''}">${t}</a>`).join('')}
       </nav>
-      <a class="yt-btn" href="${esc(SITE.channelUrl || '#')}" target="_blank" rel="noopener">▶ YouTubeで投票</a>
+      <a class="yt-btn" href="${esc(SITE.channelUrl || '#')}" target="_blank" rel="noopener">${icon('youtube')}YouTubeで投票</a>
     </div>`;
     document.body.insertBefore(head, document.body.firstChild);
 
@@ -536,7 +621,7 @@
         <div>
           <h4>${esc(SITE.siteName || '')}</h4>
           <p class="small muted" style="margin:0">${esc(SITE.tagline || '')}</p>
-          <p style="margin:12px 0 0"><a class="yt-btn" href="${esc(SITE.channelUrl || '#')}" target="_blank" rel="noopener">▶ チャンネルを見る</a></p>
+          <p style="margin:12px 0 0"><a class="yt-btn" href="${esc(SITE.channelUrl || '#')}" target="_blank" rel="noopener">${icon('youtube')}チャンネルを見る</a></p>
         </div>
         <div><h4>コンテンツ</h4><ul>${NAV.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul></div>
         <div><h4>このサイトについて</h4><ul>
@@ -560,16 +645,16 @@
   // ---------- 公開 ----------
   window.App = {
     SITE, MONSTERS, EPISODES, GOODS, NEWS, STORY, TERI, SCOUT, NAMES,
-    $, $$, esc, qs, fmtDate,
+    $, $$, esc, qs, fmtDate, icon, hydrateIcons,
     ytWatch, ytThumb, ytEmbed,
     amazonLink, rakutenLink, yahooLink, shopLinksHtml, AFFILIATE_REL,
     track, recommendGoods, hasHistory, topInterests,
-    getMon, getEp, getGoods, childrenOf, canBreed, videosToBreed, monFace, goodsFace,
+    getMon, getEp, getGoods, childrenOf, canBreed, winsToBreed, monFace, goodsFace,
     partySize, partyMons, benchMons, hospitalMons, retiredMons, inHospital,
-    naming, nameWidth, validateName, openNameCalls, nameEntries, nameFull,
+    naming, openNameCalls, forms, formUrl,
     polls, pollOf, voteMapHtml,
-    scoutCfg, scoutNow, meatList, scoutHistory, pct,
-    viewItems, totalViews, itemTiers, nextItemTier, itemBag, itemTotal, fmtViews,
+    scoutCfg, scoutNow, meatList, scoutHistory, pct, monImg,
+    viewItems, totalViews, itemTiers, nextItemTier, itemBag, itemTotal, fmtViews, tierLadderHtml,
     teriOf, teriByName, teriSpecial, teriSpecial4, teri4Recipes, teriGeneral, breedResult,
     dexOf, dexByName, skillInfo, skillsOf, allSkills,
     generationOf, maxGeneration, breedRecords,
@@ -582,5 +667,7 @@
     // タイトルは各ページの <title> に「ページ名｜サイト名」で入れてある（seo.py が付ける）
     renderChrome();
     if (typeof window.pageInit === 'function') window.pageInit();
+    // HTML 側に <span class="ic" data-ic="level"></span> と書いておけば線画が入る
+    hydrateIcons();
   });
 })();

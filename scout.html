@@ -3,25 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>スカウト｜モンスター冒険録</title>
-<meta name="description" content="動画の最後に出る3択のスカウト。どれを狙うかはYouTubeのアンケートで決めます。">
+<title>次に戦う相手｜WeSTORY</title>
+<meta name="description" content="動画の最後に出る3体に、たたかう／スカウトの6択。固定コメントの返信にいいねを押して決めます。抽選の結果はこのページで公開します。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/scout.html">
+<link rel="canonical" href="https://westory-ch.github.io/scout.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="スカウト｜モンスター冒険録">
-<meta property="og:description" content="動画の最後に出る3択のスカウト。どれを狙うかはYouTubeのアンケートで決めます。">
-<meta property="og:url" content="https://contentspackage10.github.io/scout.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="次に戦う相手｜WeSTORY">
+<meta property="og:description" content="動画の最後に出る3体に、たたかう／スカウトの6択。固定コメントの返信にいいねを押して決めます。抽選の結果はこのページで公開します。">
+<meta property="og:url" content="https://westory-ch.github.io/scout.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <div class="wrap">
 
-  <h1 class="page">スカウト</h1>
-  <p class="lead">動画の最後に、成功率のちがう<b>3体</b>が並びます。どれを狙うかは<b>YouTubeのアンケート</b>で決めます。</p>
+  <h1 class="page">次に戦う相手</h1>
+  <p class="lead">
+    動画の最後に、次に出会うモンスターが<b>3体</b>並びます。それぞれに<b>たたかう</b>と<b>スカウトする</b>があり、あわせて<b>6択</b>。
+    <b>固定コメントの返信6件</b>のうち、やりたい1件に<b>いいね</b>を押してください。
+    抽選（乱数）の結果は<b>すべてこのページで公開</b>します。
+  </p>
+  <p class="small muted" style="margin:-6px 0 0" id="scoutEveryNote"></p>
 
   <!-- ① 今どうなっているか -->
   <div class="stats" id="scoutStats" style="margin-bottom:18px"></div>
@@ -34,17 +42,28 @@
     </div>
   </section>
 
-  <!-- ③ 今回の3択 -->
+  <!-- ③ 今回の6択 -->
   <section class="section">
     <div class="spread">
-      <h2 class="sec">今回の3択</h2>
+      <h2 class="sec">今回の6択</h2>
       <span id="scoutEpBadge"></span>
     </div>
     <div id="scoutPicks"></div>
     <p class="small muted" style="margin:10px 0 0" id="scoutReflect"></p>
   </section>
 
-  <!-- ④ 成功率と肉 -->
+  <!-- ④ スカウトの挑戦回数 -->
+  <section class="section">
+    <div class="panel soft">
+      <h2 class="sec">スカウトを選んだとき</h2>
+      <p class="small" style="margin:0 0 6px" id="scoutTries"></p>
+      <p class="small muted" style="margin:0">
+        「たたかう」を選んだ場合は、そのまま戦闘の勝率で判定します。仲間にはなりません。
+      </p>
+    </div>
+  </section>
+
+  <!-- ⑤ 成功率と肉 -->
   <section class="section">
     <div class="panel">
       <h2 class="sec">肉で成功率を上げる</h2>
@@ -54,10 +73,14 @@
     </div>
   </section>
 
-  <!-- ⑤ これまでの結果 -->
+  <!-- ⑥ これまでの結果 -->
   <section class="section">
-    <h2 class="sec">これまでの結果</h2>
+    <div class="spread">
+      <h2 class="sec">これまでの結果</h2>
+      <span class="small muted">抽選の結果は書き換えません</span>
+    </div>
     <div id="history"></div>
+    <p class="small muted" style="margin:10px 0 0" id="scoutResultNote"></p>
   </section>
 
 </div>
@@ -73,7 +96,7 @@
 <script src="assets/js/app.js"></script>
 <script>
 function statHtml(ic,v,unit,k){
-  return '<div class="stat"><span class="ic">'+ic+'</span><span>'+
+  return '<div class="stat">'+App.icon(ic)+'<span>'+
     '<span class="v">'+v+'<small>'+unit+'</small></span><span class="k">'+k+'</span></span></div>';
 }
 function renderStats(){
@@ -81,48 +104,62 @@ function renderStats(){
   var ok=h.filter(function(r){return r.result==='成功'}).length;
   var meat=App.meatList().reduce(function(n,m){return n+m.have},0);
   App.$('#scoutStats').innerHTML =
-    statHtml('🎯',h.length,'回','挑戦した回数')+
-    statHtml('🤝',ok,'体','仲間になった数')+
-    statHtml('🍖',meat,'個','手持ちの肉');
+    statHtml('target',h.length,'回','挑戦した回数')+
+    statHtml('hands',ok,'体','仲間になった数')+
+    statHtml('meat',meat,'個','手持ちの肉');
 }
 function renderSteps(){
   App.$('#scoutSteps').innerHTML=(App.scoutCfg().steps||[]).map(function(s,i){
     return '<div class="step"><span class="n">'+(i+1)+'</span><span class="tx">'+s+'</span></div>';
   }).join('');
 }
-// 3択カード。実データが無いときは目安（site.js の levels）を出す
+// 3体 × たたかう／スカウト ＝ 6択のカード。
+// 実データが無いときは目安（site.js の levels）を出す
+function optLine(ic,name,v){
+  var p=Math.round(Number(v||0)*100);
+  return '<div class="cap">'+App.icon(ic)+' '+name+'</div>'+
+    '<div class="rate" style="font-size:22px">'+p+'<small>%</small></div>'+
+    '<div class="bar"><i style="width:'+p+'%"></i></div>';
+}
 function pickCards(list,wonName){
   var esc=App.esc;
   return '<div class="picks">'+list.map(function(c,i){
-    var lv=c.lv||i+1, rate=Number(c.rate||0);
+    var lv=c.lv||i+1;
+    // 画像は毎回かならず出す。まだ相手が決まっていない枠だけ画像なし
+    var img=c.species?'<img class="pic" src="'+esc(App.monImg(c.species))+'" alt="'+esc(c.species)+
+      '" loading="lazy" onerror="this.className=\'pic na\'">':'';
     return '<div class="pick lv'+lv+(wonName&&c.species===wonName?' won':'')+'">'+
       '<span class="tag">'+esc(c.label||(App.scoutCfg().levels[i]||{}).label||'')+'</span>'+
+      img+
       '<p class="nm">'+esc(c.species||'？？？')+'</p>'+
-      '<div class="rate">'+Math.round(rate*100)+'<small>%</small></div>'+
-      '<div class="bar"><i style="width:'+Math.round(rate*100)+'%"></i></div>'+
-      '<div class="cap">'+esc(c.note||'成功率')+'</div></div>';
+      optLine('battle','たたかう（勝率）',c.winRate)+
+      optLine('hands','スカウトする（成功率）',c.rate)+
+      (c.note?'<div class="cap" style="margin-top:6px">'+esc(c.note)+'</div>':'')+
+      '</div>';
   }).join('')+'</div>';
 }
 function renderPicks(){
   var esc=App.esc, cur=App.scoutNow(), cfg=App.scoutCfg();
   var ep=cur.ep?App.getEp(cur.ep):null;
   App.$('#scoutEpBadge').innerHTML = cur.status==='vote'
-    ? '<span class="badge live">投票受付中</span>'
+    ? '<span class="badge live">いいね受付中</span>'
     : (cur.status==='closed'?'<span class="badge green">締め切り済み</span>':'<span class="badge">準備中</span>');
 
   var box=App.$('#scoutPicks');
   if(cur.choices&&cur.choices.length){
-    var link=cur.pollUrl||App.SITE.channelUrl||'#';
+    var link=cur.pollUrl||(ep?App.ytWatch(ep):'')||App.SITE.channelUrl||'#';
     box.innerHTML=pickCards(cur.choices)+
       '<div class="row" style="margin-top:12px;align-items:center">'+
-      '<a class="yt-btn" href="'+esc(link)+'" target="_blank" rel="noopener">▶ YouTubeで投票する</a>'+
-      (ep?'<span class="badge">#'+esc(ep.no)+' の最後に出ています</span>':'')+'</div>';
+      '<a class="yt-btn" href="'+esc(link)+'" target="_blank" rel="noopener">'+App.icon('like')+'固定コメントの返信にいいねを押す</a>'+
+      (ep?'<span class="badge">#'+esc(ep.no)+' の最後に出ています</span>':'')+'</div>'+
+      '<p class="small muted" style="margin:10px 0 0">'+
+      '返信は<b>6件</b>（3体 × たたかう／スカウト）です。やりたい1件にいいねを押してください。</p>';
   }else{
-    // まだ3択を出していないときは、枠と目安の成功率だけ見せる
+    // まだ6択を出していないときは、枠と目安の成功率だけ見せる
     box.innerHTML=pickCards((cfg.levels||[]).map(function(l){
-      return {lv:l.lv,label:l.label,species:'？？？',rate:l.rate,note:'目安の成功率'};
+      return {lv:l.lv,label:l.label,species:'',rate:l.rate,winRate:l.winRate,note:'目安の数字'};
     }))+'<p class="small muted" style="margin:10px 0 0">次の動画の最後で3体が出そろいます。'+
-      '序盤は3体とも近い成功率になることが多いです。</p>';
+      'そのとき固定コメントに返信6件をぶら下げます。</p>';
   }
   App.$('#scoutReflect').textContent=cfg.reflect||'';
 }
@@ -144,15 +181,17 @@ function renderMeat(){
 }
 function renderHistory(){
   var esc=App.esc, h=App.scoutHistory();
-  if(!h.length){ App.$('#history').innerHTML='<div class="empty">まだスカウトに挑戦していません。</div>'; return; }
+  if(!h.length){ App.$('#history').innerHTML='<div class="empty">まだ挑戦していません。</div>'; return; }
   App.$('#history').innerHTML='<div class="tl">'+h.map(function(r){
     var mon=r.monId?App.getMon(r.monId):null, ep=r.ep?App.getEp(r.ep):null;
-    var meat=(r.meat||[]).length?'<span class="badge">🍖 '+esc((r.meat||[]).join('・'))+'</span>':'';
+    var meat=(r.meat||[]).length?'<span class="badge">'+App.icon('meat')+esc((r.meat||[]).join('・'))+'</span>':'';
+    var act=r.action?'<span class="badge">'+App.icon(r.action==='たたかう'?'battle':'hands')+esc(r.action)+'</span>':'';
+    var tries=r.tries?'<span class="badge">挑戦 '+esc(r.tries)+'回</span>':'';
     return '<div class="tl-item"><div class="tl-date">'+esc(App.fmtDate(r.date)||'—')+'</div><div class="tl-body">'+
       '<div class="row small" style="margin-bottom:8px">'+
       '<span class="badge'+(r.result==='成功'?' green':' live')+'">'+esc(r.result||'—')+'</span>'+
-      '<span class="badge gold">'+esc(r.picked||'—')+'</span>'+
-      '<span class="badge">成功率 '+App.pct(r.finalRate||r.rate)+'</span>'+meat+
+      '<span class="badge gold">'+esc(r.picked||'—')+'</span>'+act+
+      '<span class="badge">'+(r.action==='たたかう'?'勝率 ':'成功率 ')+App.pct(r.finalRate||r.rate)+'</span>'+tries+meat+
       (ep?'<span class="badge">#'+esc(ep.no)+'</span>':'')+'</div>'+
       ((r.choices||[]).length?pickCards(r.choices,r.picked):'')+
       (mon?'<p class="small" style="margin:8px 0 0">仲間になりました → <a href="monster.html?id='+
@@ -162,6 +201,10 @@ function renderHistory(){
   }).join('')+'</div>';
 }
 function pageInit(){
+  var cfg=App.scoutCfg();
+  App.$('#scoutEveryNote').innerHTML=(App.SITE.rules||{}).scoutNote||'';
+  App.$('#scoutTries').innerHTML=cfg.triesNote||'';
+  App.$('#scoutResultNote').innerHTML=cfg.resultNote||'';
   renderStats(); renderSteps(); renderPicks(); renderMeat(); renderHistory();
 }
 </script>

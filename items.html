@@ -3,17 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>アイテム｜モンスター冒険録</title>
+<title>アイテム｜WeSTORY</title>
 <meta name="description" content="いま持っているアイテムと、ショート動画の合計再生数でもらえるアイテムの基準。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/items.html">
+<link rel="canonical" href="https://westory-ch.github.io/items.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="アイテム｜モンスター冒険録">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="アイテム｜WeSTORY">
 <meta property="og:description" content="いま持っているアイテムと、ショート動画の合計再生数でもらえるアイテムの基準。">
-<meta property="og:url" content="https://contentspackage10.github.io/items.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:url" content="https://westory-ch.github.io/items.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -22,7 +25,7 @@
 
   <h1 class="page">アイテム</h1>
   <p class="lead">
-    アイテムは<b style="color:var(--gold)">ショート動画の合計再生数</b>でもらえます。
+    アイテムは<b>ショート動画の合計再生数</b>でもらえます。
     動画1本ごとではなく、これまでの再生数を全部足した数で判定します。
     いま何を何個持っているかは、このページでいつでも確認できます。
   </p>
@@ -118,12 +121,7 @@ function pageInit(){
   App.$('#viewNote').innerHTML = vi.note||'';
   App.$('#progressNote').textContent = vi.progressNote||'';
   App.$('#inflNote').textContent = vi.inflationNote||'';
-  App.$('#tierList').innerHTML = tiers.length
-    ? '<div class="row">'+tiers.map(function(t){
-        return '<span class="badge'+(t.got?' green':'')+'"><b>合計'+App.fmtViews(t.views)+'再生</b>'+
-          esc(t.item)+'<span class="muted small">'+esc(t.use)+(t.got?'／入手済み':'')+'</span></span>';
-      }).join('')+'</div>'
-    : '<div class="empty">基準はまだ設定されていません。</div>';
+  App.$('#tierList').innerHTML = App.tierLadderHtml();
 
   App.$('#useNotes').innerHTML=Object.keys(vi.useNotes||{}).map(function(k){
     return '<li><b>'+esc(k)+'</b>：'+esc(vi.useNotes[k])+'</li>';

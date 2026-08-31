@@ -15,6 +15,11 @@
   --red:#ed4956;
   --green:#2e9e5b;
   --grad:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  /* ロゴ（WeSTORY）から取った色。金＝#B08850／墨＝#181818。サイト全体のアクセントに使う */
+  --gold:#b08850;
+  --gold-d:#8f6c39;
+  --gold-soft:#f6efe3;
+  --ink:#181818;
   --radius:12px;
   --shadow:0 1px 2px rgba(0,0,0,.06);
   --shadow-h:0 6px 20px rgba(0,0,0,.10);
@@ -52,16 +57,19 @@ header.site{
   backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)
 }
 .hd{display:flex;align-items:center;gap:14px;padding:0 16px;max-width:975px;margin:0 auto;height:60px}
-.logo{display:flex;align-items:center;gap:9px;flex:0 1 auto;min-width:0}
-.logo b{
-  font-family:"Grand Hotel","Hiragino Kaku Gothic ProN","Noto Sans JP",cursive;
-  font-size:20px;font-weight:700;line-height:1.2;color:var(--txt);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
-}
-.logo .crest{
-  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;
-  background:var(--grad);color:#fff;box-shadow:0 0 0 2px #fff inset
-}
+.logo{display:flex;align-items:center;gap:9px;flex:0 0 auto;min-width:0}
+/* ロゴは画像そのもの。文字は読み上げ用に残すが画面には出さない */
+.logo img{height:34px;width:auto;display:block}
+.logo b{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- 線画アイコン ----------
+   絵文字の代わり。色は currentColor を継ぐので置いた場所の文字色になる */
+.ic{width:1.15em;height:1.15em;display:inline-block;vertical-align:-.22em;flex:0 0 auto}
+.ic svg,svg.ic{width:100%;height:100%;display:block}
+svg.ic{width:1.15em;height:1.15em}
+.btn .ic,.yt-btn .ic,.badge .ic,h2 .ic,h3 .ic{margin-right:.4em}
+.face .ph{display:grid;place-items:center;width:100%;height:100%;color:var(--line)}
+.face .ph .ic,.face .ph svg{width:38%;height:38%}
 nav.main{display:flex;gap:2px;flex-wrap:nowrap;margin-left:auto;align-items:center}
 nav.main a{
   color:var(--txt);font-size:13px;font-weight:500;padding:8px 10px;border-radius:8px;white-space:nowrap
@@ -420,11 +428,73 @@ footer.site a:hover{color:var(--txt)}
 }
 .stat .ic{
   width:40px;height:40px;flex:0 0 auto;border-radius:11px;display:grid;place-items:center;
-  font-size:19px;background:var(--line-soft)
+  padding:8px;box-sizing:border-box;color:var(--gold-d);background:var(--gold-soft)
 }
 .stat .v{font-size:26px;font-weight:800;line-height:1.1}
 .stat .v small{font-size:12px;font-weight:600;color:var(--muted);margin-left:2px}
 .stat .k{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ---------- スキルポイントのきまり ---------- */
+.spgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.spcard{
+  display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:14px;
+  border:1px solid var(--line);background:linear-gradient(160deg,#f4f8ff 0%,#fff 60%)
+}
+.spcard .ic{width:26px;height:26px;color:var(--gold-d);margin-bottom:2px}
+.spcard .v{font-size:24px;font-weight:800;line-height:1.15;color:var(--blue-d)}
+.spcard .v small{font-size:12px;font-weight:700;margin-left:2px}
+.spcard .k{font-size:12.5px;font-weight:700}
+.spcard .cap{font-size:11.5px;color:var(--muted);line-height:1.55;margin-top:4px}
+
+/* ---------- 合計再生数の達成度（はしご） ---------- */
+.ladder{position:relative;display:grid;gap:8px}
+/* 段と段をつなぐ縦のレール。丸印の真ん中を通す */
+.ladder::before{
+  content:"";position:absolute;left:15px;top:22px;bottom:22px;width:2px;
+  background:var(--line);border-radius:2px
+}
+.tier{
+  position:relative;display:grid;grid-template-columns:32px 92px 1fr auto;
+  align-items:center;gap:12px;padding:10px 14px 10px 0;border-radius:12px
+}
+.tier .dot{
+  width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+  font-size:13px;font-weight:800;background:var(--card);color:transparent;
+  border:2px solid var(--line);z-index:1
+}
+.tier .goal{font-size:15px;font-weight:800;line-height:1.1;color:var(--muted)}
+.tier .goal small{font-size:10.5px;font-weight:700;margin-left:2px}
+.tier .what{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px}
+.tier .what b{font-weight:700}
+.tier .use{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.tier .use.heal{background:#e6f5ec;color:#1f7a45}
+.tier .use.scout{background:#fdecdc;color:#a2531a}
+.tier .use.revive{background:#e9f0ff;color:#1f4fbf}
+.tier .use.trade{background:#f4e8ff;color:#7326a8}
+.tier .use.etc{background:var(--line-soft);color:#555}
+.tier .right{display:flex;align-items:center;gap:10px;justify-self:end}
+.tier .st{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.tier .st.ok{color:var(--green)}
+.tier .tbar{
+  display:block;width:96px;height:7px;border-radius:999px;
+  background:var(--line-soft);overflow:hidden
+}
+.tier .tbar i{display:block;height:100%;border-radius:999px;background:var(--grad)}
+/* 到達済み：緑で塗りつぶす */
+.tier.got .dot{background:var(--green);border-color:var(--green);color:#fff}
+.tier.got .goal{color:var(--green)}
+/* 次の目標：ここだけ帯を敷いて、どこまで来たかを目立たせる */
+.tier.now{background:linear-gradient(90deg,#fff6ee 0%,#fff 70%);box-shadow:inset 0 0 0 1px #f5d6b8}
+.tier.now .dot{background:#fff;border-color:#e6683c;color:#e6683c}
+.tier.now .goal{color:var(--txt)}
+.tier.now .st{color:#c2521f}
+/* まだ先：うすく見せる */
+.tier.far{opacity:.62}
+@media(max-width:640px){
+  .tier{grid-template-columns:32px 1fr;row-gap:4px;padding:10px 12px 10px 0}
+  .tier .what,.tier .right{grid-column:2}
+  .tier .right{justify-self:start}
+}
 
 /* ---------- 手順ステップ ---------- */
 .steps{display:grid;gap:12px;margin:0}
@@ -446,6 +516,11 @@ footer.site a:hover{color:var(--txt)}
   display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;
   background:var(--line-soft);color:#444;margin-bottom:10px
 }
+.pick .pic{
+  display:block;width:112px;height:112px;margin:0 auto 8px;object-fit:contain;
+  border-radius:14px;background:var(--line-soft);padding:6px
+}
+.pick .pic.na{display:none}
 .pick .nm{font-size:15px;font-weight:700;margin:0 0 10px;word-break:break-all}
 .pick .rate{font-size:32px;font-weight:800;line-height:1}
 .pick .rate small{font-size:13px;font-weight:700;margin-left:1px}
@@ -519,6 +594,7 @@ a.vm:hover{box-shadow:var(--shadow-h)}
 }
 @media(max-width:640px){
   .stats{grid-template-columns:1fr}
+  .spgrid{grid-template-columns:1fr}
   .picks{grid-template-columns:1fr}
   .votemap{grid-template-columns:1fr}
   .mt{grid-template-columns:96px 1fr 60px;row-gap:2px}

@@ -3,17 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>スキル図鑑｜モンスター冒険録</title>
+<title>スキル図鑑｜WeSTORY</title>
 <meta name="description" content="テリーのワンダーランド3Dのスキル一覧。どのスキルがどの特技をいくつのSPで覚えるか、どの種族が持っているかをまとめています。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/skills.html">
+<link rel="canonical" href="https://westory-ch.github.io/skills.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="スキル図鑑｜モンスター冒険録">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="スキル図鑑｜WeSTORY">
 <meta property="og:description" content="テリーのワンダーランド3Dのスキル一覧。どのスキルがどの特技をいくつのSPで覚えるか、どの種族が持っているかをまとめています。">
-<meta property="og:url" content="https://contentspackage10.github.io/skills.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:url" content="https://westory-ch.github.io/skills.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -25,6 +28,12 @@
     モンスターが覚える<b>スキル</b>の一覧です。スキルにはそれぞれ覚える<b>特技</b>があり、
     バトルでためた<b>SP</b>をふりわけると、必要SPの少ないものから順番に覚えます。
   </p>
+
+  <div class="panel" style="margin-bottom:16px">
+    <h2 class="sec" style="margin-top:0">スキルポイント（SP）のきまり</h2>
+    <div class="spgrid" id="spRules"></div>
+    <p class="small muted" style="margin:12px 0 0" id="spConsult"></p>
+  </div>
 
   <div class="panel soft" style="margin-bottom:16px">
     <div class="row">
@@ -135,7 +144,23 @@ function renderList(){
   }).join('') : '<div class="empty" style="grid-column:1/-1">見つかりませんでした。</div>';
 }
 
+// SPの増えかた。数字は site.js の skillPoint が唯一の正解
+function renderSp(){
+  var sp=App.SITE.skillPoint||{};
+  function card(ic,v,unit,k,note){
+    return '<div class="spcard">'+App.icon(ic)+
+      '<span class="v">'+v+'<small>'+unit+'</small></span>'+
+      '<span class="k">'+k+'</span>'+
+      '<span class="cap">'+note+'</span></div>';
+  }
+  App.$('#spRules').innerHTML=
+    card('level','+'+sp.perAmount,'SP','レベル'+sp.perLevels+'ごと',sp.levelNote||'')+
+    card('breed','+'+sp.breedBonus,'SP','配合1回につき',sp.breedNote||'')+
+    card('auto','自動','','ふりわけ',sp.autoNote||'');
+  App.$('#spConsult').innerHTML=sp.consultNote||'';
+}
 function pageInit(){
+  renderSp();
   ALL=App.allSkills();
   PICK=App.qs('s')||'';
   renderDetail();

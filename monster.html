@@ -3,16 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>モンスター詳細｜モンスター冒険録</title>
+<title>モンスター詳細｜WeSTORY</title>
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/monster.html">
+<link rel="canonical" href="https://westory-ch.github.io/monster.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="モンスター詳細｜モンスター冒険録">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="モンスター詳細｜WeSTORY">
 <meta property="og:description" content="">
-<meta property="og:url" content="https://contentspackage10.github.io/monster.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:url" content="https://westory-ch.github.io/monster.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -63,7 +66,7 @@ function pageInit(){
   }
 
   function nodeLink(x,label){
-    if(!x) return '<span class="node" style="opacity:.5"><span class="em">❔</span><span class="nm">不明</span><span class="sub">'+esc(label)+'</span></span>';
+    if(!x) return '<span class="node" style="opacity:.5"><span class="em">'+App.icon('question')+'</span><span class="nm">不明</span><span class="sub">'+esc(label)+'</span></span>';
     return '<a class="node" href="monster.html?id='+encodeURIComponent(x.id)+'"><span class="em">'+App.monFace(x)+'</span><span class="nm">'+esc(x.name)+'</span><span class="sub">'+esc(label)+'</span></a>';
   }
 
@@ -88,23 +91,25 @@ function pageInit(){
         '</div>'+
         '<p class="small muted" style="margin:6px 0 0">'+
           (App.canBreed(m)
-            ? '✅ 配合可能（Lv'+esc(S.rules.breedMinLevel)+'以上）'
-            : '⚗ 配合まであと '+(S.rules.breedMinLevel-(m.level||0))+'レベル ＝ 動画あと'+App.videosToBreed(m)+'本（1本で+'+esc(S.rules.levelPerVideo)+'）')+
+            ? '配合可能（Lv'+esc(S.rules.breedMinLevel)+'以上）'
+            : '配合まであと '+(S.rules.breedMinLevel-(m.level||0))+'レベル ＝ 戦闘に あと'+App.winsToBreed(m)+'勝（1勝で+'+esc(S.rules.levelPerWin)+'）')+
         '</p>'+
         (m.note?'<p class="small" style="margin:10px 0 0">'+esc(m.note)+'</p>':'')+
       '</div>'+
     '</div>'+
   '</div>'+
 
-  // 投票CTA
+  // 参加CTA
   '<section class="section"><div class="vote-box">'+
-    '<h3>▶ この子に関わる投票</h3>'+
+    '<h3>'+App.icon('like')+'この子に関わる募集</h3>'+
     '<div class="row">'+
-      '<a class="btn gold" href="names.html">✏ 名前を応募する</a>'+
-      (App.canBreed(m)?'<a class="btn gold" href="breed.html?parent='+encodeURIComponent(m.id)+'">⚗ 配合の相手を選ぶ</a>':'')+
-      '<a class="yt-btn" href="'+esc(App.ytWatch(openVoteEp))+'" target="_blank" rel="noopener">▶ パーティ投票（YouTube）</a>'+
+      '<a class="btn gold" href="names.html">'+App.icon('pen')+'名前の募集を見る</a>'+
+      (App.canBreed(m)?'<a class="btn gold" href="breed.html?parent='+encodeURIComponent(m.id)+'">'+App.icon('flask')+'配合表で相手を見る</a>':'')+
+      '<a class="yt-btn" href="'+esc(App.ytWatch(openVoteEp))+'" target="_blank" rel="noopener">'+App.icon('youtube')+'動画のコメント欄へ</a>'+
     '</div>'+
-    '<p class="small muted" style="margin:8px 0 0">配合と名前はこのサイト、パーティとスカウトはYouTubeのアンケートで決めます。</p>'+
+    '<p class="small muted" style="margin:8px 0 0">'+
+      '名前と次に戦う相手は<b>動画のコメント欄</b>、配合先と継承スキルは<b>このサイトに貼った応募フォーム</b>で受け付けます。'+
+      'パーティの3体は制作者が決めます（要望はコメント欄を参考にします）。</p>'+
   '</div></section>'+
 
   // ステータス
@@ -193,7 +198,7 @@ function pageInit(){
 
   // 登場エピソード
   '<section class="section">'+
-    '<h2 class="sec">登場エピソード（'+eps.length+'本 ／ 獲得レベル '+(eps.length*S.rules.levelPerVideo)+'）</h2>'+
+    '<h2 class="sec">登場エピソード（'+eps.length+'本）</h2>'+
     (eps.length?'<div class="grid g4">'+eps.map(App.episodeCardHtml).join('')+'</div>':'<div class="empty">登場エピソードはまだありません。</div>')+
   '</section>'+
 

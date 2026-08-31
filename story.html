@@ -3,24 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>物語｜モンスター冒険録</title>
+<title>ぼうけんの記録｜WeSTORY</title>
 <meta name="description" content="主人公とモンスターたちの旅の記録。章ごとのあらすじと、これまでの出来事をまとめています。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/story.html">
+<link rel="canonical" href="https://westory-ch.github.io/story.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="物語｜モンスター冒険録">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="ぼうけんの記録｜WeSTORY">
 <meta property="og:description" content="主人公とモンスターたちの旅の記録。章ごとのあらすじと、これまでの出来事をまとめています。">
-<meta property="og:url" content="https://contentspackage10.github.io/story.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:url" content="https://westory-ch.github.io/story.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <div class="wrap">
 
-  <h1 class="page">物語</h1>
+  <h1 class="page">ぼうけんの記録</h1>
   <p class="lead" id="lead"></p>
 
   <section class="section">
@@ -36,7 +39,7 @@
     <h2 class="sec">これまでの旅</h2>
     <div id="log"></div>
     <p class="small muted" id="logEmpty" style="display:none">
-      あらすじはこれから追加していきます。最新の動画は<a href="news.html">最新情報</a>から。
+      あらすじはこれから追加していきます。最新の動画は<a href="index.html">ホーム</a>から。
     </p>
   </section>
 
@@ -48,10 +51,13 @@
   <section class="section">
     <div class="vote-box">
       <h2 class="sec" style="margin-top:0">次の一手はあなたが決めます</h2>
-      <p class="small">配合と名前は<b>このサイト</b>、パーティとスカウトは<b>YouTubeのアンケート</b>で決めます。</p>
+      <p class="small">
+        名前と次に戦う相手は<b>動画のコメント欄</b>、配合先と継承スキルは<b>このサイトに貼った応募フォーム</b>で決めます。
+      </p>
       <div class="row">
-        <a class="btn gold" href="breed.html">⚗ 配合投票へ</a>
-        <a class="btn gold" href="names.html">✏ 名前の応募へ</a>
+        <a class="btn gold" href="breed.html"><span class="ic" data-ic="breed"></span>配合表と応募へ</a>
+        <a class="btn gold" href="names.html"><span class="ic" data-ic="pen"></span>名前の募集へ</a>
+        <a class="btn gold" href="scout.html"><span class="ic" data-ic="battle"></span>次に戦う相手へ</a>
         <a class="btn ghost" href="monsters.html">モンスター牧場</a>
       </div>
     </div>
@@ -86,9 +92,11 @@ function pageInit(){
       '<div>' +
         '<h2 class="sec" style="margin-top:0">この物語のきまり</h2>' +
         '<ul class="small" style="margin:0;padding-left:1.2em">' +
-          '<li>1本の動画で、モンスターのレベルが <b>+' + esc((App.SITE.rules||{}).levelPerVideo || 4) + '</b></li>' +
+          '<li><b>戦闘に勝つ</b>と、モンスターのレベルが <b>+' + esc((App.SITE.rules||{}).levelPerWin || 4) + '</b>（負けた戦闘は上がりません）</li>' +
           '<li>配合は <b>レベル' + esc((App.SITE.rules||{}).breedMinLevel || 10) + '</b> から</li>' +
-          '<li>毎回スカウトチャンスがあります（結果は次の回で分かります）</li>' +
+          '<li>スカウトの回もあれば、無い回もあります（結果は次の回で分かります）</li>' +
+          '<li>レベルが <b>' + esc((App.SITE.skillPoint||{}).perLevels || 5) + '</b> 上がるごとに、スキルポイントが <b>+' +
+            esc((App.SITE.skillPoint||{}).perAmount || 6) + '</b></li>' +
           '<li>負けても物語は続きます</li>' +
         '</ul>' +
       '</div>' +

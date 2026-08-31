@@ -3,27 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>配合投票｜モンスター冒険録</title>
-<meta name="description" content="父と母を選んで、このサイトから配合の組み合わせに投票しよう。">
+<title>配合表と応募｜WeSTORY</title>
+<meta name="description" content="仲間にしたモンスターの配合表。父と母を選ぶと生まれる子がその場で分かります。配合先の応募もここから。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/breed.html">
+<link rel="canonical" href="https://westory-ch.github.io/breed.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="配合投票｜モンスター冒険録">
-<meta property="og:description" content="父と母を選んで、このサイトから配合の組み合わせに投票しよう。">
-<meta property="og:url" content="https://contentspackage10.github.io/breed.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="配合表と応募｜WeSTORY">
+<meta property="og:description" content="仲間にしたモンスターの配合表。父と母を選ぶと生まれる子がその場で分かります。配合先の応募もここから。">
+<meta property="og:url" content="https://westory-ch.github.io/breed.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <div class="wrap">
 
-  <h1 class="page">配合投票</h1>
-  <p class="lead">父と母を選んで、<b>このサイトから投票</b>します。1人1票・締切まで何度でも変更できます。</p>
+  <h1 class="page">配合表と応募</h1>
+  <p class="lead">
+    <b style="color:var(--gold)">仲間にしたモンスターの配合表</b>です。父と母を選ぶと、生まれる子の種族がその場で分かります。
+    見たい組み合わせが決まったら、<b>応募フォーム</b>から送ってください。
+  </p>
 
-  <!-- 今回の配合投票に参加するかどうか -->
+  <!-- 今回の配合募集 -->
   <div class="panel" id="joinPanel" style="margin-bottom:18px"></div>
 
   <div class="panel" id="builder" style="margin-bottom:18px">
@@ -52,15 +58,18 @@
     <div class="panel">
       <h2 class="sec" id="breedrule">配合のルール</h2>
       <div class="stats" style="margin-bottom:16px">
-        <div class="stat"><span class="ic">📈</span><span><span class="v">+<span id="perV"></span><small>Lv</small></span><span class="k">動画1本で上がる</span></span></div>
-        <div class="stat"><span class="ic">🧬</span><span><span class="v">Lv<span id="minLv"></span><small>〜</small></span><span class="k">配合できるレベル</span></span></div>
-        <div class="stat"><span class="ic">⚔</span><span><span class="v"><span id="pSize"></span><small>体</small></span><span class="k">動画に出るパーティ</span></span></div>
+        <div class="stat"><span class="ic" data-ic="level"></span><span><span class="v">+<span id="perV"></span><small>Lv</small></span><span class="k">1勝で上がる</span></span></div>
+        <div class="stat"><span class="ic" data-ic="breed"></span><span><span class="v">Lv<span id="minLv"></span><small>〜</small></span><span class="k">配合できるレベル</span></span></div>
+        <div class="stat"><span class="ic" data-ic="battle"></span><span><span class="v"><span id="pSize"></span><small>体</small></span><span class="k">動画に出るパーティ</span></span></div>
       </div>
       <ul style="margin:0;padding-left:20px">
         <li>生まれる子は『テリーのワンダーランド3D』の<b>実際の配合データ</b>どおり。父と母を選ぶとその場で種族名が出ます。</li>
-        <li><b>特殊配合</b>＝種族は1つに確定。<b>一般配合</b>＝候補が複数なら、どれにするかも投票で選べます。</li>
-        <li>生まれた子の名前は<a href="names.html">名前の応募</a>から決めます。</li>
-        <li><b>人生縛り</b>…敗北したモンスターは<span id="hospLabel"></span>へ。以後は<b>出場も配合もできません</b>。<a href="rules.html#hospital">くわしく</a></li>
+        <li><b>特殊配合</b>＝種族は1つに確定。<b>一般配合</b>＝候補が複数なら、どれにするかも応募フォームで選べます。</li>
+        <li><b>配合先は通常のゲームとは異なる場合があります</b>。演出や物語の都合で調整することがあります。</li>
+        <li>配合すると<b>親はいなくなります</b>。<a href="tree.html">家系図</a>には記録として残ります。</li>
+        <li><b>スキルは1体につき2つまで</b>。継承候補が2つを超えたときだけ、どれを残すかを応募フォームで受け付けます。</li>
+        <li>生まれた子の名前は<a href="names.html">動画のコメント欄</a>で募集します。</li>
+        <li><b>人生縛り</b>…敗北するとパーティから<b>ランダムで1体</b>が<span id="hospLabel"></span>へ。復帰できるのは<b>せかいじゅの葉</b>を使ったときだけです。<a href="rules.html#hospital">くわしく</a></li>
       </ul>
       <p class="small muted" style="margin:10px 0 0" id="pollNotice"></p>
     </div>
@@ -94,44 +103,30 @@
 <script src="assets/js/app.js"></script>
 <script>
 var fatherId='', motherId='';
-var breedEp=null, joined=null;   // joined: null=未選択 / true=参加 / false=見送る
+var breedEp=null;
 
-var JOIN_KEY='dqfan_breedjoin_v1';
-function joinLoad(){ try{ return JSON.parse(localStorage.getItem(JOIN_KEY)||'{}'); }catch(e){ return {}; } }
-function joinSave(o){ try{ localStorage.setItem(JOIN_KEY,JSON.stringify(o)); }catch(e){} }
-function setJoin(v){
-  joined=v;
-  if(breedEp){ var o=joinLoad(); o[breedEp.id]=v; joinSave(o); }
-  renderJoin(); render();
-  if(v) location.hash='#builder';
+// 配合先の受付は Google フォーム。リンクはこのサイトにだけ貼る。
+function formBtn(){
+  var esc=App.esc, u=App.formUrl('breed');
+  return u ? '<a class="btn gold" href="'+esc(u)+'" target="_blank" rel="noopener">'+App.icon('breed')+'応募フォームをひらく</a>' : '';
 }
 
 function renderJoin(){
-  var esc=App.esc, el=App.$('#joinPanel');
+  var esc=App.esc, el=App.$('#joinPanel'), fm=App.forms();
   if(!breedEp){
-    el.innerHTML='<h2 class="sec">今回の配合投票</h2>'+
-      '<p class="small muted" style="margin:0">いまは受付中の配合投票はありません。'+
-      '新しい配合を出したときに、ここで「参加するか / 見送るか」を選べるようになります。'+
-      '下の組み合わせづくりは、練習用としていつでも使えます。</p>';
+    el.innerHTML='<h2 class="sec">今回の配合募集</h2>'+
+      '<p class="small muted" style="margin:0">'+esc(fm.preparingNote||'いまは受付中の配合募集はありません。')+
+      ' 下の配合表は、次の組み合わせを探すのにいつでも使えます。</p>';
     return;
   }
-  var head='<div class="row"><span class="badge live">配合投票 受付中</span><span class="badge gold">#'+esc(breedEp.no)+'</span>'+
+  el.innerHTML='<div class="row"><span class="badge live">配合の応募 受付中</span><span class="badge gold">#'+esc(breedEp.no)+'</span>'+
     (breedEp.voteDeadline?'<span class="badge">締切 '+esc(App.fmtDate(breedEp.voteDeadline))+'</span>':'')+'</div>'+
     '<h2 class="sec" style="margin:8px 0 4px">'+esc(breedEp.title)+'</h2>'+
-    '<p class="small" style="margin:0 0 10px">'+esc(breedEp.voteNote||'今回の配合に参加するかどうかを選んでください。')+'</p>';
-  if(joined===null){
-    el.innerHTML=head+'<div class="row">'+
-      '<button class="btn" onclick="setJoin(true)">この配合に参加する</button>'+
-      '<button class="btn ghost" onclick="setJoin(false)">今回は見送る</button></div>';
-  } else if(joined){
-    el.innerHTML=head+'<div class="row"><span class="badge green">参加中</span>'+
-      '<button class="btn ghost sm" onclick="setJoin(false)">やっぱり見送る</button></div>'+
-      '<p class="small muted" style="margin:8px 0 0">下で父と母を選ぶと、生まれる種族と投票ボタンが表示されます。</p>';
-  } else {
-    el.innerHTML=head+'<div class="row"><span class="badge">今回は見送り</span>'+
-      '<button class="btn sm" onclick="setJoin(true)">やっぱり参加する</button></div>'+
-      '<p class="small muted" style="margin:8px 0 0">見送っても次の配合投票にはいつでも参加できます。結果は動画と最新情報でお知らせします。</p>';
-  }
+    '<p class="small" style="margin:0 0 10px">'+esc(breedEp.voteNote||'下の配合表で組み合わせを確かめてから、応募フォームで送ってください。')+'</p>'+
+    '<p class="small muted" style="margin:0 0 10px">'+(fm.periodNote||'')+'</p>'+
+    '<p class="small muted" style="margin:0 0 10px">'+esc(fm.anonNote||'')+'</p>'+
+    '<div class="row">'+(formBtn()||'<span class="badge">フォームは準備中です</span>')+
+    '<a class="btn ghost sm" href="'+esc(App.ytWatch(breedEp))+'" target="_blank" rel="noopener">この回の動画を見る</a></div>';
 }
 
 // 配合で消費された子と、モンスター病院に引き継がれた子（人生縛り）は候補から外す
@@ -148,7 +143,7 @@ function childHtml(f,mo){
   function chip(t,kind){
     var mon=App.MONSTERS.filter(function(x){return x.species===t.n})[0];
     return '<span class="child-chip'+(kind==='sp'?' sp':'')+'">'+
-      '<span class="mon-ico">'+App.monFace(mon||{emoji:'🥚'})+'</span>'+
+      '<span class="mon-ico">'+App.monFace(mon)+'</span>'+
       '<b>'+esc(t.n)+'</b><span class="fam '+esc(t.f)+'">'+esc(t.f)+'</span>'+
       '<span class="rank '+esc(t.r)+'">'+esc(t.r)+'</span>'+
       '<span class="muted small">位階'+esc(t.i)+'</span>'+
@@ -222,9 +217,8 @@ function render(){
   App.$('#hint').textContent = (f&&mo) ? '' : '父と母の両方を選ぶと投票ボタンが出ます。';
 
   if(f&&mo){
-    var v=myVote(), same=v&&v.father===fatherId&&v.mother===motherId;
     App.$('#result').innerHTML =
-      '<h3>▶ この組み合わせで投票する</h3>'+
+      '<h3>'+App.icon('egg')+'この組み合わせから生まれる子</h3>'+
       '<div class="row" style="gap:14px;align-items:center;margin:6px 0">'+
         '<span class="mon-ico lg">'+App.monFace(f)+'</span><b>'+esc(f.name)+'</b>'+
         '<span class="small muted">'+esc(f.species)+'</span>'+
@@ -235,40 +229,19 @@ function render(){
       '<h4 style="margin:10px 0 6px">生まれるモンスター</h4>'+
       childHtml(f,mo)+
       (breedEp
-        ? '<div class="row" style="margin-top:12px">'+
-            (same
-              ? '<span class="badge green">この組み合わせで投票しました</span>'+
-                '<button class="btn ghost sm" onclick="cancelBreedVote()">投票を取り消す</button>'
-              : '<button class="btn gold" onclick="submitBreedVote()">⚗ この組み合わせで投票する</button>'+
-                (v?'<span class="small muted">いまの投票：'+esc((App.getMon(v.father)||{}).name||'?')+' × '+
-                    esc((App.getMon(v.mother)||{}).name||'?')+'（押すと差し替わります）</span>':''))+
-          '</div>'
-        : '<p class="small muted" style="margin:12px 0 0">いまは受付中の配合投票がないので、練習用の表示です。'+
-          '次の募集がはじまると、ここに投票ボタンが出ます。</p>');
+        ? '<p class="small" style="margin:12px 0 8px">この組み合わせで応募する場合は、フォームで'+
+            '<b>父＝'+esc(f.name)+'</b> ／ <b>母＝'+esc(mo.name)+'</b> を選んでください。</p>'+
+          '<div class="row">'+(formBtn()||'<span class="badge">フォームは準備中です</span>')+'</div>'
+        : '<p class="small muted" style="margin:12px 0 0">いまは受付中の配合募集がないので、下見用の表示です。'+
+          '次の募集がはじまると、ここに応募フォームのボタンが出ます。</p>');
   } else {
-    App.$('#result').innerHTML='<h3>▶ 生まれるモンスター</h3><p class="small muted" style="margin:0">父と母を選ぶと、生まれる種族と投票ボタンが表示されます。</p>';
+    App.$('#result').innerHTML='<h3>'+App.icon('egg')+'生まれるモンスター</h3><p class="small muted" style="margin:0">父と母を選ぶと、生まれる種族が表示されます。</p>';
   }
 }
 
-// 配合投票はこのサイトから受け付ける（1人1票・あとから差し替え可）
-var VOTE_KEY='dqfan_breedvote_v1';
-function voteLoad(){ try{ return JSON.parse(localStorage.getItem(VOTE_KEY)||'{}'); }catch(e){ return {}; } }
-function voteSave(o){ try{ localStorage.setItem(VOTE_KEY,JSON.stringify(o)); }catch(e){} }
-function myVote(){ return breedEp ? (voteLoad()[breedEp.id]||null) : null; }
-function submitBreedVote(){
-  if(!breedEp||!fatherId||!motherId) return;
-  var o=voteLoad();
-  o[breedEp.id]={father:fatherId, mother:motherId, date:new Date().toISOString().slice(0,10)};
-  voteSave(o);
-  if(joined!==true) setJoin(true); else render();
-}
-function cancelBreedVote(){
-  if(!breedEp) return;
-  var o=voteLoad(); delete o[breedEp.id]; voteSave(o); render();
-}
 function pageInit(){
   var S=App.SITE, esc=App.esc;
-  App.$('#perV').textContent=S.rules.levelPerVideo;
+  App.$('#perV').textContent=S.rules.levelPerWin;
   App.$('#minLv').textContent=S.rules.breedMinLevel;
   App.$('#pSize').textContent=App.partySize();
   App.$('#hospLabel').textContent=(S.hospital&&S.hospital.label)||'モンスター病院';
@@ -276,7 +249,6 @@ function pageInit(){
 
   breedEp=App.EPISODES.filter(function(e){return e.voteType==='breed'&&e.voteStatus==='受付中'})
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'')})[0]||null;
-  if(breedEp){ var st=joinLoad()[breedEp.id]; joined=(st===undefined?null:st); }
   renderJoin();
 
   var p=App.qs('parent');
@@ -290,8 +262,8 @@ function pageInit(){
     .sort(function(a,b){return (b.level||0)-(a.level||0)});
   App.$('#notyet').innerHTML = ny.length
     ? '<div class="panel soft"><div class="row">'+ny.map(function(m){
-        return '<a class="badge" href="monster.html?id='+encodeURIComponent(m.id)+'">'+esc(m.emoji||'')+' '+esc(m.name)+
-          ' Lv.'+esc(m.level||0)+' … あと動画'+App.videosToBreed(m)+'本</a>';
+        return '<a class="badge" href="monster.html?id='+encodeURIComponent(m.id)+'">'+esc(m.name)+
+          ' Lv.'+esc(m.level||0)+' … あと'+App.winsToBreed(m)+'勝</a>';
       }).join('')+'</div></div>'
     : '<div class="empty">全員が配合可能です。</div>';
 

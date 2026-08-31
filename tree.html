@@ -3,17 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>家系図｜モンスター冒険録</title>
+<title>家系図｜WeSTORY</title>
 <meta name="description" content="配合で受け継がれてきたモンスターの家系図。両親・子ども・世代をたどれます。">
 <!-- seo:start -->
-<link rel="canonical" href="https://contentspackage10.github.io/tree.html">
+<link rel="canonical" href="https://westory-ch.github.io/tree.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="モンスター冒険録">
-<meta property="og:title" content="家系図｜モンスター冒険録">
+<meta property="og:site_name" content="WeSTORY">
+<meta property="og:title" content="家系図｜WeSTORY">
 <meta property="og:description" content="配合で受け継がれてきたモンスターの家系図。両親・子ども・世代をたどれます。">
-<meta property="og:url" content="https://contentspackage10.github.io/tree.html">
-<meta property="og:image" content="https://contentspackage10.github.io/assets/mon/terry.png">
+<meta property="og:url" content="https://westory-ch.github.io/tree.html">
+<meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/logo_mark.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#b08850">
 <!-- seo:end -->
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -22,7 +25,7 @@
 
   <h1 class="page">家系図</h1>
   <p class="lead">
-    ここに載るのは<b style="color:var(--gold)">動画で配合が確定し、実際に実行されたもの</b>だけです。投票の途中経過や候補は記録しません。
+    ここに載るのは<b style="color:var(--gold)">動画で配合が確定し、実際に実行されたもの</b>だけです。応募の途中経過や候補は記録しません。
     いちばん上が選んだ本人で、そのすぐ下に<b>父と母</b>、さらに下にその親…と<b>先祖をさかのぼって</b>並びます。
     配合を1回重ねるごとに世代が1つ進みます。ノードをクリックすると詳細ページへ移動します。
   </p>
@@ -34,9 +37,9 @@
       <label class="fl" style="margin:0">だれの家系を見る？</label>
       <select class="sel" id="rootSel" onchange="renderTree()" style="width:auto;min-width:220px"></select>
       <span class="tree-legend">
-        <span>⭐ スカウト（親なし＝第1世代）</span>
-        <span>👶 配合で誕生</span>
-        <span>👑 選択中</span>
+        <span><span class="ic" data-ic="star"></span>スカウト（親なし＝第1世代）</span>
+        <span><span class="ic" data-ic="breed"></span>配合で誕生</span>
+        <span><span class="ic" data-ic="crown"></span>選択中</span>
       </span>
     </div>
     <p class="small muted" style="margin:8px 0 0" id="rootNote"></p>
@@ -62,8 +65,12 @@
   <section class="section">
     <div class="panel">
       <h2 class="sec">次の配合を決めるのはあなた</h2>
-      <p class="small muted" style="margin:0 0 10px">レベル<span id="minLv"></span>以上のモンスターから父と母を選んで投票できます。生まれる種族は『テリーのワンダーランド3D』の実際の配合データで決まるので、投票する前に配合投票ページで確認できます。</p>
-      <div class="row"><a class="btn gold" href="breed.html">⚗ 配合投票ページへ</a><a class="btn ghost" href="rules.html#breed">配合ルール</a></div>
+      <p class="small muted" style="margin:0 0 10px">
+        レベル<span id="minLv"></span>以上のモンスターから父と母を選び、<b>このサイトに貼った応募フォーム</b>で送れます。
+        生まれる種族は『テリーのワンダーランド3D』の実際の配合データで決まるので、
+        <b>送る前に配合表で確かめられます</b>（演出や物語の都合で、通常のゲームとは異なる配合先になる場合があります）。
+      </p>
+      <div class="row"><a class="btn gold" href="breed.html"><span class="ic" data-ic="breed"></span>配合表と応募へ</a><a class="btn ghost" href="rules.html#breed">配合ルール</a></div>
     </div>
   </section>
 
@@ -89,13 +96,13 @@ function parentsOf(m){
 }
 function nodeHtml(m,role){
   var esc=App.esc;
-  var mark=m.parents?'👶':'⭐';
+  var mark=App.icon(m.parents?'breed':'star');
   return '<a class="node'+(m.id===focusId?' me':'')+'" href="monster.html?id='+encodeURIComponent(m.id)+'">'+
     (role?'<span class="sub role">'+esc(role)+'</span>':'')+
     '<span class="em">'+App.monFace(m)+'</span>'+
     '<span class="nm">'+esc(m.name)+'</span>'+
     '<span class="sub">'+esc(m.species)+'</span>'+
-    '<span class="sub">'+mark+' 第'+esc(App.generationOf(m))+'世代 ／ Lv.'+esc(m.level||0)+'</span>'+
+    '<span class="sub">'+mark+'第'+esc(App.generationOf(m))+'世代 ／ Lv.'+esc(m.level||0)+'</span>'+
     '</a>';
 }
 function subtree(m,role,depth){
@@ -150,10 +157,10 @@ function renderRecords(){
             '<a class="badge" href="monster.html?id='+encodeURIComponent(r.child.id)+'"><b>'+esc(r.child.name)+'</b>'+
             '<span class="muted small">（'+esc(r.child.species)+'）</span></a></div>'+
           (r.child.note?'<p class="small muted" style="margin:6px 0 0">'+esc(r.child.note)+'</p>':'')+
-          (ep?'<p style="margin:6px 0 0"><a class="btn sm" href="'+esc(App.ytWatch(ep))+'" target="_blank" rel="noopener">▶ 配合した動画を見る</a></p>':'')+
+          (ep?'<p style="margin:6px 0 0"><a class="btn sm" href="'+esc(App.ytWatch(ep))+'" target="_blank" rel="noopener">'+App.icon('play')+'配合した動画を見る</a></p>':'')+
           '</div></div>';
       }).join('')+'</div>'
-    : '<div class="empty">まだ配合は実行されていません。投票で組み合わせが決まり、動画で配合すると、ここに記録されます。</div>';
+    : '<div class="empty">まだ配合は実行されていません。応募で組み合わせが決まり、動画で配合すると、ここに記録されます。</div>';
 }
 function renderStats(){
   var esc=App.esc, n=App.breedRecords().length;
