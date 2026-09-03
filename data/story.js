@@ -121,5 +121,32 @@ window.DB_STORY = {
    *          breed:{father,mother,child}, battleEnemyId, outcome:"win"|"lose",
    *          scoutPct, nextChoices:[], summary }
    */
-  scripts: {}
+  scripts: {
+    EP001: {
+      arcId: "",
+      title: "テリーの物語 1話",
+      logline: "",
+      recap: "",
+      voteReflect: "スライムの名前と、次に戦う相手を募集中です。",
+      breed: null,
+      battleEnemyId: "",
+      outcome: "win",
+      scoutPct: 0,
+      nextChoices: ["ピッキー", "スライム", "アントベア"],
+      summary: "見知らぬ大樹の国に放り出されたテリー。あらくれに笑われ、タイジュ王にも笑われ、それでもモンスターマスターへの第一歩がはじまります。"
+    },
+    EP000: {
+      arcId: "",
+      title: "テリー０ 告知版",
+      logline: "",
+      recap: "",
+      voteReflect: "これから旅をともにするスライムの名前を募集中です。",
+      breed: null,
+      battleEnemyId: "",
+      outcome: "win",
+      scoutPct: 0,
+      nextChoices: [],
+      summary: "はじまりの回。テリーとわたぼうがごあいさつをします。まだ戦いはありません。"
+    }
+  }
 };

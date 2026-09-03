@@ -42,8 +42,8 @@ window.DB_SCOUT = {
   viewsDate: "",
   items: {
     "やくそう": 0,
-    "上やくそう": 0,
-    "特やくそう": 0,
+    "アモールの水": 0,
+    "世界樹のしずく": 0,
     "まもののえさ": 0,
     "くんせいにく": 0,
     "ほねつきにく": 0,
@@ -55,9 +55,9 @@ window.DB_SCOUT = {
      並びは成功率の高い順（ねらいめ → むずかしい）にしています。
      結果は投票（いいね）で決まるので、ここには書きません。 */
   current: {
-    ep: "",
+    ep: "EP001",
     pollUrl: "",
-    status: "",
+    status: "vote",
     choices: [
       { lv: 1, label: "ねらいめ",   species: "ピッキー",   winRate: 1.00, rate: 0.78 },
       { lv: 2, label: "ふつう",     species: "スライム",   winRate: 1.00, rate: 0.75 },

@@ -247,7 +247,7 @@ function pageInit(){
   App.$('#hospLabel').textContent=(S.hospital&&S.hospital.label)||'モンスター病院';
   App.$('#pollNotice').textContent=S.pollNotice||'';
 
-  breedEp=App.EPISODES.filter(function(e){return e.voteType==='breed'&&e.voteStatus==='受付中'})
+  breedEp=App.EPISODES.filter(function(e){return App.hasVote(e,'breed')&&e.voteStatus==='受付中'})
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'')})[0]||null;
   renderJoin();
 

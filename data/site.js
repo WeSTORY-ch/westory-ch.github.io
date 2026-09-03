@@ -25,7 +25,7 @@ window.DB_SITE = {
    *   貼っていない商品は Yahoo! ボタンを出さない（素の検索リンクは成果ゼロなので出さない）。
    */
   affiliate: {
-    amazonTag: "lifeprep22-22",
+    amazonTag: "",            // ★2026-09-01 Amazonアソシエイト閉鎖。旧タグ lifeprep22-22 は使用禁止
     rakutenId: "526aee36.4b8299d8.526aee37.168b739a",
     amazonSearchOnly: true,   // Amazon は検索リンクのみ（ASIN直リンク・画像を出さない）
     yahooManualOnly: true     // Yahoo! は yahooUrl を貼った商品だけリンクを出す
@@ -139,10 +139,10 @@ window.DB_SITE = {
     tiers: [
       { views: 50000, item: "やくそう", use: "回復", auto: true },
       { views: 100000, item: "まもののえさ", use: "スカウト", auto: true },
-      { views: 200000, item: "上やくそう", use: "回復", auto: true },
+      { views: 200000, item: "アモールの水", use: "回復", auto: true },
       { views: 400000, item: "くんせいにく", use: "スカウト", auto: true },
       { views: 550000, item: "ほねつきにく", use: "スカウト", auto: true },
-      { views: 700000, item: "特やくそう", use: "回復", auto: true },
+      { views: 700000, item: "世界樹のしずく", use: "回復", auto: true },
       { views: 1000000, item: "せかいじゅの葉", use: "復帰", auto: false },
       { views: 1500000, item: "しもふりにく", use: "スカウト", auto: true },
       { views: 2000000, item: "ちいさなメダル", use: "交換", auto: false }

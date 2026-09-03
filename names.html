@@ -90,7 +90,7 @@
 // 募集中の回の動画へ。無ければチャンネルのトップへ送る。
 function ctaHtml(){
   var esc=App.esc;
-  var ep=App.EPISODES.filter(function(e){return e.voteType==='name'&&e.voteStatus==='受付中'})
+  var ep=App.EPISODES.filter(function(e){return App.hasVote(e,'name')&&e.voteStatus==='受付中'})
     .sort(function(a,b){return (b.date||'').localeCompare(a.date||'')})[0];
   return ep
     ? '<a class="yt-btn" href="'+esc(App.ytWatch(ep))+'" target="_blank" rel="noopener">'+App.icon('youtube')+'#'+esc(ep.no)+' のコメント欄をひらく</a>'

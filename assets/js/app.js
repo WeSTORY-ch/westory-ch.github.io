@@ -247,6 +247,14 @@
   const forms = () => SITE.forms || {};
   const formUrl = (key) => (forms()[key + 'Url'] || '').trim();
 
+  // ---------- 1本の動画で募集している種類 ----------
+  // 1話から募集が2つ（名前＋次に戦う相手）になった。voteType は1つしか持てないので
+  // voteTypes（配列）を足した。voteTypes があればそちら、無ければ voteType 1件として扱う。
+  const voteTypesOf = (ep) =>
+    (ep && ep.voteTypes && ep.voteTypes.length) ? ep.voteTypes
+      : (ep && ep.voteType ? [ep.voteType] : []);
+  const hasVote = (ep, key) => voteTypesOf(ep).indexOf(key) >= 0;
+
   // ---------- どこで投票するか（site.js の polls が唯一の正解） ----------
   const polls = () => SITE.polls || [];
   const pollOf = (key) => polls().find(p => p.key === key) || null;
@@ -652,7 +660,7 @@
     getMon, getEp, getGoods, childrenOf, canBreed, winsToBreed, monFace, goodsFace,
     partySize, partyMons, benchMons, hospitalMons, retiredMons, inHospital,
     naming, openNameCalls, forms, formUrl,
-    polls, pollOf, voteMapHtml,
+    polls, pollOf, voteMapHtml, voteTypesOf, hasVote,
     scoutCfg, scoutNow, meatList, scoutHistory, pct, monImg,
     viewItems, totalViews, itemTiers, nextItemTier, itemBag, itemTotal, fmtViews, tierLadderHtml,
     teriOf, teriByName, teriSpecial, teriSpecial4, teri4Recipes, teriGeneral, breedResult,

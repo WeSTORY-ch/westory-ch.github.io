@@ -147,10 +147,12 @@ var VOTE_TYPE = {
   breed:  {label:'配合の組み合わせ',  where:'web',     url:'breed.html', form:'breed', ic:'breed', cta:'配合表を見て応募する'},
   skill:  {label:'継承するスキル',    where:'web',     url:'skills.html', form:'skill', ic:'skill', cta:'継承スキルに応募する'}
 };
-function voteCta(ep){
-  var esc=App.esc, t=VOTE_TYPE[ep.voteType]||{where:'youtube',ic:'play',cta:'動画のコメント欄へ'};
+// key を渡すとその募集だけ。省略すると1本目（voteTypes の先頭 or voteType）。
+function voteCta(ep, key){
+  var esc=App.esc, k=key||App.voteTypesOf(ep)[0];
+  var t=VOTE_TYPE[k]||{where:'youtube',ic:'play',cta:'動画のコメント欄へ'};
   var ic=App.icon(t.ic||'play');
-  var note=ep.voteNote||(t.where==='web'
+  var note=(key?(ep.voteNotes&&ep.voteNotes[key]):ep.voteNote)||ep.voteNote||(t.where==='web'
     ? 'このサイトに貼った応募フォームから送れます。'
     : '動画のコメント欄で受け付けます。');
   var btn;
@@ -187,7 +189,7 @@ function pageInit(){
 
   // ルールカードに付随する「いまの配合募集」
   (function(){
-    var b = App.EPISODES.filter(function(e){ return e.voteType==='breed' && e.voteStatus==='受付中'; })
+    var b = App.EPISODES.filter(function(e){ return App.hasVote(e,'breed') && e.voteStatus==='受付中'; })
       .sort(function(a,c){ return (c.date||'').localeCompare(a.date||''); })[0];
     var fu = App.formUrl('breed');
     App.$('#ruleVote').innerHTML = b
@@ -251,14 +253,19 @@ function pageInit(){
   }
 
   // 投票受付中
+  // 1本の動画で2つ募集していることがあるので、種類ごとに1枠ずつ出す
   var open = App.EPISODES.filter(function(e){return e.voteStatus==='受付中'});
-  App.$('#openVotes').innerHTML = open.length
-    ? '<div class="grid g2">' + open.map(function(e){
-        var typ = VOTE_TYPE[e.voteType] || {label:'募集'};
-        return '<div class="vote-box"><div class="row"><span class="badge live">受付中</span><span class="badge gold">'+esc(typ.label)+'</span>'+
-          (e.voteDeadline?'<span class="badge">締切 '+esc(App.fmtDate(e.voteDeadline))+'</span>':'')+'</div>'+
-          '<h3 style="margin:8px 0 4px">'+esc(e.title)+'</h3>'+voteCta(e)+'</div>';
-      }).join('') + '</div>'
+  var boxes = [];
+  open.forEach(function(e){
+    App.voteTypesOf(e).forEach(function(k){
+      var typ = VOTE_TYPE[k] || {label:'募集'};
+      boxes.push('<div class="vote-box"><div class="row"><span class="badge live">受付中</span><span class="badge gold">'+esc(typ.label)+'</span>'+
+        (e.voteDeadline?'<span class="badge">締切 '+esc(App.fmtDate(e.voteDeadline))+'</span>':'')+'</div>'+
+        '<h3 style="margin:8px 0 4px">'+esc(e.title)+'</h3>'+voteCta(e, k)+'</div>');
+    });
+  });
+  App.$('#openVotes').innerHTML = boxes.length
+    ? '<div class="grid g2">' + boxes.join('') + '</div>'
     : '<div class="empty">いま受付中の募集はありません。次の動画の公開をお待ちください。</div>';
 
   // お知らせ（news.html を廃止してここへ統合したので全件出す）
