@@ -18,82 +18,64 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260903110815">
+<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
 </head>
 <body>
 <div class="wrap">
 
-  <h1 class="page">次に戦う相手</h1>
+  <div class="spread">
+    <h1 class="page">次に戦う相手</h1>
+    <a class="btn ghost sm" href="rules.html#scout">くわしいルール</a>
+  </div>
   <p class="lead">
-    動画の最後に、次に出会うモンスターが<b>3体</b>並びます。それぞれに<b>たたかう</b>と<b>スカウトする</b>があり、あわせて<b>6択</b>。
-    <b>固定コメントの返信6件</b>のうち、やりたい1件に<b>いいね</b>を押してください。
-    抽選（乱数）の結果は<b>すべてこのページで公開</b>します。
+    動画の最後に出た<b>3体</b>から、次の相手を<b>コメントで選びます</b>。
+    抽選の乱数は<b>すべてこのページで公開</b>し、引き直しはしません。
   </p>
-  <p class="small muted" style="margin:-6px 0 0" id="scoutEveryNote"></p>
 
   <!-- ① 今どうなっているか -->
   <div class="stats" id="scoutStats" style="margin-bottom:18px"></div>
 
-  <!-- ② 流れ -->
-  <section class="section">
-    <div class="panel">
-      <h2 class="sec">やりかた</h2>
-      <div class="steps" id="scoutSteps"></div>
-    </div>
-  </section>
-
-  <!-- ③ 今回の6択 -->
+  <!-- ② 今回の候補 -->
   <section class="section">
     <div class="spread">
-      <h2 class="sec">今回の6択</h2>
+      <h2 class="sec">今回の3体</h2>
       <span id="scoutEpBadge"></span>
     </div>
     <div id="scoutPicks"></div>
-    <p class="small muted" style="margin:10px 0 0" id="scoutReflect"></p>
   </section>
 
-  <!-- ④ スカウトの挑戦回数 -->
-  <section class="section">
-    <div class="panel soft">
-      <h2 class="sec">スカウトを選んだとき</h2>
-      <p class="small" style="margin:0 0 6px" id="scoutTries"></p>
-      <p class="small muted" style="margin:0">
-        「たたかう」を選んだ場合は、そのまま戦闘の勝率で判定します。仲間にはなりません。
-      </p>
-    </div>
-  </section>
-
-  <!-- ⑤ 成功率と肉 -->
+  <!-- ③ 成功率と肉 -->
   <section class="section">
     <div class="panel">
       <h2 class="sec">肉で成功率を上げる</h2>
       <div class="meter" id="meatMeter"></div>
-      <p class="small muted" style="margin:12px 0 0" id="meatNote"></p>
-      <p class="small muted" style="margin:6px 0 0">肉は<a href="items.html">ショート動画の合計再生数</a>で増えます。</p>
+      <p class="small muted" style="margin:12px 0 0">
+        肉は<a href="items.html">ショート動画の合計再生数</a>で増え、スカウト挑戦時に弱い順で自動消費されます。
+        スカウトは3回まで・失敗したら戦闘判定など、こまかい決まりは<a href="rules.html#scout">ルール</a>へ。
+      </p>
     </div>
   </section>
 
-  <!-- ⑥ これまでの結果 -->
+  <!-- ④ これまでの結果 -->
   <section class="section">
     <div class="spread">
       <h2 class="sec">これまでの結果</h2>
       <span class="small muted">抽選の結果は書き換えません</span>
     </div>
     <div id="history"></div>
-    <p class="small muted" style="margin:10px 0 0" id="scoutResultNote"></p>
   </section>
 
 </div>
 
-<script src="data/site.js?v=20260903110815"></script>
-<script src="data/monsters.js?v=20260903110815"></script>
-<script src="data/teri.js?v=20260903110815"></script>
-<script src="data/episodes.js?v=20260903110815"></script>
-<script src="data/goods.js?v=20260903110815"></script>
-<script src="data/news.js?v=20260903110815"></script>
-<script src="data/story.js?v=20260903110815"></script>
-<script src="data/scout.js?v=20260903110815"></script>
-<script src="assets/js/app.js?v=20260903110815"></script>
+<script src="data/site.js?v=20260904141031"></script>
+<script src="data/monsters.js?v=20260904141031"></script>
+<script src="data/teri.js?v=20260904141031"></script>
+<script src="data/episodes.js?v=20260904141031"></script>
+<script src="data/goods.js?v=20260904141031"></script>
+<script src="data/news.js?v=20260904141031"></script>
+<script src="data/story.js?v=20260904141031"></script>
+<script src="data/scout.js?v=20260904141031"></script>
+<script src="assets/js/app.js?v=20260904141031"></script>
 <script>
 function statHtml(ic,v,unit,k){
   return '<div class="stat">'+App.icon(ic)+'<span>'+
@@ -108,11 +90,6 @@ function renderStats(){
     statHtml('hands',ok,'体','仲間になった数')+
     statHtml('meat',meat,'個','手持ちの肉');
 }
-function renderSteps(){
-  App.$('#scoutSteps').innerHTML=(App.scoutCfg().steps||[]).map(function(s,i){
-    return '<div class="step"><span class="n">'+(i+1)+'</span><span class="tx">'+s+'</span></div>';
-  }).join('');
-}
 // 3体 × たたかう／スカウト ＝ 6択のカード。
 // 実データが無いときは目安（site.js の levels）を出す
 function optLine(ic,name,v){
@@ -121,14 +98,14 @@ function optLine(ic,name,v){
     '<div class="rate" style="font-size:22px">'+p+'<small>%</small></div>'+
     '<div class="bar"><i style="width:'+p+'%"></i></div>';
 }
-function pickCards(list,wonName){
+function pickCards(list,wonName,mini){
   var esc=App.esc;
-  return '<div class="picks">'+list.map(function(c,i){
+  return '<div class="picks'+(mini?' mini':'')+'">'+list.map(function(c,i){
     var lv=c.lv||i+1;
-    // 画像は毎回かならず出す。まだ相手が決まっていない枠だけ画像なし
-    var img=c.species?'<img class="pic" src="'+esc(App.monImg(c.species))+'" alt="'+esc(c.species)+
-      '" loading="lazy" onerror="this.className=\'pic na\'">':'';
-    return '<div class="pick lv'+lv+(wonName&&c.species===wonName?' won':'')+'">'+
+    var won=wonName&&c.species===wonName;
+    // 画像は毎回かならず出す（個別画像が無ければ系統画像）。まだ相手が決まっていない枠だけ画像なし
+    var img=c.species?App.monImgTag(c.species,'pic'):'';
+    return '<div class="pick lv'+lv+(won?' won':(wonName?' lose':''))+'">'+
       '<span class="tag">'+esc(c.label||(App.scoutCfg().levels[i]||{}).label||'')+'</span>'+
       img+
       '<p class="nm">'+esc(c.species||'？？？')+'</p>'+
@@ -150,18 +127,14 @@ function renderPicks(){
     var link=cur.pollUrl||(ep?App.ytWatch(ep):'')||App.SITE.channelUrl||'#';
     box.innerHTML=pickCards(cur.choices)+
       '<div class="row" style="margin-top:12px;align-items:center">'+
-      '<a class="yt-btn" href="'+esc(link)+'" target="_blank" rel="noopener">'+App.icon('like')+'固定コメントの返信にいいねを押す</a>'+
-      (ep?'<span class="badge">#'+esc(ep.no)+' の最後に出ています</span>':'')+'</div>'+
-      '<p class="small muted" style="margin:10px 0 0">'+
-      '返信は<b>6件</b>（3体 × たたかう／スカウト）です。やりたい1件にいいねを押してください。</p>';
+      '<a class="yt-btn" href="'+esc(link)+'" target="_blank" rel="noopener">'+App.icon('like')+'コメントで番号を送る</a>'+
+      (ep?'<span class="badge">#'+esc(ep.no)+' の最後に出ています</span>':'')+'</div>';
   }else{
-    // まだ6択を出していないときは、枠と目安の成功率だけ見せる
+    // まだ候補を出していないときは、枠と目安の成功率だけ見せる
     box.innerHTML=pickCards((cfg.levels||[]).map(function(l){
       return {lv:l.lv,label:l.label,species:'',rate:l.rate,winRate:l.winRate,note:'目安の数字'};
-    }))+'<p class="small muted" style="margin:10px 0 0">次の動画の最後で3体が出そろいます。'+
-      'そのとき固定コメントに返信6件をぶら下げます。</p>';
+    }))+'<p class="small muted" style="margin:10px 0 0">次の動画の最後で3体が出そろいます。</p>';
   }
-  App.$('#scoutReflect').textContent=cfg.reflect||'';
 }
 function renderMeat(){
   var esc=App.esc, cfg=App.scoutCfg(), rows=App.meatList();
@@ -177,7 +150,20 @@ function renderMeat(){
     rows.map(function(m){
       return line(m.have?'':'zero',m.item,m.add,m.have+'個');
     }).join('');
-  App.$('#meatNote').innerHTML=cfg.meatNote||'';
+}
+// スカウトは3回まで挑戦できる。何回目で決着したかをボタン状のチップで見せる。
+//   1回目で成功 → [1回目 成功] [2回目 不要] [3回目 不要]
+function triesHtml(r){
+  if(r.action!=='スカウト'||!r.tries) return '';
+  var total=(App.scoutCfg().tries||3), out=[];
+  for(var i=1;i<=total;i++){
+    if(i<r.tries)       out.push('<span class="try ng"><i>✕</i>'+i+'回目 失敗</span>');
+    else if(i===r.tries) out.push(r.result==='成功'
+      ? '<span class="try ok"><i>◎</i>'+i+'回目 成功</span>'
+      : '<span class="try ng"><i>✕</i>'+i+'回目 失敗</span>');
+    else out.push('<span class="try na">'+i+'回目 不要</span>');
+  }
+  return '<div class="tries">'+out.join('')+'</div>';
 }
 function renderHistory(){
   var esc=App.esc, h=App.scoutHistory();
@@ -186,14 +172,14 @@ function renderHistory(){
     var mon=r.monId?App.getMon(r.monId):null, ep=r.ep?App.getEp(r.ep):null;
     var meat=(r.meat||[]).length?'<span class="badge">'+App.icon('meat')+esc((r.meat||[]).join('・'))+'</span>':'';
     var act=r.action?'<span class="badge">'+App.icon(r.action==='たたかう'?'battle':'hands')+esc(r.action)+'</span>':'';
-    var tries=r.tries?'<span class="badge">挑戦 '+esc(r.tries)+'回</span>':'';
     return '<div class="tl-item"><div class="tl-date">'+esc(App.fmtDate(r.date)||'—')+'</div><div class="tl-body">'+
       '<div class="row small" style="margin-bottom:8px">'+
       '<span class="badge'+(r.result==='成功'?' green':' live')+'">'+esc(r.result||'—')+'</span>'+
       '<span class="badge gold">'+esc(r.picked||'—')+'</span>'+act+
-      '<span class="badge">'+(r.action==='たたかう'?'勝率 ':'成功率 ')+App.pct(r.finalRate||r.rate)+'</span>'+tries+meat+
+      '<span class="badge">'+(r.action==='たたかう'?'勝率 ':'成功率 ')+App.pct(r.finalRate||r.rate)+'</span>'+meat+
       (ep?'<span class="badge">#'+esc(ep.no)+'</span>':'')+'</div>'+
-      ((r.choices||[]).length?pickCards(r.choices,r.picked):'')+
+      ((r.choices||[]).length?pickCards(r.choices,r.picked,true):'')+
+      triesHtml(r)+
       (mon?'<p class="small" style="margin:8px 0 0">仲間になりました → <a href="monster.html?id='+
         encodeURIComponent(mon.id)+'">'+esc(mon.name)+'</a></p>':'')+
       (r.note?'<p class="small muted" style="margin:6px 0 0">'+esc(r.note)+'</p>':'')+
@@ -201,11 +187,7 @@ function renderHistory(){
   }).join('')+'</div>';
 }
 function pageInit(){
-  var cfg=App.scoutCfg();
-  App.$('#scoutEveryNote').innerHTML=(App.SITE.rules||{}).scoutNote||'';
-  App.$('#scoutTries').innerHTML=cfg.triesNote||'';
-  App.$('#scoutResultNote').innerHTML=cfg.resultNote||'';
-  renderStats(); renderSteps(); renderPicks(); renderMeat(); renderHistory();
+  renderStats(); renderPicks(); renderMeat(); renderHistory();
 }
 </script>
 </body>

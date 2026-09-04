@@ -122,6 +122,19 @@ window.DB_STORY = {
    *          scoutPct, nextChoices:[], summary }
    */
   scripts: {
+    EP002: {
+      arcId: "",
+      title: "テリーの物語 2話",
+      logline: "",
+      recap: "",
+      voteReflect: "次に挑む相手（①ドラキー ②ナスビナーラ ③おばけキャンドル）と、スカウト成功時の名前を募集中です。",
+      breed: null,
+      battleEnemyId: "",
+      outcome: "",   // まだ戦闘なし（相手は募集中）
+      scoutPct: 0,
+      nextChoices: ["ドラキー", "ナスビナーラ", "おばけキャンドル"],
+      summary: "はじめて旅の扉をくぐったテリー。たどり着いたのは見わたすかぎりの大草原。大はしゃぎで叫んだそのとき、スライム・ピッキー・アントベアが砂けむりを上げて駆けてきます。"
+    },
     EP001: {
       arcId: "",
       title: "テリーの物語 1話",

@@ -18,16 +18,15 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260903110815">
+<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
 </head>
 <body>
 <div class="wrap">
 
   <h1 class="page">家系図</h1>
   <p class="lead">
-    ここに載るのは<b style="color:var(--gold)">動画で配合が確定し、実際に実行されたもの</b>だけです。応募の途中経過や候補は記録しません。
-    いちばん上が選んだ本人で、そのすぐ下に<b>父と母</b>、さらに下にその親…と<b>先祖をさかのぼって</b>並びます。
-    配合を1回重ねるごとに世代が1つ進みます。ノードをクリックすると詳細ページへ移動します。
+    <b style="color:var(--gold)">実際に実行された配合</b>だけを記録した家系図です。
+    いちばん上が本人、下へ<b>親①・親② → その先祖</b>とさかのぼります。ノードを押すと詳細へ。
   </p>
 
   <div class="grid g3" id="treeStats" style="margin-bottom:16px"></div>
@@ -66,7 +65,7 @@
     <div class="panel">
       <h2 class="sec">次の配合を決めるのはあなた</h2>
       <p class="small muted" style="margin:0 0 10px">
-        レベル<span id="minLv"></span>以上のモンスターから父と母を選び、<b>このサイトに貼った応募フォーム</b>で送れます。
+        レベル<span id="minLv"></span>以上のモンスターから親①と親②を選び、<b>このサイトに貼った応募フォーム</b>で送れます。
         生まれる種族は『テリーのワンダーランド3D』の実際の配合データで決まるので、
         <b>送る前に配合表で確かめられます</b>（演出や物語の都合で、通常のゲームとは異なる配合先になる場合があります）。
       </p>
@@ -76,23 +75,23 @@
 
 </div>
 
-<script src="data/site.js?v=20260903110815"></script>
-<script src="data/monsters.js?v=20260903110815"></script>
-<script src="data/teri.js?v=20260903110815"></script>
-<script src="data/episodes.js?v=20260903110815"></script>
-<script src="data/goods.js?v=20260903110815"></script>
-<script src="data/news.js?v=20260903110815"></script>
-<script src="data/story.js?v=20260903110815"></script>
-<script src="assets/js/app.js?v=20260903110815"></script>
+<script src="data/site.js?v=20260904141031"></script>
+<script src="data/monsters.js?v=20260904141031"></script>
+<script src="data/teri.js?v=20260904141031"></script>
+<script src="data/episodes.js?v=20260904141031"></script>
+<script src="data/goods.js?v=20260904141031"></script>
+<script src="data/news.js?v=20260904141031"></script>
+<script src="data/story.js?v=20260904141031"></script>
+<script src="assets/js/app.js?v=20260904141031"></script>
 <script>
 var focusId='';
-// 家系図は「本人 → 父と母 → その親…」と先祖をさかのぼって描く。
+// 家系図は「本人 → 親①と親② → その親…」と先祖をさかのぼって描く。
 // 以前は片方の親だけを使って子孫方向に並べていたため、親のいない子まで
 // 下にぶら下がって世代が積み上がって見えていた。
 function parentsOf(m){
   if(!m || !m.parents) return [];
   var f=App.getMon(m.parents.father), mo=App.getMon(m.parents.mother);
-  return [['♂ 父',f],['♀ 母',mo]].filter(function(p){ return !!p[1]; });
+  return [['親①',f],['親②',mo]].filter(function(p){ return !!p[1]; });
 }
 function nodeHtml(m,role){
   var esc=App.esc;
@@ -119,7 +118,7 @@ function renderTree(){
   focusId=sel;
   if(!m){ App.$('#treeWrap').innerHTML='<div class="empty">モンスターが登録されていません。</div>'; return; }
   App.$('#rootNote').innerHTML = m.parents
-    ? esc(m.name)+' は配合で生まれた第'+esc(App.generationOf(m))+'世代です。下に父と母、さらにその先祖が並びます。'
+    ? esc(m.name)+' は配合で生まれた第'+esc(App.generationOf(m))+'世代です。下に親①と親②、さらにその先祖が並びます。'
     : esc(m.name)+' はスカウトで仲間になった第1世代なので、先祖はいません。';
   App.$('#treeWrap').innerHTML =
     '<div class="tree"><ul class="rootlv" style="padding-top:0">'+subtree(m,'',0)+'</ul></div>';
@@ -152,7 +151,7 @@ function renderRecords(){
           '<div class="row small" style="margin-bottom:4px"><span class="badge green">配合 '+(i+1)+'回目</span>'+
           '<span class="badge gold">'+esc(r.type)+'</span><span class="badge">第'+esc(r.gen)+'世代</span>'+
           (ep?'<span class="badge">#'+esc(ep.no)+'</span>':'')+'</div>'+
-          '<div class="row small">'+side(r.father,'♂')+side(r.mother,'♀')+
+          '<div class="row small">'+side(r.father,'親①')+side(r.mother,'親②')+
             '<span class="dot" style="color:var(--gold)">→</span>'+
             '<a class="badge" href="monster.html?id='+encodeURIComponent(r.child.id)+'"><b>'+esc(r.child.name)+'</b>'+
             '<span class="muted small">（'+esc(r.child.species)+'）</span></a></div>'+

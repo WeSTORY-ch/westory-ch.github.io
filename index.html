@@ -18,109 +18,88 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260903110815">
+<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
 </head>
 <body>
 
 <div class="wrap">
 
-  <!-- プロフィールヘッダー -->
-  <section class="ig-profile">
-    <div class="ig-avatar"><img src="assets/brand/logo_mark.png" alt="WeSTORY"></div>
-    <div class="ig-info">
-      <div class="ig-name">
-        <h1 id="igName"></h1>
-        <span class="ig-verified" title="視聴者参加型企画"><span class="ic" data-ic="check"></span></span>
-        <a class="yt-btn" id="heroYt" href="#" target="_blank" rel="noopener">＋ フォロー（YouTube）</a>
-        <a class="btn sm" href="breed.html">配合表</a>
-        <a class="btn sm" href="monsters.html">牧場</a>
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div>
+      <span class="kicker">Interactive Monster Story</span>
+      <h1>物語の行き先は、<br>あなたが決める。</h1>
+      <p class="sub">名前も、次に戦う相手も、配合も。コメントと投票で進む参加型のモンスター物語。</p>
+      <div class="cta">
+        <a class="yt-btn" id="heroYt" href="#" target="_blank" rel="noopener">YouTubeで見る</a>
+        <a class="btn gold" href="#join">いま参加できるもの</a>
+        <a class="btn ghost" href="rules.html">あそびかた</a>
       </div>
-      <div class="ig-stats">
-        <span><b id="stEp">0</b> 投稿</span>
-        <span><b id="stMon">0</b> 仲間</span>
-        <span><b id="stGen">0</b> 世代</span>
+      <div class="hero-stats">
+        <span><b id="stEp">0</b><i>エピソード</i></span>
+        <span><b id="stMon">0</b><i>仲間</i></span>
+        <span><b id="stGen">0</b><i>世代</i></span>
       </div>
-      <div class="ig-bio">
-        <div class="h" id="igHandle"></div>
-        <div id="igLead"></div>
-        <div class="small muted" id="heroRules" style="margin-top:2px"></div>
-        <a class="link" href="rules.html">ルールと参加のしかたを見る →</a>
-      </div>
+      <div id="liveBar"></div>
     </div>
+    <div class="hero-video" id="heroVideo"></div>
   </section>
 
-  <!-- この企画のルール＋参加のしかた（最上部） -->
-  <section class="section" id="rules">
-    <div class="panel">
-      <h2 class="sec">この企画のルール</h2>
-      <div class="grid g3">
-        <div><h3 style="margin:0 0 4px"><span class="ic" data-ic="level"></span>戦闘に1勝でレベル+4</h3><p class="small muted" style="margin:0">上がるのは<b>その戦闘のパーティ3体だけ</b>。動画が2本に分かれても<b>1戦闘＝1回</b>として数えます。負けた戦闘は経験値がもらえません。</p></div>
-        <div><h3 style="margin:0 0 4px"><span class="ic" data-ic="flask"></span>配合はレベル10から</h3><p class="small muted" style="margin:0">レベル10に到達したモンスターは、父と母を選んで配合できます。</p></div>
-        <div><h3 style="margin:0 0 4px"><span class="ic" data-ic="cross"></span>負けたら1体が病院へ</h3><p class="small muted" style="margin:0">パーティから<b>ランダムで1体</b>。戻すには<b>せかいじゅの葉</b>しかありません。</p></div>
-      </div>
-
-      <h3 class="sec" style="margin:18px 0 8px;font-size:15px">どこで決めるか</h3>
-      <div id="voteMap"></div>
-      <p class="small muted" style="margin:10px 0 0">締切は次の動画の公開まで。票をもとに決めますが、<b>最終的な判断は制作者</b>が行います。</p>
-      <div id="ruleVote"></div>
-      <div class="row" style="margin-top:14px">
-        <a class="btn" href="breed.html"><span class="ic" data-ic="breed"></span>配合表と応募へ</a>
-        <a class="btn" href="names.html"><span class="ic" data-ic="pen"></span>名前の募集へ</a>
-        <a class="btn" href="scout.html"><span class="ic" data-ic="battle"></span>次に戦う相手へ</a>
-        <a class="btn ghost" href="rules.html">ルールの詳細</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ストーリー -->
-  <div class="stories" id="stories"></div>
-
-  <!-- タブ -->
-  <nav class="ig-tabs">
-    <a class="on" href="#feed"><span class="ic" data-ic="play"></span>投稿</a>
-    <a href="monsters.html"><span class="ic" data-ic="egg"></span>モンスター</a>
-    <a href="tree.html"><span class="ic" data-ic="tree"></span>家系図</a>
-    <a href="goods.html"><span class="ic" data-ic="gift"></span>グッズ</a>
-  </nav>
-
-  <!-- 最新エピソード -->
-  <section class="section">
+  <!-- いま参加できる -->
+  <section class="section" id="join">
     <div class="spread">
-      <h2 class="sec">最新エピソード</h2>
-      <a class="btn ghost sm" href="story.html">ぼうけんの記録 →</a>
+      <h2 class="sec">いま参加できるもの</h2>
+      <span class="small muted">締切は次の動画の公開まで／最終判断は制作者</span>
     </div>
-    <div class="two-col" id="latestWrap">
-      <div id="latestEmbed"></div>
-      <div id="latestInfo"></div>
-    </div>
-  </section>
-
-  <!-- 募集受付中 -->
-  <section class="section" id="openVoteSec">
-    <h2 class="sec">いま参加できるもの</h2>
     <div id="openVotes"></div>
   </section>
 
-  <!-- お知らせ（旧・最新情報ページをここへ統合） -->
+  <!-- いまのパーティ -->
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec">いまのパーティ</h2>
+      <span class="row">
+        <a class="btn ghost sm" href="monsters.html">牧場 →</a>
+        <a class="btn ghost sm" href="tree.html">家系図 →</a>
+      </span>
+    </div>
+    <div class="grid g4" id="partyList"></div>
+  </section>
+
+  <!-- エピソード -->
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec">エピソード</h2>
+      <a class="btn ghost sm" href="story.html">ぼうけんの記録 →</a>
+    </div>
+    <div class="ep-strip" id="epStrip"></div>
+  </section>
+
+  <!-- あそびかた（要点だけ） -->
+  <section class="section">
+    <div class="spread">
+      <h2 class="sec">あそびかたは4つ</h2>
+      <a class="btn ghost sm" href="rules.html">くわしいルール →</a>
+    </div>
+    <div id="voteMap"></div>
+    <div class="row small muted" style="margin-top:10px">
+      <span class="badge gold">1勝でLv+<span id="rLvWin"></span></span>
+      <span class="badge cyan">配合はLv<span id="rBreedLv"></span>から・性別なし</span>
+      <span class="badge live">負けたら1体が病院へ</span>
+    </div>
+  </section>
+
+  <!-- お知らせ -->
   <section class="section" id="news">
     <h2 class="sec">お知らせ</h2>
     <div class="tl" id="newsList"></div>
   </section>
 
-  <!-- 注目モンスター -->
+  <!-- おすすめグッズ -->
   <section class="section">
     <div class="spread">
-      <h2 class="sec">仲間モンスター</h2>
-      <a class="btn ghost sm" href="monsters.html">牧場へ →</a>
-    </div>
-    <div class="grid g4" id="monList"></div>
-  </section>
-
-  <!-- あなたへのおすすめ -->
-  <section class="section">
-    <div class="spread">
-      <h2 class="sec">あなたへのおすすめグッズ</h2>
-      <a class="btn ghost sm" href="goods.html">グッズ一覧 →</a>
+      <h2 class="sec">冒険のおともグッズ</h2>
+      <a class="btn ghost sm" href="goods.html">一覧 →</a>
     </div>
     <p class="pr-note">PR：当サイトはアフィリエイト広告を利用しています。<span id="recWhy"></span></p>
     <div class="grid g4" id="recGoods"></div>
@@ -128,169 +107,146 @@
 
 </div>
 
-<script src="data/site.js?v=20260903110815"></script>
-<script src="data/monsters.js?v=20260903110815"></script>
-<script src="data/teri.js?v=20260903110815"></script>
-<script src="data/episodes.js?v=20260903110815"></script>
-<script src="data/goods.js?v=20260903110815"></script>
-<script src="data/news.js?v=20260903110815"></script>
-<script src="data/story.js?v=20260903110815"></script>
-<script src="assets/js/app.js?v=20260903110815"></script>
+<script src="data/site.js?v=20260904141031"></script>
+<script src="data/monsters.js?v=20260904141031"></script>
+<script src="data/teri.js?v=20260904141031"></script>
+<script src="data/episodes.js?v=20260904141031"></script>
+<script src="data/scout.js?v=20260904141031"></script>
+<script src="data/goods.js?v=20260904141031"></script>
+<script src="data/news.js?v=20260904141031"></script>
+<script src="data/story.js?v=20260904141031"></script>
+<script src="assets/js/app.js?v=20260904141031"></script>
 <script>
 // 募集の種類ごとに「どこで決めるか」（site.js の polls と対応）
-//   youtube = 動画のコメント欄／固定コメントの返信にいいね
-//   web     = このサイトに貼った応募フォーム（Googleフォーム）
 var VOTE_TYPE = {
-  name:   {label:'名前を決める',      where:'youtube', url:'names.html', ic:'pen',   cta:'コメント欄で名前を送る'},
-  battle: {label:'次に戦う相手',      where:'youtube', url:'scout.html', ic:'like',  cta:'固定コメントの返信にいいね'},
-  scout:  {label:'次に戦う相手',      where:'youtube', url:'scout.html', ic:'like',  cta:'固定コメントの返信にいいね'},
+  name:   {label:'名前を決める',      where:'youtube', url:'', ic:'pen',   cta:'コメントする'},
+  battle: {label:'次に戦う相手',      where:'youtube', url:'scout.html', ic:'like',  cta:'コメントで番号を送る'},
+  scout:  {label:'次に戦う相手',      where:'youtube', url:'scout.html', ic:'like',  cta:'コメントで番号を送る'},
   breed:  {label:'配合の組み合わせ',  where:'web',     url:'breed.html', form:'breed', ic:'breed', cta:'配合表を見て応募する'},
   skill:  {label:'継承するスキル',    where:'web',     url:'skills.html', form:'skill', ic:'skill', cta:'継承スキルに応募する'}
 };
-// key を渡すとその募集だけ。省略すると1本目（voteTypes の先頭 or voteType）。
+var NUMS=['①','②','③','④','⑤'];
+// いま受付中の3体をミニカードで（画像は data/scout.js の species から）
+function candCards(chs, withRates){
+  var esc=App.esc;
+  return '<div class="picks mini">'+chs.map(function(c,i){
+    return '<div class="pick lv'+(c.lv||i+1)+'">'+
+      '<span class="tag">'+(NUMS[i]||(i+1))+' '+esc(c.label||'')+'</span>'+
+      App.monImgTag(c.species,'pic')+
+      '<p class="nm">'+esc(c.species)+'</p>'+
+      (withRates
+        ? '<div class="cap">勝率 '+Math.round((c.winRate||0)*100)+'%</div>'+
+          '<div class="cap">スカウト '+Math.round((c.rate||0)*100)+'%</div>'
+        : '')+
+      '</div>';
+  }).join('')+'</div>';
+}
 function voteCta(ep, key){
   var esc=App.esc, k=key||App.voteTypesOf(ep)[0];
   var t=VOTE_TYPE[k]||{where:'youtube',ic:'play',cta:'動画のコメント欄へ'};
   var ic=App.icon(t.ic||'play');
-  var note=(key?(ep.voteNotes&&ep.voteNotes[key]):ep.voteNote)||ep.voteNote||(t.where==='web'
-    ? 'このサイトに貼った応募フォームから送れます。'
-    : '動画のコメント欄で受け付けます。');
-  var btn;
-  if(t.where==='web'){
-    var u=t.form?App.formUrl(t.form):'';
-    btn=(u?'<a class="btn gold" href="'+esc(u)+'" target="_blank" rel="noopener">'+ic+esc(t.cta)+'</a>':
-          '<span class="badge">フォームは準備中です</span>')+
-      '<a class="btn ghost sm" href="'+esc(t.url)+'">くわしく見る</a>';
-  }else{
-    btn='<a class="yt-btn" href="'+esc(App.ytWatch(ep))+'" target="_blank" rel="noopener">'+ic+esc(t.cta)+'</a>'+
-      (t.url?'<a class="btn ghost sm" href="'+esc(t.url)+'">くわしく見る</a>':'');
+  var cur=App.scoutNow();
+  var chs=(cur.status==='vote'&&cur.ep===ep.id)?(cur.choices||[]):[];
+  var more=t.url?'<a class="btn ghost sm" href="'+esc(t.url)+'">くわしく</a>':'';
+  var ytBtn='<a class="yt-btn" href="'+esc(App.ytWatch(ep))+'" target="_blank" rel="noopener">'+ic+esc(t.cta)+'</a>';
+
+  // 次に戦う相手：3体の画像＆確率 ＋ 短いCTA
+  if(k==='battle'||k==='scout'){
+    return (chs.length?candCards(chs,true):'')+
+      '<div class="row" style="margin-top:10px">'+ytBtn+more+'</div>';
   }
-  return '<p class="small" style="margin:0 0 10px">'+esc(note)+'</p><div class="row">'+btn+'</div>';
+  // 名前：同じ3体の画像 ＋ 短いCTA
+  if(k==='name'){
+    var mx=(App.naming()||{}).maxChars||6;
+    return (chs.length
+        ? candCards(chs,false)+
+          '<p class="small muted" style="margin:8px 0 8px">「番号＋名前案」の形でコメント（ひらがな・カタカナ'+mx+'文字まで）</p>'
+        : '<p class="small muted" style="margin:0 0 8px">ひらがな・カタカナ'+mx+'文字まで。コメント欄で受け付けます。</p>')+
+      '<div class="row">'+ytBtn+'</div>';
+  }
+  // 配合・スキル：このサイトの応募フォーム
+  var note=(key?(ep.voteNotes&&ep.voteNotes[key]):ep.voteNote)||ep.voteNote||'このサイトに貼った応募フォームから送れます。';
+  var u=t.form?App.formUrl(t.form):'';
+  return '<p class="small" style="margin:0 0 8px">'+esc(note)+'</p><div class="row">'+
+    (u?'<a class="btn gold" href="'+esc(u)+'" target="_blank" rel="noopener">'+ic+esc(t.cta)+'</a>'
+      :'<span class="badge">フォームは準備中です</span>')+more+'</div>';
 }
 function pageInit(){
   var S=App.SITE, esc=App.esc;
 
-  // プロフィールヘッダー
-  App.$('#igName').textContent = S.siteName || '';
-  App.$('#igHandle').textContent = S.channelHandle || '';
-  App.$('#igLead').textContent = S.tagline || '';
+  // ヒーロー
   App.$('#heroYt').href = S.channelUrl || '#';
   App.$('#stEp').textContent = App.EPISODES.length;
   App.$('#stMon').textContent = App.MONSTERS.length;
   App.$('#stGen').textContent = App.maxGeneration();
-  App.$('#heroRules').innerHTML =
-    '<span class="badge gold">戦闘に1勝 = レベル+' + esc(S.rules.levelPerWin) + '</span> ' +
-    '<span class="badge cyan">配合はLv' + esc(S.rules.breedMinLevel) + 'から</span> ' +
-    '<span class="badge pink">Lv' + esc(S.skillPoint.perLevels) + 'ごとにスキル+' + esc(S.skillPoint.perAmount) + '</span> ' +
-    '<span class="badge">更新は不定期</span>';
+  App.$('#rLvWin').textContent = S.rules.levelPerWin;
+  App.$('#rBreedLv').textContent = S.rules.breedMinLevel;
 
-  // どこで決めるか（site.js の polls が唯一の正解）
-  App.$('#voteMap').innerHTML = App.voteMapHtml();
-
-  // ルールカードに付随する「いまの配合募集」
-  (function(){
-    var b = App.EPISODES.filter(function(e){ return App.hasVote(e,'breed') && e.voteStatus==='受付中'; })
-      .sort(function(a,c){ return (c.date||'').localeCompare(a.date||''); })[0];
-    var fu = App.formUrl('breed');
-    App.$('#ruleVote').innerHTML = b
-      ? '<div class="vote-box" style="margin-top:12px">'+
-          '<div class="row"><span class="badge live">配合の応募 受付中</span><span class="badge gold">#'+esc(b.no)+'</span>'+
-          (b.voteDeadline?'<span class="badge">締切 '+esc(App.fmtDate(b.voteDeadline))+'</span>':'')+'</div>'+
-          '<h3 style="margin:8px 0 4px">'+esc(b.title)+'</h3>'+
-          '<p class="small" style="margin:0 0 10px">'+esc(b.voteNote||'このサイトで配合表を確かめてから、応募フォームで送ってください。')+'</p>'+
-          '<div class="row">'+
-          (fu?'<a class="btn gold" href="'+esc(fu)+'" target="_blank" rel="noopener">'+App.icon('breed')+'応募フォームをひらく</a>':
-              '<span class="badge">フォームは準備中です</span>')+
-          '<a class="btn ghost sm" href="breed.html">'+App.icon('flask')+'配合表を見る</a>'+
-          '<a class="btn ghost sm" href="'+esc(App.ytWatch(b))+'" target="_blank" rel="noopener">この回の動画を見る</a></div>'+
-        '</div>'
-      : '<div class="empty" style="margin-top:12px">いまは配合の募集を受け付けていません。'+
-        'それでも<a href="breed.html">配合表</a>はいつでも見られます。次の募集は動画と最新情報でお知らせします。</div>';
-  })();
-
-  // ストーリー（投票受付中を先頭に、あとは新着順）
-  (function(){
-    var sorted = App.EPISODES.slice().sort(function(a,b){
-      var av=(a.voteStatus==='受付中')?1:0, bv=(b.voteStatus==='受付中')?1:0;
-      if(av!==bv) return bv-av;
-      return (b.date||'').localeCompare(a.date||'');
-    });
-    var html = sorted.slice(0,10).map(function(e){
-      var m = (e.monsters||[]).map(App.getMon).filter(Boolean)[0];
-      var seen = e.voteStatus!=='受付中';
-      return '<a class="story'+(seen?' seen':'')+'" href="'+esc(App.ytWatch(e))+'" target="_blank" rel="noopener" '+
-        'onclick="App.track.viewEpisode(App.getEp(\''+esc(e.id)+'\'))">'+
-        '<span class="ring"><i>'+(App.ytThumb(e)?'<img src="'+esc(App.ytThumb(e))+'" alt="">':(m&&m.img?'<img src="'+esc(m.img)+'" alt="">':App.icon('play')))+'</i></span>'+
-        '<span class="nm">'+(e.voteStatus==='受付中'?'募集中 ':'')+'#'+esc(e.no)+'</span></a>';
-    }).join('');
-    App.$('#stories').innerHTML = '<a class="story" href="breed.html"><span class="ring"><i>'+App.icon('flask')+'</i></span><span class="nm">配合表</span></a>' + html;
-  })();
-
-  // 最新エピソード
+  // 最新話（ショートなので縦長で埋め込む）
   var eps = App.EPISODES.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
   var ep = eps[0];
   if(ep){
     App.track.viewEpisode(ep);
     var emb = App.ytEmbed(ep);
-    App.$('#latestEmbed').innerHTML = '<div class="embed">' + (emb
-      ? '<iframe src="'+esc(emb)+'" title="'+esc(ep.title)+'" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>'
-      : '<div class="ph"><div style="font-size:40px">'+App.icon('play')+'</div><div>動画ID未設定<br><span class="small">data/episodes.js の youtubeId を入れると<br>ここに動画が埋め込まれます</span></div></div>') + '</div>';
-
-    var mons = (ep.monsters||[]).map(App.getMon).filter(Boolean);
-    App.$('#latestInfo').innerHTML =
-      '<div class="panel" style="height:100%">' +
-        '<div class="row small"><span class="badge gold">#'+esc(ep.no)+'</span><span class="muted">'+esc(App.fmtDate(ep.date))+'</span>'+
-        (ep.voteStatus==='受付中'?'<span class="badge live">募集受付中</span>':'')+'</div>' +
-        '<h3 style="margin:8px 0 6px;font-size:18px">'+esc(ep.title)+'</h3>' +
-        '<p class="small muted">'+esc(ep.summary||'')+'</p>' +
-        (mons.length?'<div class="row small" style="margin:8px 0">'+mons.map(function(m){
-          return '<a class="badge" href="monster.html?id='+encodeURIComponent(m.id)+'">'+esc(m.emoji||'')+' '+esc(m.name)+'</a>';
-        }).join('')+'</div>':'') +
-        (ep.voteStatus==='受付中'
-          ? '<div class="vote-box" style="margin-top:10px">'+voteCta(ep)+'</div>'
-          : (ep.result?'<div class="panel soft" style="margin-top:10px"><b class="dot" style="color:var(--gold)">結果</b><div>'+esc(ep.result)+'</div></div>':'')) +
-      '</div>';
+    App.$('#heroVideo').innerHTML =
+      '<div class="frame"><span class="tag">最新話 #'+esc(ep.no)+'</span>'+
+      '<div class="embed portrait" style="border:0;border-radius:0">'+(emb
+        ? '<iframe src="'+esc(emb)+'" title="'+esc(ep.title)+'" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>'
+        : '<div class="ph">'+App.icon('play')+'<div class="small">動画は準備中</div></div>')+'</div></div>';
   }
 
-  // 投票受付中
-  // 1本の動画で2つ募集していることがあるので、種類ごとに1枠ずつ出す
+  // 受付中の件数バー
   var open = App.EPISODES.filter(function(e){return e.voteStatus==='受付中'});
+  var kinds = [];
+  open.forEach(function(e){ App.voteTypesOf(e).forEach(function(k){ kinds.push(k); }); });
+  App.$('#liveBar').innerHTML = kinds.length
+    ? '<div class="live-bar"><span class="pulse"></span><b>募集受付中 '+kinds.length+'件</b>'+
+      '<a href="#join">参加する ↓</a></div>'
+    : '';
+
+  // いま参加できる（1本の動画で2つ募集していることがあるので種類ごとに1枠）
   var boxes = [];
   open.forEach(function(e){
     App.voteTypesOf(e).forEach(function(k){
       var typ = VOTE_TYPE[k] || {label:'募集'};
       boxes.push('<div class="vote-box"><div class="row"><span class="badge live">受付中</span><span class="badge gold">'+esc(typ.label)+'</span>'+
-        (e.voteDeadline?'<span class="badge">締切 '+esc(App.fmtDate(e.voteDeadline))+'</span>':'')+'</div>'+
-        '<h3 style="margin:8px 0 4px">'+esc(e.title)+'</h3>'+voteCta(e, k)+'</div>');
+        (e.voteDeadline?'<span class="badge">締切 '+esc(App.fmtDate(e.voteDeadline))+'</span>':'')+
+        '<span class="badge">#'+esc(e.no)+'</span></div>'+
+        '<div style="margin-top:10px">'+voteCta(e, k)+'</div></div>');
     });
   });
   App.$('#openVotes').innerHTML = boxes.length
     ? '<div class="grid g2">' + boxes.join('') + '</div>'
     : '<div class="empty">いま受付中の募集はありません。次の動画の公開をお待ちください。</div>';
 
-  // お知らせ（news.html を廃止してここへ統合したので全件出す）
+  // パーティ
+  var party = App.partyMons();
+  App.$('#partyList').innerHTML = (party.length?party:App.MONSTERS.slice(0,4))
+    .map(App.monsterCardHtml).join('') || '<div class="empty" style="grid-column:1/-1">まだ仲間がいません。</div>';
+
+  // エピソード（新着順）
+  App.$('#epStrip').innerHTML = eps.slice(0,8).map(App.episodeCardHtml).join('')
+    || '<div class="empty">まだ動画がありません。</div>';
+
+  // あそびかた（site.js の polls が唯一の正解）
+  App.$('#voteMap').innerHTML = App.voteMapHtml();
+
+  // お知らせ
   var news = App.NEWS.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
   App.$('#newsList').innerHTML = news.map(function(n){
-    var ep = n.epId ? App.getEp(n.epId) : null;
+    var nep = n.epId ? App.getEp(n.epId) : null;
     return '<div class="tl-item"><div class="tl-date">'+esc(App.fmtDate(n.date))+'</div><div class="tl-body">'+
       '<div class="row small" style="margin-bottom:2px"><span class="badge'+(n.type==='募集'?' live':'')+'">'+esc(n.type)+'</span></div>'+
       '<h3>'+esc(n.title)+'</h3><p>'+esc(n.body)+'</p>'+
-      (ep?'<p style="margin-top:6px"><a class="btn sm" href="'+esc(App.ytWatch(ep))+'" target="_blank" rel="noopener">'+App.icon('play')+'対象の動画へ</a></p>':'')+
+      (nep?'<p style="margin-top:6px"><a class="btn sm" href="'+esc(App.ytWatch(nep))+'" target="_blank" rel="noopener">'+App.icon('play')+'対象の動画へ</a></p>':'')+
       '</div></div>';
-  }).join('') || '<div class="empty">まだお知らせはありません。募集や配合の結果はここに出します。</div>';
-
-  // モンスター
-  App.$('#monList').innerHTML = App.MONSTERS.slice()
-    .sort(function(a,b){return (b.level||0)-(a.level||0)}).slice(0,8)
-    .map(App.monsterCardHtml).join('');
+  }).join('') || '<div class="empty">まだお知らせはありません。</div>';
 
   // おすすめ
-  var rec = App.recommendGoods(4);
-  App.$('#recGoods').innerHTML = rec.map(App.goodsCardHtml).join('');
-  var why = App.hasHistory()
+  App.$('#recGoods').innerHTML = App.recommendGoods(4).map(App.goodsCardHtml).join('');
+  App.$('#recWhy').textContent = App.hasHistory()
     ? '（あなたが見た「' + App.topInterests(2).map(esc).join('・') + '」の傾向から表示しています）'
     : '（まだ閲覧履歴がないため、人気順で表示しています）';
-  App.$('#recWhy').textContent = why;
 }
 </script>
 </body>

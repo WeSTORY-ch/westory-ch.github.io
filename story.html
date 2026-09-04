@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260903110815">
+<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
 </head>
 <body>
 <div class="wrap">
@@ -56,7 +56,6 @@
       </p>
       <div class="row">
         <a class="btn gold" href="breed.html"><span class="ic" data-ic="breed"></span>配合表と応募へ</a>
-        <a class="btn gold" href="names.html"><span class="ic" data-ic="pen"></span>名前の募集へ</a>
         <a class="btn gold" href="scout.html"><span class="ic" data-ic="battle"></span>次に戦う相手へ</a>
         <a class="btn ghost" href="monsters.html">モンスター牧場</a>
       </div>
@@ -65,14 +64,14 @@
 
 </div>
 
-<script src="data/site.js?v=20260903110815"></script>
-<script src="data/monsters.js?v=20260903110815"></script>
-<script src="data/teri.js?v=20260903110815"></script>
-<script src="data/episodes.js?v=20260903110815"></script>
-<script src="data/goods.js?v=20260903110815"></script>
-<script src="data/news.js?v=20260903110815"></script>
-<script src="data/story.js?v=20260903110815"></script>
-<script src="assets/js/app.js?v=20260903110815"></script>
+<script src="data/site.js?v=20260904141031"></script>
+<script src="data/monsters.js?v=20260904141031"></script>
+<script src="data/teri.js?v=20260904141031"></script>
+<script src="data/episodes.js?v=20260904141031"></script>
+<script src="data/goods.js?v=20260904141031"></script>
+<script src="data/news.js?v=20260904141031"></script>
+<script src="data/story.js?v=20260904141031"></script>
+<script src="assets/js/app.js?v=20260904141031"></script>
 <script>
 function pageInit(){
   var S = App.STORY, esc = App.esc;
@@ -124,7 +123,8 @@ function pageInit(){
       '<div>' +
         '<div class="row small">' +
           (arc ? '<span class="badge">' + esc(arc.title) + '</span>' : '') +
-          '<span class="badge ' + (win ? 'green' : '') + '">' + (win ? '勝利' : '敗北') + '</span>' +
+          // 勝敗バッジは戦闘があった回だけ（outcome が空の回は出さない）
+          (s.outcome ? '<span class="badge ' + (win ? 'green' : '') + '">' + (win ? '勝利' : '敗北') + '</span>' : '') +
           (s.breed ? '<span class="badge gold">配合</span>' : '') +
           (en ? '<span class="badge">' + esc(en.name) + '</span>' : '') +
         '</div>' +

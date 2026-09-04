@@ -17,21 +17,21 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260903110815">
+<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
 </head>
 <body>
 <div class="wrap" id="main"></div>
 
-<script src="data/site.js?v=20260903110815"></script>
-<script src="data/monsters.js?v=20260903110815"></script>
-<script src="data/teri.js?v=20260903110815"></script>
-<script src="data/mondex.js?v=20260903110815"></script>
-<script src="data/skills.js?v=20260903110815"></script>
-<script src="data/episodes.js?v=20260903110815"></script>
-<script src="data/goods.js?v=20260903110815"></script>
-<script src="data/news.js?v=20260903110815"></script>
-<script src="data/story.js?v=20260903110815"></script>
-<script src="assets/js/app.js?v=20260903110815"></script>
+<script src="data/site.js?v=20260904141031"></script>
+<script src="data/monsters.js?v=20260904141031"></script>
+<script src="data/teri.js?v=20260904141031"></script>
+<script src="data/mondex.js?v=20260904141031"></script>
+<script src="data/skills.js?v=20260904141031"></script>
+<script src="data/episodes.js?v=20260904141031"></script>
+<script src="data/goods.js?v=20260904141031"></script>
+<script src="data/news.js?v=20260904141031"></script>
+<script src="data/story.js?v=20260904141031"></script>
+<script src="assets/js/app.js?v=20260904141031"></script>
 <script>
 function pageInit(){
   var esc=App.esc, S=App.SITE;
@@ -79,7 +79,6 @@ function pageInit(){
       '<div style="flex:1;min-width:240px">'+
         '<div class="row small"><span class="fam '+esc(m.family)+'">'+esc(m.family)+'</span>'+
           '<span class="rank '+esc(m.rank)+'">ランク '+esc(m.rank)+'</span>'+
-          '<span class="badge">'+esc(m.gender||'-')+'</span>'+
           '<span class="badge">'+esc(m.id)+'</span>'+
           (m.parents?'<span class="badge pink">配合で誕生</span>':'<span class="badge cyan">スカウト/初期メンバー</span>')+
         '</div>'+
@@ -103,7 +102,6 @@ function pageInit(){
   '<section class="section"><div class="vote-box">'+
     '<h3>'+App.icon('like')+'この子に関わる募集</h3>'+
     '<div class="row">'+
-      '<a class="btn gold" href="names.html">'+App.icon('pen')+'名前の募集を見る</a>'+
       (App.canBreed(m)?'<a class="btn gold" href="breed.html?parent='+encodeURIComponent(m.id)+'">'+App.icon('flask')+'配合表で相手を見る</a>':'')+
       '<a class="yt-btn" href="'+esc(App.ytWatch(openVoteEp))+'" target="_blank" rel="noopener">'+App.icon('youtube')+'動画のコメント欄へ</a>'+
     '</div>'+
@@ -119,7 +117,7 @@ function pageInit(){
         '<dt>種族</dt><dd>'+esc(m.species)+'</dd>'+
         '<dt>系統</dt><dd>'+esc(m.family)+'</dd>'+
         '<dt>ランク</dt><dd>'+esc(m.rank)+'</dd>'+
-        '<dt>性別</dt><dd>'+esc(m.gender||'-')+'</dd>'+
+        '<dt>性別</dt><dd>なし（どの子とも配合できます）</dd>'+
         '<dt>レベル</dt><dd>'+esc(m.level||0)+'</dd>'+
         '<dt>状態</dt><dd>'+esc(m.status||'現役')+'</dd>'+
         '<dt>初登場</dt><dd>'+(m.birthEp&&App.getEp(m.birthEp)?'<a href="'+esc(App.ytWatch(App.getEp(m.birthEp)))+'" target="_blank" rel="noopener">#'+esc(App.getEp(m.birthEp).no)+' '+esc(App.getEp(m.birthEp).title)+'</a>':'-')+'</dd>'+
@@ -183,7 +181,7 @@ function pageInit(){
     '<div class="spread"><h2 class="sec">家系</h2><a class="btn ghost sm" href="tree.html?id='+encodeURIComponent(m.id)+'">家系図で見る →</a></div>'+
     '<div class="tree-scroll"><div class="tree">'+
       (m.parents
-        ? '<div class="row" style="justify-content:center;gap:26px">'+nodeLink(father,'父')+'<span class="dot" style="font-size:24px;color:var(--gold);align-self:center">×</span>'+nodeLink(mother,'母')+'</div>'+
+        ? '<div class="row" style="justify-content:center;gap:26px">'+nodeLink(father,'親①')+'<span class="dot" style="font-size:24px;color:var(--gold);align-self:center">×</span>'+nodeLink(mother,'親②')+'</div>'+
           '<div style="width:2px;height:24px;background:var(--line-soft)"></div>'
         : '<p class="small muted" style="margin:0 0 10px">初期メンバー／スカウト個体のため両親はいません。</p>')+
       '<span class="node me"><span class="em">'+App.monFace(m)+'</span><span class="nm">'+esc(m.name)+'</span><span class="sub">Lv.'+esc(m.level||0)+'</span></span>'+

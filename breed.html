@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>配合表と応募｜WeSTORY</title>
-<meta name="description" content="仲間にしたモンスターの配合表。父と母を選ぶと生まれる子がその場で分かります。配合先の応募もここから。">
+<meta name="description" content="仲間にしたモンスターの配合表。親①と親②を選ぶと生まれる子がその場で分かります。配合先の応募もここから。">
 <!-- seo:start -->
 <link rel="canonical" href="https://westory-ch.github.io/breed.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="WeSTORY">
 <meta property="og:title" content="配合表と応募｜WeSTORY">
-<meta property="og:description" content="仲間にしたモンスターの配合表。父と母を選ぶと生まれる子がその場で分かります。配合先の応募もここから。">
+<meta property="og:description" content="仲間にしたモンスターの配合表。親①と親②を選ぶと生まれる子がその場で分かります。配合先の応募もここから。">
 <meta property="og:url" content="https://westory-ch.github.io/breed.html">
 <meta property="og:image" content="https://westory-ch.github.io/assets/brand/logo_mark.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,14 +18,14 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260903110815">
+<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
 </head>
 <body>
 <div class="wrap">
 
   <h1 class="page">配合表と応募</h1>
   <p class="lead">
-    <b style="color:var(--gold)">仲間にしたモンスターの配合表</b>です。父と母を選ぶと、生まれる子の種族がその場で分かります。
+    <b style="color:var(--gold)">仲間にしたモンスターの配合表</b>です。親①と親②を選ぶと、生まれる子の種族がその場で分かります。モンスターに性別はなく、どの子とも配合できます。
     見たい組み合わせが決まったら、<b>応募フォーム</b>から送ってください。
   </p>
 
@@ -35,13 +35,13 @@
   <div class="panel" id="builder" style="margin-bottom:18px">
     <div class="breed-grid">
       <div class="breed-slot father">
-        <h4>♂ 父を選ぶ</h4>
+        <h4>親① を選ぶ</h4>
         <div id="fatherPick"><p class="muted small" style="margin:0">下のリストから選択</p></div>
         <div class="picklist" id="fatherList"></div>
       </div>
       <div class="breed-x">×</div>
       <div class="breed-slot mother">
-        <h4>♀ 母を選ぶ</h4>
+        <h4>親② を選ぶ</h4>
         <div id="motherPick"><p class="muted small" style="margin:0">下のリストから選択</p></div>
         <div class="picklist" id="motherList"></div>
       </div>
@@ -63,12 +63,12 @@
         <div class="stat"><span class="ic" data-ic="battle"></span><span><span class="v"><span id="pSize"></span><small>体</small></span><span class="k">動画に出るパーティ</span></span></div>
       </div>
       <ul style="margin:0;padding-left:20px">
-        <li>生まれる子は『テリーのワンダーランド3D』の<b>実際の配合データ</b>どおり。父と母を選ぶとその場で種族名が出ます。</li>
+        <li>生まれる子は『テリーのワンダーランド3D』の<b>実際の配合データ</b>どおり。親①と親②を選ぶとその場で種族名が出ます。モンスターに性別はないので、どの子同士でも配合できます。</li>
         <li><b>特殊配合</b>＝種族は1つに確定。<b>一般配合</b>＝候補が複数なら、どれにするかも応募フォームで選べます。</li>
         <li><b>配合先は通常のゲームとは異なる場合があります</b>。演出や物語の都合で調整することがあります。</li>
         <li>配合すると<b>親はいなくなります</b>。<a href="tree.html">家系図</a>には記録として残ります。</li>
         <li><b>スキルは1体につき2つまで</b>。継承候補が2つを超えたときだけ、どれを残すかを応募フォームで受け付けます。</li>
-        <li>生まれた子の名前は<a href="names.html">動画のコメント欄</a>で募集します。</li>
+        <li>生まれた子の名前は<b>動画のコメント欄</b>で募集します。</li>
         <li><b>人生縛り</b>…敗北するとパーティから<b>ランダムで1体</b>が<span id="hospLabel"></span>へ。復帰できるのは<b>せかいじゅの葉</b>を使ったときだけです。<a href="rules.html#hospital">くわしく</a></li>
       </ul>
       <p class="small muted" style="margin:10px 0 0" id="pollNotice"></p>
@@ -93,14 +93,14 @@
 
 </div>
 
-<script src="data/site.js?v=20260903110815"></script>
-<script src="data/monsters.js?v=20260903110815"></script>
-<script src="data/teri.js?v=20260903110815"></script>
-<script src="data/episodes.js?v=20260903110815"></script>
-<script src="data/goods.js?v=20260903110815"></script>
-<script src="data/news.js?v=20260903110815"></script>
-<script src="data/story.js?v=20260903110815"></script>
-<script src="assets/js/app.js?v=20260903110815"></script>
+<script src="data/site.js?v=20260904141031"></script>
+<script src="data/monsters.js?v=20260904141031"></script>
+<script src="data/teri.js?v=20260904141031"></script>
+<script src="data/episodes.js?v=20260904141031"></script>
+<script src="data/goods.js?v=20260904141031"></script>
+<script src="data/news.js?v=20260904141031"></script>
+<script src="data/story.js?v=20260904141031"></script>
+<script src="assets/js/app.js?v=20260904141031"></script>
 <script>
 var fatherId='', motherId='';
 var breedEp=null;
@@ -129,10 +129,11 @@ function renderJoin(){
     '<a class="btn ghost sm" href="'+esc(App.ytWatch(breedEp))+'" target="_blank" rel="noopener">この回の動画を見る</a></div>';
 }
 
-// 配合で消費された子と、モンスター病院に引き継がれた子（人生縛り）は候補から外す
+// 配合で消費された子と、モンスター病院に引き継がれた子（人生縛り）は候補から外す。
+// レベル不足の子も「配合先の下見」はできる（応募できるのは全員Lv10以上のときだけ）。
 function pickCandidates(){
   return App.MONSTERS.filter(function(m){
-    return m.status!=='配合済み' && !App.inHospital(m) && App.canBreed(m);
+    return m.status!=='配合済み' && !App.inHospital(m);
   });
 }
 
@@ -141,9 +142,9 @@ function childHtml(f,mo){
   var esc=App.esc, r=App.breedResult(f,mo);
   if(!r.ok) return '<p class="small muted" style="margin:0">この2体は配合データに登録がありません。</p>';
   function chip(t,kind){
-    var mon=App.MONSTERS.filter(function(x){return x.species===t.n})[0];
+    // 種族名から直接画像を引く（仲間になっていない種族でも必ず画像を出す。無ければ系統画像）
     return '<span class="child-chip'+(kind==='sp'?' sp':'')+'">'+
-      '<span class="mon-ico">'+App.monFace(mon)+'</span>'+
+      '<span class="mon-ico">'+App.monImgTag(t.n,'')+'</span>'+
       '<b>'+esc(t.n)+'</b><span class="fam '+esc(t.f)+'">'+esc(t.f)+'</span>'+
       '<span class="rank '+esc(t.r)+'">'+esc(t.r)+'</span>'+
       '<span class="muted small">位階'+esc(t.i)+'</span>'+
@@ -151,9 +152,9 @@ function childHtml(f,mo){
   }
   var h='';
   if(r.special4.length){
-    // 4体配合＝父と母それぞれの親（＝この子の祖父母4体）まで指定される、いちばん強い配合。
+    // 4体配合＝親①と親②それぞれの親（＝この子の祖父母4体）まで指定される、いちばん強い配合。
     h+='<div class="child-box"><div class="row small"><span class="badge gold">4体配合</span>'+
-      '<span class="muted">父と母の親（祖父母4体）がそろっているので生まれます</span></div>'+
+      '<span class="muted">親①と親②の親（祖父母4体）がそろっているので生まれます</span></div>'+
       '<div class="row" style="margin-top:6px">'+r.special4.map(function(t){return chip(t,'sp')}).join('')+'</div></div>';
   }
   if(r.special.length){
@@ -162,19 +163,15 @@ function childHtml(f,mo){
       '<div class="row" style="margin-top:6px">'+r.special.map(function(t){return chip(t,'sp')}).join('')+'</div></div>';
   }
   if(r.general.length){
-    // 一般配合は「父の系統／母の系統／系統配合表」の3枠から候補が出る。
+    // 一般配合は「親①の系統／親②の系統／系統配合表」の3枠から候補が出る。
     // 両親が同じ系統だと3枠が同じ系統に潰れるので候補が1体になる（原作どおりの挙動）。
     var same=(r.a.f===r.b.f);
     var note=r.general.length>1 ? 'この中から選べます（投票で決定）'
-      : (same ? '父と母が同じ「'+r.a.f+'」なので、3つの枠がすべて同じ系統に重なり候補は1体です'
+      : (same ? '親①と親②が同じ「'+r.a.f+'」なので、3つの枠がすべて同じ系統に重なり候補は1体です'
               : '候補は1体です');
     h+='<div class="child-box"><div class="row small"><span class="badge cyan">一般配合（位階配合）</span>'+
       '<span class="muted">'+esc(note)+'</span></div>'+
-      '<div class="row" style="margin-top:6px">'+r.general.map(function(t){return chip(t)}).join('')+'</div>'+
-      '<p class="small muted" style="margin:8px 0 0">候補の出どころ：'+
-      '<b>父の系統</b>（'+esc(r.a.f)+'）／<b>母の系統</b>（'+esc(r.b.f)+'）／'+
-      '<b>系統配合表</b>（'+esc((App.TERI.kei[r.a.f]||{})[r.b.f]||'—')+'）の3枠。'+
-      'それぞれ「両親の位階のうち高い方より1つ上」の種族が候補になります（Sランク以上は一般配合では生まれません）。</p></div>';
+      '<div class="row" style="margin-top:6px">'+r.general.map(function(t){return chip(t)}).join('')+'</div></div>';
   }
   if(!h) h='<p class="small muted" style="margin:0">この組み合わせから生まれる種族は見つかりませんでした。</p>';
   return h;
@@ -182,15 +179,14 @@ function childHtml(f,mo){
 function pickRow(m,role){
   var esc=App.esc, sel=(role==='f'?fatherId:motherId)===m.id;
   var blocked=(role==='f'&&m.id===motherId)||(role==='m'&&m.id===fatherId);
-  var wrongSex=(role==='f'&&m.gender==='♀')||(role==='m'&&m.gender==='♂');
   var off=blocked;
   return '<div class="pick-item'+(sel?' sel':'')+(off?' off':'')+'" '+
     (off?'':'onclick="pick(\''+esc(m.id)+'\',\''+role+'\')"')+'>'+
     '<span class="mon-ico">'+App.monFace(m)+'</span>'+
     '<b>'+esc(m.name)+'</b>'+
     '<span class="fam '+esc(m.family)+'">'+esc(m.family)+'</span>'+
-    '<span class="muted small" style="margin-left:auto">'+esc(m.gender||'-')+' Lv.'+esc(m.level||0)+'</span>'+
-    (wrongSex?'<span class="badge" title="性別は逆ですが、この組み合わせでも投票できます">性別ちがい</span>':'')+
+    '<span class="muted small" style="margin-left:auto">Lv.'+esc(m.level||0)+
+    (App.canBreed(m)?'':' <span class="badge sm">下見のみ</span>')+'</span>'+
     '</div>';
 }
 function pick(id,role){
@@ -214,7 +210,7 @@ function render(){
   var cands=pickCandidates();
   App.$('#fatherList').innerHTML=cands.map(function(m){return pickRow(m,'f')}).join('')||'<p class="muted small">候補がいません</p>';
   App.$('#motherList').innerHTML=cands.map(function(m){return pickRow(m,'m')}).join('')||'<p class="muted small">候補がいません</p>';
-  App.$('#hint').textContent = (f&&mo) ? '' : '父と母の両方を選ぶと投票ボタンが出ます。';
+  App.$('#hint').textContent = (f&&mo) ? '' : '親①と親②の両方を選ぶと投票ボタンが出ます。';
 
   if(f&&mo){
     App.$('#result').innerHTML =
@@ -228,14 +224,17 @@ function render(){
       '</div>'+
       '<h4 style="margin:10px 0 6px">生まれるモンスター</h4>'+
       childHtml(f,mo)+
-      (breedEp
+      (breedEp && App.canBreed(f) && App.canBreed(mo)
         ? '<p class="small" style="margin:12px 0 8px">この組み合わせで応募する場合は、フォームで'+
-            '<b>父＝'+esc(f.name)+'</b> ／ <b>母＝'+esc(mo.name)+'</b> を選んでください。</p>'+
+            '<b>親①＝'+esc(f.name)+'</b> ／ <b>親②＝'+esc(mo.name)+'</b> を選んでください。</p>'+
           '<div class="row">'+(formBtn()||'<span class="badge">フォームは準備中です</span>')+'</div>'
-        : '<p class="small muted" style="margin:12px 0 0">いまは受付中の配合募集がないので、下見用の表示です。'+
-          '次の募集がはじまると、ここに応募フォームのボタンが出ます。</p>');
+        : (breedEp
+          ? '<p class="small muted" style="margin:12px 0 0">この組み合わせは下見用の表示です。応募できるのは<b>2体ともLv'+esc(App.SITE.rules.breedMinLevel)+'以上</b>になってから（'+
+            [f,mo].filter(function(m){return !App.canBreed(m)}).map(function(m){return esc(m.name)+'はあと'+App.winsToBreed(m)+'勝'}).join('、')+'）。</p>'
+          : '<p class="small muted" style="margin:12px 0 0">いまは受付中の配合募集がないので、下見用の表示です。'+
+            '次の募集がはじまると、ここに応募フォームのボタンが出ます。</p>'));
   } else {
-    App.$('#result').innerHTML='<h3>'+App.icon('egg')+'生まれるモンスター</h3><p class="small muted" style="margin:0">父と母を選ぶと、生まれる種族が表示されます。</p>';
+    App.$('#result').innerHTML='<h3>'+App.icon('egg')+'生まれるモンスター</h3><p class="small muted" style="margin:0">親①と親②を選ぶと、生まれる種族が表示されます。</p>';
   }
 }
 
@@ -252,7 +251,7 @@ function pageInit(){
   renderJoin();
 
   var p=App.qs('parent');
-  if(p&&App.getMon(p)){ var pm=App.getMon(p); if(pm.gender==='♀') motherId=p; else fatherId=p; }
+  if(p&&App.getMon(p)){ fatherId=p; }  // リンクで来た子は親①の枠に入れる（性別の概念はない）
   render();
 
   App.$('#breedable').innerHTML = pickCandidates().map(App.monsterCardHtml).join('')

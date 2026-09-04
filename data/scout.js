@@ -51,18 +51,39 @@ window.DB_SCOUT = {
     "せかいじゅの葉": 0,
     "ちいさなメダル": 0
   },
-  /* 第1回の3体。数字は制作者が決めた確定値です。
-     並びは成功率の高い順（ねらいめ → むずかしい）にしています。
-     結果は投票（いいね）で決まるので、ここには書きません。 */
+  /* 第2回の3体。数字は制作者が決めた確定値です。
+     並びは動画内の番号（①②③）のままにしています。
+     受付は2話のコメント欄で「番号」を書く方式です。
+     結果は投票で決まるので、ここには書きません。 */
   current: {
-    ep: "EP001",
+    ep: "EP002",
     pollUrl: "",
     status: "vote",
     choices: [
-      { lv: 1, label: "ねらいめ",   species: "ピッキー",   winRate: 1.00, rate: 0.78 },
-      { lv: 2, label: "ふつう",     species: "スライム",   winRate: 1.00, rate: 0.75 },
-      { lv: 3, label: "むずかしい", species: "アントベア", winRate: 1.00, rate: 0.66 }
+      { lv: 1, label: "ねらいめ",   species: "ドラキー",         winRate: 1.00, rate: 0.80 },
+      { lv: 2, label: "むずかしい", species: "ナスビナーラ",     winRate: 1.00, rate: 0.66 },
+      { lv: 3, label: "ふつう",     species: "おばけキャンドル", winRate: 1.00, rate: 0.70 }
     ]
   },
-  history: []
+  history: [
+    {
+      id: "S001",
+      ep: "EP001",
+      date: "2026-09-04",
+      choices: [
+        { species: "ピッキー",   winRate: 1.00, rate: 0.78 },
+        { species: "スライム",   winRate: 1.00, rate: 0.75 },
+        { species: "アントベア", winRate: 1.00, rate: 0.66 }
+      ],
+      picked: "アントベア",
+      action: "スカウト",
+      rate: 0.66,
+      meat: [],
+      finalRate: 0.66,
+      tries: 1,
+      result: "成功",
+      monId: "M002",
+      note: "1回目の抽選: 乱数0.4176 ＜ 0.66 で成功（乱数は引き直しなし・そのまま記録）。最終判断は制作者。"
+    }
+  ]
 };

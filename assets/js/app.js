@@ -290,6 +290,25 @@
     const m = MONSTERS.find(x => x.species === name || x.name === name);
     return (m && m.img) || ('assets/mon/' + name + '.png');
   };
+  // 種族の個別画像が無いときに使う系統画像（assets/mon/fam_*.png と対応）
+  const FAM_IMG = {
+    'スライム系': 'スライム', 'ドラゴン系': 'ドラゴン', '自然系': 'しぜん',
+    '魔獣系': 'けもの', '物質系': 'ぶっしつ', '悪魔系': 'あくま',
+    'ゾンビ系': 'ゾンビ', '？？？系': '？？？'
+  };
+  const famImg = (name) => {
+    const t = teriByName(name);
+    const f = t && FAM_IMG[t.f];
+    return f ? ('assets/mon/fam_' + f + '.png') : '';
+  };
+  // 種族画像の <img> タグ。個別画像 → 系統画像 → 非表示 の順でフォールバック
+  const monImgTag = (name, cls) => {
+    const src = monImg(name);
+    if (!src) return '';
+    const fb = famImg(name);
+    const oe = fb ? `this.onerror=null;this.src='${esc(fb)}'` : `this.style.display='none'`;
+    return `<img class="${esc(cls == null ? 'pic' : cls)}" src="${esc(src)}" alt="${esc(name)}" loading="lazy" onerror="${oe}">`;
+  };
 
   // ---------- アイテム（ショート動画の合計再生数でもらえる） ----------
   const viewItems = () => SITE.viewItems || { tiers: [], useNotes: {} };
@@ -499,7 +518,6 @@
         <div class="row small">
           <span class="fam ${esc(m.family)}">${esc(m.family)}</span>
           <span class="rank ${esc(m.rank)}">${esc(m.rank)}</span>
-          <span class="muted">${esc(m.gender || '-')}</span>
         </div>
         <div class="foot small muted">${esc(m.species)}</div>
       </div>
@@ -537,13 +555,12 @@
   // ---------- ヘッダー / フッター ----------
   const NAV = [
     ['index.html', 'ホーム'],
-    ['story.html', 'ぼうけんの記録'],
-    ['monsters.html', 'モンスター牧場'],
+    ['story.html', '物語'],
+    ['monsters.html', '牧場'],
     ['skills.html', 'スキル'],
     ['tree.html', '家系図'],
-    ['breed.html', '配合表と応募'],
-    ['names.html', '名前の募集'],
-    ['scout.html', '次に戦う相手'],
+    ['breed.html', '配合'],
+    ['scout.html', '次の相手'],
     ['items.html', 'アイテム'],
     ['goods.html', 'グッズ'],
     ['rules.html', 'ルール']
@@ -661,7 +678,7 @@
     partySize, partyMons, benchMons, hospitalMons, retiredMons, inHospital,
     naming, openNameCalls, forms, formUrl,
     polls, pollOf, voteMapHtml, voteTypesOf, hasVote,
-    scoutCfg, scoutNow, meatList, scoutHistory, pct, monImg,
+    scoutCfg, scoutNow, meatList, scoutHistory, pct, monImg, famImg, monImgTag,
     viewItems, totalViews, itemTiers, nextItemTier, itemBag, itemTotal, fmtViews, tierLadderHtml,
     teriOf, teriByName, teriSpecial, teriSpecial4, teri4Recipes, teriGeneral, breedResult,
     dexOf, dexByName, skillInfo, skillsOf, allSkills,

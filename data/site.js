@@ -76,7 +76,7 @@ window.DB_SITE = {
    * ※ パーティの3体は投票項目ではない。制作者が決める（rules.partyNote 参照）。 */
   polls: [
     /* icon は assets/js/app.js の ICONS に登録した線画の名前。絵文字は使わない。 */
-    { key: "name",   icon: "pen",    what: "モンスターの名前", where: "youtube", note: "動画のコメント欄で受け付けます。いいねの多い中から制作者が選びます。", url: "names.html" },
+    { key: "name",   icon: "pen",    what: "モンスターの名前", where: "youtube", note: "動画のコメント欄で受け付けます。いいねの多い中から制作者が選びます。", url: "" },
     { key: "battle", icon: "battle", what: "次に戦う相手",     where: "youtube", note: "固定コメントの返信6件（3体 × たたかう／スカウト）に、やりたい1件へいいねを押してください。", url: "scout.html" },
     { key: "breed",  icon: "breed",  what: "配合の組み合わせ", where: "web",     note: "このサイトで配合表を確かめてから、応募フォームで送ります。", url: "breed.html" },
     { key: "skill",  icon: "skill",  what: "継承するスキル",   where: "web",     note: "配合で継承候補が2つを超えたときだけ実施します。応募フォームで送ります。", url: "skills.html" }
