@@ -17,21 +17,21 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
 </head>
 <body>
 <div class="wrap" id="main"></div>
 
-<script src="data/site.js?v=20260904141031"></script>
-<script src="data/monsters.js?v=20260904141031"></script>
-<script src="data/teri.js?v=20260904141031"></script>
-<script src="data/mondex.js?v=20260904141031"></script>
-<script src="data/skills.js?v=20260904141031"></script>
-<script src="data/episodes.js?v=20260904141031"></script>
-<script src="data/goods.js?v=20260904141031"></script>
-<script src="data/news.js?v=20260904141031"></script>
-<script src="data/story.js?v=20260904141031"></script>
-<script src="assets/js/app.js?v=20260904141031"></script>
+<script src="data/site.js?v=20260905120546"></script>
+<script src="data/monsters.js?v=20260905120546"></script>
+<script src="data/teri.js?v=20260905120546"></script>
+<script src="data/mondex.js?v=20260905120546"></script>
+<script src="data/skills.js?v=20260905120546"></script>
+<script src="data/episodes.js?v=20260905120546"></script>
+<script src="data/goods.js?v=20260905120546"></script>
+<script src="data/news.js?v=20260905120546"></script>
+<script src="data/story.js?v=20260905120546"></script>
+<script src="assets/js/app.js?v=20260905120546"></script>
 <script>
 function pageInit(){
   var esc=App.esc, S=App.SITE;
@@ -55,14 +55,37 @@ function pageInit(){
 
   // 種族図鑑（枠・耐性・限界値）と、その種族が持つスキル
   var dex=App.dexOf(m), dexSkills=App.skillsOf(m);
-  // 覚える特技を必要SPの少ない順にならべる
+  // スキルポイント＝自分のレベル＋配合ボーナス（配合1回で+6。2つのスキルどちらにも適用）
+  var spCfg=S.skillPoint||{};
+  var mySp=App.spOf(m), breedCnt=App.breedCountOf(m), breedSp=breedCnt*(spCfg.breedBonus||0);
+  // 覚える特技を必要SPの少ない順にならべ、いまのSPで覚えているところまでを光らせる
   function techsHtml(techs){
     if(!techs||!techs.length) return '<div class="empty">覚える特技のデータがありません。</div>';
-    return '<div class="techs">'+techs.slice().sort(function(a,b){return (a.sp||0)-(b.sp||0)}).map(function(t){
-      return '<div class="tech"><span class="sp">'+esc(t.sp||0)+'</span>'+
-        '<span class="nm">'+esc(t.t)+'</span>'+
+    return '<div class="techs mine">'+techs.slice().sort(function(a,b){return (a.sp||0)-(b.sp||0)}).map(function(t){
+      var on=(t.sp||0)<=mySp;
+      return '<div class="tech'+(on?' on':'')+'"><span class="sp">'+esc(t.sp||0)+'</span>'+
+        '<span class="nm">'+esc(t.t)+(on?'<span class="got">習得ずみ</span>':'')+'</span>'+
         (t.e?'<span class="ef">'+esc(t.e)+'</span>':'')+'</div>';
     }).join('')+'</div>';
+  }
+  // スキル1列ぶんの「ここまで覚えている」表示（習得数・進捗バー・つぎに覚える特技）
+  function skillProgressHtml(s){
+    var sorted=s.techs.slice().sort(function(a,b){return (a.sp||0)-(b.sp||0)});
+    var learned=sorted.filter(function(t){return (t.sp||0)<=mySp}).length;
+    var next=sorted.filter(function(t){return (t.sp||0)>mySp})[0];
+    var maxSp=sorted.reduce(function(n,t){return Math.max(n,t.sp||0)},0);
+    var pct=maxSp?Math.min(100,Math.round(Math.min(mySp,maxSp)/maxSp*100)):0;
+    return '<div class="row" style="justify-content:space-between;align-items:baseline">'+
+        '<b class="dot" style="font-size:19px">'+esc(s.name)+'</b>'+
+        '<a class="small" href="skills.html?s='+encodeURIComponent(s.name)+'">くわしく →</a>'+
+      '</div>'+
+      '<div class="row" style="gap:10px;margin:6px 0 4px;align-items:center">'+
+        '<span class="small"><b style="color:var(--gold)">'+learned+'</b>／'+sorted.length+'個 習得</span>'+
+        '<div class="bar" style="flex:1"><i style="width:'+pct+'%"></i></div>'+
+      '</div>'+
+      '<p class="small muted" style="margin:0 0 8px">'+
+        (next?'つぎはSP'+esc(next.sp||0)+'で「'+esc(next.t)+'」を覚えます。':(sorted.length?'このスキルの特技はすべて覚えました。':''))+'</p>'+
+      techsHtml(s.techs);
   }
 
   function nodeLink(x,label){
@@ -125,16 +148,16 @@ function pageInit(){
       '</dl>'+
     '</div>'+
     '<div class="panel"><h2 class="sec">スキル</h2>'+
+      '<div class="row" style="gap:10px;align-items:baseline">'+
+        '<b class="dot" style="color:var(--gold);font-size:18px">スキルポイント '+mySp+'</b>'+
+      '</div>'+
+      '<p class="small muted" style="margin:4px 0 12px">'+
+        'レベルぶん '+esc(m.level||0)+
+        (breedSp?' ＋ 配合ボーナス '+breedSp+'（配合'+breedCnt+'回 × +'+esc(spCfg.breedBonus||0)+'）':'')+
+        '。自分のレベル＝SPで、レベルが上がると自動で加算されます。'+
+        (dexSkills.length>1?'SPは2つのスキルどちらにも同じだけ適用されます。':'')+'</p>'+
       (dexSkills.length
-        ? dexSkills.map(function(s){
-            return '<div class="row" style="justify-content:space-between;align-items:baseline">'+
-                '<b class="dot" style="font-size:19px">'+esc(s.name)+'</b>'+
-                '<a class="small" href="skills.html?s='+encodeURIComponent(s.name)+'">くわしく →</a>'+
-              '</div>'+
-              '<p class="small muted" style="margin:4px 0 10px">'+
-                esc(m.species)+' はこのスキルを持っています。SPをためると上から順に'+s.techs.length+'個の特技を覚えます。</p>'+
-              techsHtml(s.techs);
-          }).join('')
+        ? dexSkills.map(skillProgressHtml).join('')
         : ((m.skills||[]).length
           ? '<div class="grid" style="gap:8px">'+(m.skills||[]).map(function(s){
               return '<div class="skill"><b>'+esc(s.name)+'</b><div class="small muted">'+esc(s.desc||'')+'</div></div>';

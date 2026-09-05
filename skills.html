@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
 </head>
 <body>
 <div class="wrap">
@@ -26,7 +26,7 @@
   <h1 class="page">スキル図鑑</h1>
   <p class="lead">
     モンスターが覚える<b>スキル</b>の一覧です。スキルにはそれぞれ覚える<b>特技</b>があり、
-    バトルでためた<b>SP</b>をふりわけると、必要SPの少ないものから順番に覚えます。
+    <b>自分のレベル＝SP</b>として自動でたまり（配合1回ごとに+6）、必要SPの少ないものから順番に覚えます。
   </p>
 
   <div class="panel" style="margin-bottom:16px">
@@ -56,16 +56,16 @@
 
 </div>
 
-<script src="data/site.js?v=20260904141031"></script>
-<script src="data/monsters.js?v=20260904141031"></script>
-<script src="data/teri.js?v=20260904141031"></script>
-<script src="data/mondex.js?v=20260904141031"></script>
-<script src="data/skills.js?v=20260904141031"></script>
-<script src="data/episodes.js?v=20260904141031"></script>
-<script src="data/goods.js?v=20260904141031"></script>
-<script src="data/news.js?v=20260904141031"></script>
-<script src="data/story.js?v=20260904141031"></script>
-<script src="assets/js/app.js?v=20260904141031"></script>
+<script src="data/site.js?v=20260905120546"></script>
+<script src="data/monsters.js?v=20260905120546"></script>
+<script src="data/teri.js?v=20260905120546"></script>
+<script src="data/mondex.js?v=20260905120546"></script>
+<script src="data/skills.js?v=20260905120546"></script>
+<script src="data/episodes.js?v=20260905120546"></script>
+<script src="data/goods.js?v=20260905120546"></script>
+<script src="data/news.js?v=20260905120546"></script>
+<script src="data/story.js?v=20260905120546"></script>
+<script src="assets/js/app.js?v=20260905120546"></script>
 <script>
 var ALL=[], PICK='';
 
@@ -154,10 +154,10 @@ function renderSp(){
       '<span class="cap">'+note+'</span></div>';
   }
   App.$('#spRules').innerHTML=
-    card('level','+'+sp.perAmount,'SP','レベル'+sp.perLevels+'ごと',sp.levelNote||'')+
+    card('level','Lv＝','SP','自分のレベル＝スキルポイント',sp.levelNote||'')+
     card('breed','+'+sp.breedBonus,'SP','配合1回につき',sp.breedNote||'')+
-    card('auto','自動','','ふりわけ',sp.autoNote||'');
-  App.$('#spConsult').innerHTML=sp.consultNote||'';
+    card('auto','自動','','加算（レベルが上がると反映）',sp.autoNote||'');
+  App.$('#spConsult').innerHTML=(sp.maxNote?sp.maxNote+' ':'')+(sp.consultNote||'');
 }
 function pageInit(){
   renderSp();

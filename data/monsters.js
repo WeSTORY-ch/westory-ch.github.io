@@ -45,18 +45,18 @@ window.DB_MONSTERS = [
     parents: null, breed: null, birthEp: "EP001",
     skills: [{ name: "メラ", desc: "敵1体にメラ系の呪文ダメージ（小）を与える" }],
     traits: ["スモールボディ"], skillLine: "スラフォース",
-    episodes: ["EP001"], tags: ["スライム", "最初の仲間"],
+    episodes: ["EP001", "EP003"], tags: ["スライム", "最初の仲間"],
     party: 1, status: "現役",
     note: "最初の仲間モンスター。名前は1話コメント欄の応募から「スラぼう」に決定。"
   },
   {
-    id: "M002", name: "", species: "アントベア", family: "魔獣系", rank: "F",
+    id: "M002", name: "アントン", species: "アントベア", family: "魔獣系", rank: "F",
     idx: 18, size: "S", level: 1, emoji: "🐻", img: "assets/mon/アントベア.png",
     parents: null, breed: null, birthEp: "EP001",
     skills: [{ name: "ハートブレイク", desc: "敵1体を攻撃し、たまにマインド効果で1ターン行動を封じる斬撃" }],
     traits: ["スタンダードボディ"], skillLine: "けもの道",
-    episodes: [], tags: ["アントベア", "スカウト"],
+    episodes: ["EP003"], tags: ["アントベア", "アントン", "スカウト"],
     party: 2, status: "現役",
-    note: "1話の6択の結果スカウトに決定し、抽選1回目（乱数0.4176）で成功。名前は未定（募集予定）。"
+    note: "1話の6択の結果スカウトに決定し、抽選1回目（乱数0.4176）で成功。名前は3話（告知板）で「アントン」に決定。"
   }
 ];

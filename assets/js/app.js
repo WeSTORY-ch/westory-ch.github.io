@@ -490,6 +490,16 @@
       type: m.breed || '配合', ep: m.birthEp || '', gen: generationOf(m)
     }))
     .sort((x, y) => String(x.ep).localeCompare(String(y.ep)));
+  // ---------- スキルポイント（2026-09-05改定：自分のレベル＝SP） ----------
+  //  レベル1につきSP1が自動で加算される。配合を1回行うごとに+6のボーナスが付き、
+  //  保有スキルが2つになっても、SPはどちらのスキルにも同じだけ適用される。
+  //  生まれた子はレベル1でも配合ボーナスぶん（+6）からのスタート。
+  //  配合の回数は家系のつながり（世代-1）から数える。数字は site.js の skillPoint が唯一の正解。
+  const breedCountOf = (m) => Math.max(0, generationOf(m) - 1);
+  const spOf = (m) => {
+    const c = SITE.skillPoint || {};
+    return ((m && m.level) || 0) * (c.perLevel || 1) + breedCountOf(m) * (c.breedBonus || 0);
+  };
   // ---------- 物語 ----------
   const getArc = (id) => (STORY.arcs || []).find(a => a.id === id) || null;
   const getEnemy = (id) => (STORY.enemies || []).find(e => e.id === id) || null;
@@ -682,7 +692,7 @@
     viewItems, totalViews, itemTiers, nextItemTier, itemBag, itemTotal, fmtViews, tierLadderHtml,
     teriOf, teriByName, teriSpecial, teriSpecial4, teri4Recipes, teriGeneral, breedResult,
     dexOf, dexByName, skillInfo, skillsOf, allSkills,
-    generationOf, maxGeneration, breedRecords,
+    generationOf, maxGeneration, breedRecords, breedCountOf, spOf,
     getArc, getEnemy, getScript,
     monsterCardHtml, goodsCardHtml, episodeCardHtml,
     renderChrome, adsOn, adSlotEl

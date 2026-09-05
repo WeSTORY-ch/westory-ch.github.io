@@ -335,6 +335,16 @@ a.badge:hover{border-color:var(--gold);color:var(--gold)}
 }
 .tech .nm{font-weight:700;color:var(--txt)}
 .tech .ef{grid-column:2;color:var(--muted);font-size:12.5px;line-height:1.55}
+/* モンスター詳細のスキル欄：いまのSP（レベル＋配合ボーナス）で覚えているところまでを光らせる */
+.techs.mine .tech{opacity:.5}
+.techs.mine .tech .sp{background:var(--line);color:var(--muted)}
+.techs.mine .tech.on{opacity:1;background:rgba(176,136,80,.10)}
+.techs.mine .tech.on .sp{background:var(--grad);color:var(--ink)}
+.techs.mine .tech.on .nm{color:var(--gold)}
+.techs.mine .got{
+  display:inline-block;font-size:10.5px;font-weight:800;color:var(--ink);
+  background:var(--grad);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:1.5px
+}
 .limits{display:grid;grid-template-columns:64px 1fr 52px;gap:7px 10px;align-items:center;margin:0}
 .limits .k{color:var(--muted);font-size:12.5px}
 .limits .v{text-align:right;font-weight:800;font-size:12.5px;color:var(--txt)}

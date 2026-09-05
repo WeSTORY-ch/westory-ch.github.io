@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
 </head>
 <body>
 <div class="wrap">
@@ -64,14 +64,14 @@
 
 </div>
 
-<script src="data/site.js?v=20260904141031"></script>
-<script src="data/monsters.js?v=20260904141031"></script>
-<script src="data/teri.js?v=20260904141031"></script>
-<script src="data/episodes.js?v=20260904141031"></script>
-<script src="data/goods.js?v=20260904141031"></script>
-<script src="data/news.js?v=20260904141031"></script>
-<script src="data/story.js?v=20260904141031"></script>
-<script src="assets/js/app.js?v=20260904141031"></script>
+<script src="data/site.js?v=20260905120546"></script>
+<script src="data/monsters.js?v=20260905120546"></script>
+<script src="data/teri.js?v=20260905120546"></script>
+<script src="data/episodes.js?v=20260905120546"></script>
+<script src="data/goods.js?v=20260905120546"></script>
+<script src="data/news.js?v=20260905120546"></script>
+<script src="data/story.js?v=20260905120546"></script>
+<script src="assets/js/app.js?v=20260905120546"></script>
 <script>
 function pageInit(){
   var S = App.STORY, esc = App.esc;
@@ -94,8 +94,10 @@ function pageInit(){
           '<li><b>戦闘に勝つ</b>と、モンスターのレベルが <b>+' + esc((App.SITE.rules||{}).levelPerWin || 4) + '</b>（負けた戦闘は上がりません）</li>' +
           '<li>配合は <b>レベル' + esc((App.SITE.rules||{}).breedMinLevel || 10) + '</b> から</li>' +
           '<li>スカウトの回もあれば、無い回もあります（結果は次の回で分かります）</li>' +
-          '<li>レベルが <b>' + esc((App.SITE.skillPoint||{}).perLevels || 5) + '</b> 上がるごとに、スキルポイントが <b>+' +
-            esc((App.SITE.skillPoint||{}).perAmount || 6) + '</b></li>' +
+          '<li><b>自分のレベル＝スキルポイント</b>（レベルが1上がるとSPも +1、自動で加算）</li>' +
+          '<li>配合1回ごとにスキルポイント <b>+' + esc((App.SITE.skillPoint||{}).breedBonus || 6) +
+            '</b>（2つのスキルどちらにも適用。生まれた子はレベル1でも+' +
+            esc((App.SITE.skillPoint||{}).breedBonus || 6) + 'スタート）</li>' +
           '<li>負けても物語は続きます</li>' +
         '</ul>' +
       '</div>' +

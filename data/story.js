@@ -122,6 +122,19 @@ window.DB_STORY = {
    *          scoutPct, nextChoices:[], summary }
    */
   scripts: {
+    EP003: {
+      arcId: "",
+      title: "テリーの物語 3話 告知板",
+      logline: "",
+      recap: "",
+      voteReflect: "今回の募集はありません。スラぼう・アントベア・アントンの決定をお知らせする告知板の回です。",
+      breed: null,
+      battleEnemyId: "",
+      outcome: "",   // 告知板の回。戦闘なし
+      scoutPct: 0,
+      nextChoices: [],
+      summary: "告知板の回。①スライムの名前は「スラぼう」②スカウト先は「アントベア」③仲間になった場合の名前は「アントン」に決定しました。今回の募集はありません。"
+    },
     EP002: {
       arcId: "",
       title: "テリーの物語 2話",

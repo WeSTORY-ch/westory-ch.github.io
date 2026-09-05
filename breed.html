@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260904141031">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
 </head>
 <body>
 <div class="wrap">
@@ -68,6 +68,7 @@
         <li><b>配合先は通常のゲームとは異なる場合があります</b>。演出や物語の都合で調整することがあります。</li>
         <li>配合すると<b>親はいなくなります</b>。<a href="tree.html">家系図</a>には記録として残ります。</li>
         <li><b>スキルは1体につき2つまで</b>。継承候補が2つを超えたときだけ、どれを残すかを応募フォームで受け付けます。</li>
+        <li id="spBonusLi"></li>
         <li>生まれた子の名前は<b>動画のコメント欄</b>で募集します。</li>
         <li><b>人生縛り</b>…敗北するとパーティから<b>ランダムで1体</b>が<span id="hospLabel"></span>へ。復帰できるのは<b>せかいじゅの葉</b>を使ったときだけです。<a href="rules.html#hospital">くわしく</a></li>
       </ul>
@@ -93,14 +94,14 @@
 
 </div>
 
-<script src="data/site.js?v=20260904141031"></script>
-<script src="data/monsters.js?v=20260904141031"></script>
-<script src="data/teri.js?v=20260904141031"></script>
-<script src="data/episodes.js?v=20260904141031"></script>
-<script src="data/goods.js?v=20260904141031"></script>
-<script src="data/news.js?v=20260904141031"></script>
-<script src="data/story.js?v=20260904141031"></script>
-<script src="assets/js/app.js?v=20260904141031"></script>
+<script src="data/site.js?v=20260905120546"></script>
+<script src="data/monsters.js?v=20260905120546"></script>
+<script src="data/teri.js?v=20260905120546"></script>
+<script src="data/episodes.js?v=20260905120546"></script>
+<script src="data/goods.js?v=20260905120546"></script>
+<script src="data/news.js?v=20260905120546"></script>
+<script src="data/story.js?v=20260905120546"></script>
+<script src="assets/js/app.js?v=20260905120546"></script>
 <script>
 var fatherId='', motherId='';
 var breedEp=null;
@@ -244,6 +245,7 @@ function pageInit(){
   App.$('#minLv').textContent=S.rules.breedMinLevel;
   App.$('#pSize').textContent=App.partySize();
   App.$('#hospLabel').textContent=(S.hospital&&S.hospital.label)||'モンスター病院';
+  App.$('#spBonusLi').innerHTML=(S.skillPoint||{}).breedNote||'';
   App.$('#pollNotice').textContent=S.pollNotice||'';
 
   breedEp=App.EPISODES.filter(function(e){return App.hasVote(e,'breed')&&e.voteStatus==='受付中'})
