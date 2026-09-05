@@ -18,16 +18,22 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905131743">
 </head>
 <body>
 <div class="wrap">
 
   <h1 class="page">配合表と応募</h1>
-  <p class="lead">
-    <b style="color:var(--gold)">仲間にしたモンスターの配合表</b>です。親①と親②を選ぶと、生まれる子の種族がその場で分かります。モンスターに性別はなく、どの子とも配合できます。
-    見たい組み合わせが決まったら、<b>応募フォーム</b>から送ってください。
+  <p class="lead" style="margin-bottom:8px">
+    <b style="color:var(--gold)">仲間にしたモンスターの配合表</b>です。親①と親②を選ぶと、生まれる子の種族が分かります。
   </p>
+  <!-- ★2026-09-05 長い説明はたたむ（ルールページはたたまない） -->
+  <details class="fold">
+    <summary>このページの使いかた</summary>
+    <div class="fold-body">
+      <p>モンスターに性別はなく、どの子とも配合できます。見たい組み合わせが決まったら、<b>応募フォーム</b>から送ってください。</p>
+    </div>
+  </details>
 
   <!-- 今回の配合募集 -->
   <div class="panel" id="joinPanel" style="margin-bottom:18px"></div>
@@ -62,6 +68,10 @@
         <div class="stat"><span class="ic" data-ic="breed"></span><span><span class="v">Lv<span id="minLv"></span><small>〜</small></span><span class="k">配合できるレベル</span></span></div>
         <div class="stat"><span class="ic" data-ic="battle"></span><span><span class="v"><span id="pSize"></span><small>体</small></span><span class="k">動画に出るパーティ</span></span></div>
       </div>
+      <!-- ★2026-09-05 一番上の図（3つの数字）は出したまま、細かい説明だけたたむ -->
+      <details class="fold" style="margin-bottom:0">
+      <summary>ルールのくわしい説明</summary>
+      <div class="fold-body">
       <ul style="margin:0;padding-left:20px">
         <li>生まれる子は『テリーのワンダーランド3D』の<b>実際の配合データ</b>どおり。親①と親②を選ぶとその場で種族名が出ます。モンスターに性別はないので、どの子同士でも配合できます。</li>
         <li><b>特殊配合</b>＝種族は1つに確定。<b>一般配合</b>＝候補が複数なら、どれにするかも応募フォームで選べます。</li>
@@ -73,6 +83,8 @@
         <li><b>人生縛り</b>…敗北するとパーティから<b>ランダムで1体</b>が<span id="hospLabel"></span>へ。復帰できるのは<b>せかいじゅの葉</b>を使ったときだけです。<a href="rules.html#hospital">くわしく</a></li>
       </ul>
       <p class="small muted" style="margin:10px 0 0" id="pollNotice"></p>
+      </div>
+      </details>
     </div>
   </section>
 
@@ -94,14 +106,17 @@
 
 </div>
 
-<script src="data/site.js?v=20260905120546"></script>
-<script src="data/monsters.js?v=20260905120546"></script>
-<script src="data/teri.js?v=20260905120546"></script>
-<script src="data/episodes.js?v=20260905120546"></script>
-<script src="data/goods.js?v=20260905120546"></script>
-<script src="data/news.js?v=20260905120546"></script>
-<script src="data/story.js?v=20260905120546"></script>
-<script src="assets/js/app.js?v=20260905120546"></script>
+<script src="data/site.js?v=20260905131743"></script>
+<script src="data/monsters.js?v=20260905131743"></script>
+<script src="data/teri.js?v=20260905131743"></script>
+<!-- ★2026-09-05 追加: 生まれる候補の「保有スキル」を出すのに種族図鑑とスキル表が要る -->
+<script src="data/mondex.js?v=20260905131743"></script>
+<script src="data/skills.js?v=20260905131743"></script>
+<script src="data/episodes.js?v=20260905131743"></script>
+<script src="data/goods.js?v=20260905131743"></script>
+<script src="data/news.js?v=20260905131743"></script>
+<script src="data/story.js?v=20260905131743"></script>
+<script src="assets/js/app.js?v=20260905131743"></script>
 <script>
 var fatherId='', motherId='';
 var breedEp=null;
@@ -139,30 +154,100 @@ function pickCandidates(){
 }
 
 // 生まれる子どもの表示（テリーのワンダーランド3D の実データ）
+// ★2026-09-05 画像を大きくして横並びのカードにし、押すと保有スキルが開くようにした。
+var openChild='';   // いま開いている候補の種族名
+
+// 生まれた子が「レベル1のとき」に持っているスキルポイント。
+// site.js の skillPoint（自分のレベル＝SP／配合1回ごとに+breedBonus）どおりに計算する。
+// 配合回数＝生まれる子の世代-1＝max(親①の世代, 親②の世代)。
+function childStartSp(f,mo){
+  var c=App.SITE.skillPoint||{};
+  var breeds=Math.max(App.generationOf(f),App.generationOf(mo));
+  return 1*(c.perLevel||1)+breeds*(c.breedBonus||0);
+}
+
+function childCard(t,kind){
+  var esc=App.esc;
+  var dex=App.dexByName(t.n)||{};
+  var sk=(dex.skills||[]);
+  return '<div class="childc'+(kind==='sp'?' sp':'')+(openChild===t.n?' on':'')+
+      '" data-child="'+esc(t.n)+'" role="button" tabindex="0">'+
+    '<span class="pic">'+App.monImgTag(t.n,'')+'</span>'+
+    '<span class="nm">'+esc(t.n)+'</span>'+
+    '<span class="tags"><span class="fam '+esc(t.f)+'">'+esc(t.f)+'</span>'+
+      '<span class="rank '+esc(t.r)+'">'+esc(t.r)+'</span>'+
+      '<span class="badge sm">位階'+esc(t.i)+'</span>'+
+      (t.via?'<span class="via">'+esc(t.via.join('／'))+'</span>':'')+'</span>'+
+    '<span class="skl">'+(sk.length?esc(sk.join('・')):'<span class="muted">スキル未登録</span>')+'</span>'+
+    '<span class="open">'+(openChild===t.n?'▲ スキルを閉じる':'▼ 保有スキルを見る')+'</span>'+
+  '</div>';
+}
+
+// 押された候補の保有スキル（テリーのワンダーランド3D の実データ）を開く。
+// 生まれた時点の SP と照らして「もう覚えている特技」に印を付ける。
+function childSkillHtml(name,startSp){
+  var esc=App.esc, dex=App.dexByName(name);
+  if(!dex) return '<div class="panel soft child-skill"><div class="empty">'+esc(name)+' の種族データがありません。</div></div>';
+  var skills=(dex.skills||[]).map(function(n){
+    return Object.assign({name:n},App.skillInfo(n)||{techs:[],mons:[]});
+  });
+  if(!skills.length){
+    return '<div class="panel soft child-skill">'+
+      '<h4 style="margin:0">'+esc(name)+' の保有スキル</h4>'+
+      '<p class="small muted" style="margin:6px 0 0">この種族のスキルは登録されていません。</p></div>';
+  }
+  var body=skills.map(function(s){
+    var sorted=(s.techs||[]).slice().sort(function(a,b){return (a.sp||0)-(b.sp||0)});
+    var learned=sorted.filter(function(t){return (t.sp||0)<=startSp}).length;
+    var maxSp=sorted.reduce(function(n,t){return Math.max(n,t.sp||0)},0);
+    var pct=maxSp?Math.min(100,Math.round(Math.min(startSp,maxSp)/maxSp*100)):0;
+    var next=sorted.filter(function(t){return (t.sp||0)>startSp})[0];
+    return '<div style="margin-top:10px">'+
+      '<div class="row" style="justify-content:space-between;align-items:baseline">'+
+        '<b class="dot" style="font-size:16px">'+esc(s.name)+'</b>'+
+        '<a class="small" href="skills.html?s='+encodeURIComponent(s.name)+'">くわしく →</a>'+
+      '</div>'+
+      '<div class="row" style="gap:10px;margin:6px 0 4px;align-items:center">'+
+        '<span class="small">生まれた時点で <b style="color:var(--gold)">'+learned+'</b>／'+sorted.length+'個</span>'+
+        '<div class="bar" style="flex:1"><i style="width:'+pct+'%"></i></div>'+
+      '</div>'+
+      '<p class="small muted" style="margin:0 0 6px">'+
+        (next?'つぎはSP'+esc(next.sp||0)+'で「'+esc(next.t)+'」。':'この時点ですべて覚えています。')+'</p>'+
+      (sorted.length
+        ? '<div class="techs mine">'+sorted.map(function(t){
+            var on=(t.sp||0)<=startSp;
+            return '<div class="tech'+(on?' on':'')+'"><span class="sp">'+esc(t.sp||0)+'</span>'+
+              '<span class="nm">'+esc(t.t)+(on?'<span class="got">習得ずみ</span>':'')+'</span>'+
+              (t.e?'<span class="ef">'+esc(t.e)+'</span>':'')+'</div>';
+          }).join('')+'</div>'
+        : '<div class="empty">覚える特技のデータがありません。</div>')+
+    '</div>';
+  }).join('');
+  return '<div class="panel soft child-skill">'+
+    '<div class="spread"><h4 style="margin:0">'+esc(name)+' の保有スキル</h4>'+
+      '<span class="badge gold">生まれた時点 SP '+esc(startSp)+'</span></div>'+
+    '<p class="small muted" style="margin:6px 0 0">自分のレベル＝SP。レベル1でも配合ぶんの'+
+      '＋'+esc((App.SITE.skillPoint||{}).breedBonus||0)+'が最初から入ります'+
+      ((App.SITE.skillPoint||{}).maxSkills>1?'（SPは2つのスキルどちらにも同じだけ効きます）':'')+'。</p>'+
+    body+'</div>';
+}
+
 function childHtml(f,mo){
   var esc=App.esc, r=App.breedResult(f,mo);
   if(!r.ok) return '<p class="small muted" style="margin:0">この2体は配合データに登録がありません。</p>';
-  function chip(t,kind){
-    // 種族名から直接画像を引く（仲間になっていない種族でも必ず画像を出す。無ければ系統画像）
-    return '<span class="child-chip'+(kind==='sp'?' sp':'')+'">'+
-      '<span class="mon-ico">'+App.monImgTag(t.n,'')+'</span>'+
-      '<b>'+esc(t.n)+'</b><span class="fam '+esc(t.f)+'">'+esc(t.f)+'</span>'+
-      '<span class="rank '+esc(t.r)+'">'+esc(t.r)+'</span>'+
-      '<span class="muted small">位階'+esc(t.i)+'</span>'+
-      (t.via?'<span class="via">'+esc(t.via.join('／'))+'</span>':'')+'</span>';
+  var found=false, h='';
+  function box(badge,note,list,kind){
+    if(!list.length) return '';
+    list.forEach(function(t){ if(t.n===openChild) found=true; });
+    return '<div class="child-box"><div class="row small">'+badge+
+      '<span class="muted">'+esc(note)+'</span></div>'+
+      '<div class="childs">'+list.map(function(t){return childCard(t,kind)}).join('')+'</div></div>';
   }
-  var h='';
-  if(r.special4.length){
-    // 4体配合＝親①と親②それぞれの親（＝この子の祖父母4体）まで指定される、いちばん強い配合。
-    h+='<div class="child-box"><div class="row small"><span class="badge gold">4体配合</span>'+
-      '<span class="muted">親①と親②の親（祖父母4体）がそろっているので生まれます</span></div>'+
-      '<div class="row" style="margin-top:6px">'+r.special4.map(function(t){return chip(t,'sp')}).join('')+'</div></div>';
-  }
-  if(r.special.length){
-    h+='<div class="child-box"><div class="row small"><span class="badge gold">特殊配合</span>'+
-      '<span class="muted">この組み合わせでしか生まれない種族です</span></div>'+
-      '<div class="row" style="margin-top:6px">'+r.special.map(function(t){return chip(t,'sp')}).join('')+'</div></div>';
-  }
+  // 4体配合＝親①と親②それぞれの親（＝この子の祖父母4体）まで指定される、いちばん強い配合。
+  h+=box('<span class="badge gold">4体配合</span>',
+         '親①と親②の親（祖父母4体）がそろっているので生まれます',r.special4,'sp');
+  h+=box('<span class="badge gold">特殊配合</span>',
+         'この組み合わせでしか生まれない種族です',r.special,'sp');
   if(r.general.length){
     // 一般配合は「親①の系統／親②の系統／系統配合表」の3枠から候補が出る。
     // 両親が同じ系統だと3枠が同じ系統に潰れるので候補が1体になる（原作どおりの挙動）。
@@ -170,11 +255,11 @@ function childHtml(f,mo){
     var note=r.general.length>1 ? 'この中から選べます（投票で決定）'
       : (same ? '親①と親②が同じ「'+r.a.f+'」なので、3つの枠がすべて同じ系統に重なり候補は1体です'
               : '候補は1体です');
-    h+='<div class="child-box"><div class="row small"><span class="badge cyan">一般配合（位階配合）</span>'+
-      '<span class="muted">'+esc(note)+'</span></div>'+
-      '<div class="row" style="margin-top:6px">'+r.general.map(function(t){return chip(t)}).join('')+'</div></div>';
+    h+=box('<span class="badge cyan">一般配合（位階配合）</span>',note,r.general,'');
   }
-  if(!h) h='<p class="small muted" style="margin:0">この組み合わせから生まれる種族は見つかりませんでした。</p>';
+  if(!h) return '<p class="small muted" style="margin:0">この組み合わせから生まれる種族は見つかりませんでした。</p>';
+  h+='<p class="small muted" style="margin:0 0 8px">カードを押すと、その種族が持っているスキルと覚える特技が開きます。</p>';
+  if(openChild&&found) h+=childSkillHtml(openChild,childStartSp(f,mo));
   return h;
 }
 function pickRow(m,role){
@@ -192,9 +277,31 @@ function pickRow(m,role){
 }
 function pick(id,role){
   if(role==='f') fatherId=id; else motherId=id;
+  openChild='';           // 親を変えたら開いていたスキル表示は閉じる
   render();
 }
-function clearPick(){ fatherId=''; motherId=''; render(); }
+function clearPick(){ fatherId=''; motherId=''; openChild=''; render(); }
+
+// 「生まれるモンスター」カードのクリック（あとから作られる要素なので委譲で受ける）
+function bindChildClick(){
+  var box=App.$('#result');
+  if(!box||box.dataset.bound) return;
+  box.dataset.bound='1';
+  box.addEventListener('click',function(ev){
+    var c=ev.target.closest('.childc');
+    if(!c) return;
+    openChild=(openChild===c.dataset.child)?'':c.dataset.child;
+    render();
+  });
+  box.addEventListener('keydown',function(ev){
+    if(ev.key!=='Enter'&&ev.key!==' ') return;
+    var c=ev.target.closest('.childc');
+    if(!c) return;
+    ev.preventDefault();
+    openChild=(openChild===c.dataset.child)?'':c.dataset.child;
+    render();
+  });
+}
 
 function slotHtml(m,role){
   if(!m) return '<p class="muted small" style="margin:0">下のリストから選択</p>';
@@ -216,12 +323,13 @@ function render(){
   if(f&&mo){
     App.$('#result').innerHTML =
       '<h3>'+App.icon('egg')+'この組み合わせから生まれる子</h3>'+
-      '<div class="row" style="gap:14px;align-items:center;margin:6px 0">'+
-        '<span class="mon-ico lg">'+App.monFace(f)+'</span><b>'+esc(f.name)+'</b>'+
-        '<span class="small muted">'+esc(f.species)+'</span>'+
+      // 親は「アイコン＋名前＋種族」を1かたまりにして、狭い画面では塊ごと折り返す
+      '<div class="parent-row">'+
+        '<span class="parent-one"><span class="mon-ico lg">'+App.monFace(f)+'</span>'+
+          '<b>'+esc(f.name)+'</b><span class="sp">'+esc(f.species)+'</span></span>'+
         '<span class="dot" style="color:var(--gold);font-size:22px">×</span>'+
-        '<span class="mon-ico lg">'+App.monFace(mo)+'</span><b>'+esc(mo.name)+'</b>'+
-        '<span class="small muted">'+esc(mo.species)+'</span>'+
+        '<span class="parent-one"><span class="mon-ico lg">'+App.monFace(mo)+'</span>'+
+          '<b>'+esc(mo.name)+'</b><span class="sp">'+esc(mo.species)+'</span></span>'+
       '</div>'+
       '<h4 style="margin:10px 0 6px">生まれるモンスター</h4>'+
       childHtml(f,mo)+
@@ -237,6 +345,7 @@ function render(){
   } else {
     App.$('#result').innerHTML='<h3>'+App.icon('egg')+'生まれるモンスター</h3><p class="small muted" style="margin:0">親①と親②を選ぶと、生まれる種族が表示されます。</p>';
   }
+  bindChildClick();
 }
 
 function pageInit(){

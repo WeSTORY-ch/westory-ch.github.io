@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905131743">
 </head>
 <body>
 
@@ -63,7 +63,8 @@
         <a class="btn ghost sm" href="tree.html">家系図 →</a>
       </span>
     </div>
-    <div class="grid g4" id="partyList"></div>
+    <!-- ★2026-09-05 パーティは3体固定＝常に3列（party3） -->
+    <div class="grid g4 party3" id="partyList"></div>
   </section>
 
   <!-- エピソード -->
@@ -107,15 +108,15 @@
 
 </div>
 
-<script src="data/site.js?v=20260905120546"></script>
-<script src="data/monsters.js?v=20260905120546"></script>
-<script src="data/teri.js?v=20260905120546"></script>
-<script src="data/episodes.js?v=20260905120546"></script>
-<script src="data/scout.js?v=20260905120546"></script>
-<script src="data/goods.js?v=20260905120546"></script>
-<script src="data/news.js?v=20260905120546"></script>
-<script src="data/story.js?v=20260905120546"></script>
-<script src="assets/js/app.js?v=20260905120546"></script>
+<script src="data/site.js?v=20260905131743"></script>
+<script src="data/monsters.js?v=20260905131743"></script>
+<script src="data/teri.js?v=20260905131743"></script>
+<script src="data/episodes.js?v=20260905131743"></script>
+<script src="data/scout.js?v=20260905131743"></script>
+<script src="data/goods.js?v=20260905131743"></script>
+<script src="data/news.js?v=20260905131743"></script>
+<script src="data/story.js?v=20260905131743"></script>
+<script src="assets/js/app.js?v=20260905131743"></script>
 <script>
 // 募集の種類ごとに「どこで決めるか」（site.js の polls と対応）
 var VOTE_TYPE = {
@@ -219,10 +220,8 @@ function pageInit(){
     ? '<div class="grid g2">' + boxes.join('') + '</div>'
     : '<div class="empty">いま受付中の募集はありません。次の動画の公開をお待ちください。</div>';
 
-  // パーティ
-  var party = App.partyMons();
-  App.$('#partyList').innerHTML = (party.length?party:App.MONSTERS.slice(0,4))
-    .map(App.monsterCardHtml).join('') || '<div class="empty" style="grid-column:1/-1">まだ仲間がいません。</div>';
+  // パーティ（★2026-09-05 常に3枠。足りないぶんは「空き」で埋める）
+  App.$('#partyList').innerHTML = App.partySlotsHtml();
 
   // エピソード（新着順）
   App.$('#epStrip').innerHTML = eps.slice(0,8).map(App.episodeCardHtml).join('')
@@ -231,15 +230,21 @@ function pageInit(){
   // あそびかた（site.js の polls が唯一の正解）
   App.$('#voteMap').innerHTML = App.voteMapHtml();
 
-  // お知らせ
+  // お知らせ（★2026-09-05 タイトルだけ出して、本文は押したら開くプルダウン）
+  var NEWS_BADGE = {'募集':'live','決定':'green','ルール':'cyan','グッズ':'gold'};
   var news = App.NEWS.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')});
   App.$('#newsList').innerHTML = news.map(function(n){
     var nep = n.epId ? App.getEp(n.epId) : null;
-    return '<div class="tl-item"><div class="tl-date">'+esc(App.fmtDate(n.date))+'</div><div class="tl-body">'+
-      '<div class="row small" style="margin-bottom:2px"><span class="badge'+(n.type==='募集'?' live':'')+'">'+esc(n.type)+'</span></div>'+
-      '<h3>'+esc(n.title)+'</h3><p>'+esc(n.body)+'</p>'+
+    var bc  = NEWS_BADGE[n.type] ? ' '+NEWS_BADGE[n.type] : '';
+    return '<details class="tl-item nd"><summary>'+
+      '<span class="tl-date">'+esc(App.fmtDate(n.date))+'</span>'+
+      '<span class="ndh">'+
+        '<span class="row small"><span class="badge'+bc+'">'+esc(n.type)+'</span></span>'+
+        '<h3>'+esc(n.title)+'</h3>'+
+      '</span></summary>'+
+      '<div class="nd-body tl-body"><p>'+esc(n.body)+'</p>'+
       (nep?'<p style="margin-top:6px"><a class="btn sm" href="'+esc(App.ytWatch(nep))+'" target="_blank" rel="noopener">'+App.icon('play')+'対象の動画へ</a></p>':'')+
-      '</div></div>';
+      '</div></details>';
   }).join('') || '<div class="empty">まだお知らせはありません。</div>';
 
   // おすすめ

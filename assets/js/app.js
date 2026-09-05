@@ -533,6 +533,25 @@
       </div>
     </a>`;
   }
+  /* ★2026-09-05 パーティは常に partySize()（＝3）枠ぶん出す。
+     まだ埋まっていない枠は「空き」のダミーカードにする（リンクなし）。 */
+  function emptySlotCardHtml(n) {
+    return `<div class="card mcard slot" aria-hidden="true">
+      <div class="face"><span class="mk">＋</span></div>
+      <div class="body">
+        <p class="title">空き</p>
+        <div class="row small"><span class="badge">${n}体目</span></div>
+        <div class="foot small muted">まだ仲間がいません</div>
+      </div>
+    </div>`;
+  }
+  /** パーティ枠ぶんのHTML。実際の仲間 → 足りないぶんを「空き」で埋める。 */
+  function partySlotsHtml(list) {
+    const mons = (list || partyMons()).slice(0, partySize());
+    let html = mons.map(monsterCardHtml).join('');
+    for (let i = mons.length; i < partySize(); i++) html += emptySlotCardHtml(i + 1);
+    return html;
+  }
   function goodsCardHtml(g) {
     return `<div class="card gcard">
       <div class="face">${goodsFace(g)}</div>
@@ -694,7 +713,7 @@
     dexOf, dexByName, skillInfo, skillsOf, allSkills,
     generationOf, maxGeneration, breedRecords, breedCountOf, spOf,
     getArc, getEnemy, getScript,
-    monsterCardHtml, goodsCardHtml, episodeCardHtml,
+    monsterCardHtml, emptySlotCardHtml, partySlotsHtml, goodsCardHtml, episodeCardHtml,
     renderChrome, adsOn, adSlotEl
   };
 

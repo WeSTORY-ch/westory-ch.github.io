@@ -53,6 +53,9 @@ code{background:var(--line-soft);padding:1px 6px;border-radius:5px;font-size:12.
 .wrap{max-width:1040px;margin:0 auto;padding:0 18px}
 .section{margin:26px 0}
 .grid{display:grid;gap:12px}
+/* ★グリッドの子は既定 min-width:auto で「中身より小さくなれない」。
+   スマホで列がはみ出す原因になるので 0 にしておく（実測: skills.html 320px） */
+.grid > *{min-width:0}
 .g2{grid-template-columns:repeat(2,1fr)}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g4{grid-template-columns:repeat(4,1fr)}
@@ -190,9 +193,14 @@ svg.ic{width:1.15em;height:1.15em}
 .btn:disabled,.btn.off{opacity:.4;pointer-events:none}
 
 /* ---------- バッジ ---------- */
+/* ★2026-09-05 スマホ対応: white-space:nowrap をやめた。
+   実測(Chrome 320/390px)で「フィギュア・ぬいぐるみ」やお知らせの長文バッジが
+   カード枠・画面幅をはみ出していた（rules.html は横幅516pxまで伸びていた）。
+   短いバッジは元どおり1行のまま、入りきらないときだけ折り返す。 */
 .badge{
   display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;
-  background:var(--line-soft);color:#c9bda2;white-space:nowrap;border:1px solid transparent
+  background:var(--line-soft);color:#c9bda2;border:1px solid transparent;
+  max-width:100%;white-space:normal;overflow-wrap:anywhere
 }
 a.badge:hover{border-color:var(--gold);color:var(--gold)}
 .badge > *{color:inherit}
@@ -237,6 +245,45 @@ a.badge:hover{border-color:var(--gold);color:var(--gold)}
 .child-chip .mon-ico{width:32px;height:32px;margin-left:-4px}
 .child-chip .via{font-size:10.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:1px 7px}
 
+/* ★2026-09-05 「生まれるモンスター」＝画像を大きく横並び。押すとスキルが開く */
+/* ★2026-09-05(2) スマホでも必ず「横1列」。auto-fill だと 390px で2列に折り返して
+   いた（実測）ので、grid-auto-flow:column で1行に固定し、入りきらないときだけ
+   横スクロールに逃がす。 */
+.childs{
+  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(112px,1fr);
+  gap:10px;margin-top:8px;overflow-x:auto;padding-bottom:2px;overscroll-behavior-x:contain
+}
+.parent-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:6px 0}
+.parent-one{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.parent-one b{font-size:15px}
+.parent-one .sp{font-size:11.5px;color:var(--muted);overflow-wrap:anywhere}
+.childs > *{min-width:0}
+.childc{
+  display:flex;flex-direction:column;gap:6px;padding:9px 9px 11px;text-align:center;cursor:pointer;
+  border:1px solid var(--line);border-radius:14px;background:var(--card2);
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease
+}
+.childc:hover{border-color:rgba(210,167,94,.5);transform:translateY(-2px)}
+.childc .pic{
+  aspect-ratio:1/1;position:relative;overflow:hidden;border-radius:11px;
+  background:radial-gradient(65% 55% at 50% 62%,rgba(210,167,94,.20),transparent 70%),
+             linear-gradient(180deg,#211c13 0%,#14110c 100%)
+}
+.childc .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:7%}
+.childc .nm{font-weight:800;font-size:13.5px;color:var(--txt);line-height:1.35;overflow-wrap:anywhere}
+.childc .tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.childc .tags > *{font-size:10px;padding:1px 7px}
+.childc .via{
+  font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:1px 7px
+}
+.childc .skl{font-size:11px;color:var(--gold);font-weight:700;overflow-wrap:anywhere}
+.childc .open{font-size:10.5px;color:var(--muted)}
+.childc.sp{border-color:rgba(210,167,94,.5);background:var(--gold-soft)}
+.childc.on{border-color:var(--gold);box-shadow:0 0 0 1px rgba(210,167,94,.45) inset,0 6px 18px rgba(0,0,0,.35)}
+.childc.on .open{color:var(--gold)}
+.child-skill{margin-top:10px}
+
 /* ---------- カード ---------- */
 .card{
   background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
@@ -270,9 +317,32 @@ a.badge:hover{border-color:var(--gold);color:var(--gold)}
 }
 .mcard .gen{position:absolute;right:7px;top:7px;font-size:14px;color:var(--gold)}
 
+/* ★2026-09-05(2) パーティは常に3枠。まだ埋まっていない枠は「空き」として出す。
+   （data/site.js rules.partySize = 3 が根拠） */
+.mcard.slot{
+  border-style:dashed;border-color:var(--line);background:transparent;
+  cursor:default;pointer-events:none
+}
+.mcard.slot .face{
+  background:repeating-linear-gradient(135deg,#151209 0 8px,#12100b 8px 16px);
+  color:var(--muted);font-size:30px
+}
+.mcard.slot .face .mk{
+  width:46px;height:46px;border-radius:50%;border:1.5px dashed var(--line);
+  display:grid;place-items:center;font-size:22px;color:#6b6152
+}
+.mcard.slot .title{color:var(--muted);font-weight:700}
+.mcard.slot .sub{color:#6b6152}
+
 /* グッズカード */
-.gcard .face{aspect-ratio:1/1;display:grid;place-items:center;font-size:46px;background:#f4efe6;border-bottom:1px solid var(--line-soft)}
-.gcard .face img{width:100%;height:100%;object-fit:contain}
+/* ★2026-09-05 グッズ画像（楽天のサムネ）が枠からはみ出す件の対策。
+   height:100% は親の高さが確定しない環境（iOS Safari の aspect-ratio + flex 子）で
+   auto に落ちて、元画像の 400px がそのまま出てしまう。absolute で枠に固定する。 */
+.gcard .face{
+  aspect-ratio:1/1;position:relative;overflow:hidden;flex:0 0 auto;
+  display:grid;place-items:center;font-size:46px;background:#f4efe6;border-bottom:1px solid var(--line-soft)
+}
+.gcard .face img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;object-fit:contain}
 .gcard .price{font-weight:800;font-size:13.5px;color:var(--gold)}
 .shop-links{display:grid;gap:5px;margin-top:6px}
 .shop-links a{
@@ -294,6 +364,47 @@ a.badge:hover{border-color:var(--gold);color:var(--gold)}
 .tl-body{flex:1;min-width:0}
 .tl-body h3{margin:0 0 3px;font-size:13.5px;font-weight:700;color:var(--txt)}
 .tl-body p{margin:0;color:#c9bda2;font-size:12.5px}
+
+/* ★2026-09-05(2) お知らせは「タイトルだけ」出して、本文は押したら開く */
+/* .tl-item は flex なので、details にすると summary と本文が横に並んでしまう。block に戻す */
+.nd{min-width:0;display:block}
+.nd > summary{
+  list-style:none;cursor:pointer;display:flex;gap:12px;align-items:flex-start;min-width:0
+}
+.nd > summary .tl-date{padding-top:3px}
+.nd > summary::-webkit-details-marker{display:none}
+.nd > summary::after{
+  content:"";flex:0 0 auto;width:7px;height:7px;margin-left:auto;align-self:center;
+  border-right:1.7px solid var(--muted);border-bottom:1.7px solid var(--muted);
+  transform:rotate(45deg) translate(-1px,-2px);transition:transform .18s ease
+}
+.nd[open] > summary::after{transform:rotate(-135deg) translate(-1px,-1px)}
+.nd > summary:hover h3{color:var(--gold)}
+.nd .ndh{flex:1;min-width:0}
+.nd .ndh h3{margin:0;font-size:13.5px;font-weight:700;color:var(--txt);line-height:1.45}
+.nd .ndh .row{margin-bottom:3px}
+.nd .nd-body{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+
+/* ★2026-09-05(2) 長い説明文をたたむ共通パーツ（ルールページでは使わない） */
+.fold{border:1px solid var(--line);border-radius:12px;background:var(--card);margin:0 0 14px}
+.fold > summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;
+  padding:9px 13px;font-size:12.5px;font-weight:700;color:var(--gold)
+}
+.fold > summary::-webkit-details-marker{display:none}
+.fold > summary::after{
+  content:"";flex:0 0 auto;width:7px;height:7px;margin-left:auto;
+  border-right:1.7px solid currentColor;border-bottom:1.7px solid currentColor;
+  transform:rotate(45deg) translate(-1px,-2px);transition:transform .18s ease
+}
+.fold[open] > summary::after{transform:rotate(-135deg) translate(-1px,-1px)}
+.fold > summary:hover{color:#eccf8f}
+.fold > .fold-body{padding:0 13px 12px;color:#c9bda2;font-size:12.5px;line-height:1.7}
+.fold > .fold-body > *:first-child{margin-top:0}
+.fold > .fold-body > *:last-child{margin-bottom:0}
+/* display:flex にすると li の display が block 化されて「・」が消えるので使わない */
+.fold > .fold-body ul{margin:0;padding-left:20px}
+.fold > .fold-body ul > li + li{margin-top:6px}
 
 /* ---------- 投票CTA ---------- */
 .vote-box{
@@ -319,7 +430,12 @@ a.badge:hover{border-color:var(--gold);color:var(--gold)}
   background:radial-gradient(65% 55% at 50% 62%,rgba(210,167,94,.22),transparent 72%),linear-gradient(180deg,#242017 0%,#14110c 100%)
 }
 .stat-row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
-.bar{height:7px;border-radius:999px;background:var(--line-soft);overflow:hidden;flex:1;min-width:150px}
+/* ★2026-09-05 スマホ対応: min-width:150px を撤廃。
+   実測で scout.html の3列(.picks)が 150×3=450px となり画面(390px)を149pxはみ出し、
+   monster.html の .limits も 64+150+52 で親パネルを押し広げていた。
+   よこ並びの .row の中だけは細くなりすぎないよう下限を残す。 */
+.bar{height:7px;border-radius:999px;background:var(--line-soft);overflow:hidden;flex:1;min-width:0}
+.row > .bar{min-width:110px}
 .bar i{display:block;height:100%;background:var(--grad)}
 .dl{display:grid;grid-template-columns:96px 1fr;gap:5px 12px;margin:0}
 .dl dt{color:var(--muted);font-size:12.5px}
@@ -654,8 +770,19 @@ a.vm:hover{border-color:var(--gold)}
   .card .body{padding:8px 9px}
   .card .title{font-size:12px}
   .shop-links a{font-size:11px;padding:6px}
-  .breed-grid{grid-template-columns:1fr;gap:8px}
-  .breed-x{padding-top:0}
+  /* ★2026-09-05(2) 親①/親② はスマホでも「横並び」のまま。1列に落とさない。
+     そのぶん中身を詰めてコンパクトにする。 */
+  .breed-grid{grid-template-columns:1fr 22px 1fr;gap:6px}
+  .breed-x{padding-top:0;align-self:center;font-size:17px}
+  .breed-slot{padding:8px 8px 9px;min-height:0;border-radius:11px}
+  .breed-slot h4{font-size:11px;margin-bottom:5px}
+  .picked{gap:7px}
+  .picked .em{width:40px;height:40px;font-size:24px;border-radius:10px}
+  .picklist{max-height:184px;gap:4px;margin-top:7px}
+  .pick-item{padding:5px 6px;gap:4px 6px;font-size:11.5px;flex-wrap:wrap;border-radius:8px}
+  .pick-item .mon-ico{width:22px;height:22px;font-size:15px}
+  .pick-item .fam{display:none}
+  .pick-item b{max-width:100%;overflow-wrap:anywhere}
   .hd{gap:8px;flex-wrap:wrap;height:auto;padding:8px 12px}
   .logo{flex:1 1 auto}
   nav.main{order:3;width:100%;margin-left:0;padding-bottom:2px}
@@ -711,4 +838,42 @@ a.vm:hover{border-color:var(--gold)}
   .btn{padding:7px 13px}
   .child-chip{font-size:12px;padding:5px 9px}
   .child-chip .mon-ico{width:26px;height:26px}
+  /* ★2026-09-05(2) 「生まれるモンスター」は横1列を守ったまま3枚を収める。
+     実測: 390px幅で .child-box の内側は約320px → 3列×約102px（横スクロール無し）。
+     320px幅では内側約250px → 約79px。 */
+  .childs{grid-auto-columns:minmax(78px,1fr);gap:6px}
+  .childc{padding:7px 6px 9px;gap:4px}
+  .childc .nm{font-size:11.5px}
+  .childc .tags > *{font-size:9px;padding:1px 5px}
+  .childc .via{font-size:9px}
+  .childc .skl{font-size:10px}
+  .childc .open{font-size:9.5px}
+}
+
+/* ---------- ★2026-09-05(3) パーティは「常に3列」 ----------
+   パーティは data/site.js rules.partySize = 3 の固定枠なので、
+   .g4 のスマホ用2列（@media max-width:720px/520px）に折り返させない。
+   ファイル末尾に置いて、後勝ちでメディアクエリを上書きする。
+   実測: 320px 端末で .wrap 内側 281px → 1枚あたり約 90px。 */
+.grid.party3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:720px){
+  .grid.party3{gap:8px}
+  .grid.party3 .card .body{padding:7px 8px;gap:3px}
+  .grid.party3 .card .title{font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+  .grid.party3 .mcard .lv{font-size:9.5px;padding:0 6px;left:5px;bottom:5px}
+  .grid.party3 .mcard .gen{font-size:11px;right:5px;top:5px}
+  .grid.party3 .fam,
+  .grid.party3 .rank{font-size:9.5px;padding:1px 6px}
+  .grid.party3 .card .foot{font-size:10px;padding-top:2px}
+  .grid.party3 .row.small{gap:4px}
+  .grid.party3 .mcard.slot .face{font-size:22px}
+  .grid.party3 .mcard.slot .face .mk{width:34px;height:34px;font-size:17px}
+}
+@media(max-width:390px){
+  .grid.party3{gap:6px}
+  .grid.party3 .card .body{padding:6px 6px}
+  .grid.party3 .card .title{font-size:11px}
+  .grid.party3 .fam,
+  .grid.party3 .rank{font-size:9px;padding:0 5px}
+  .grid.party3 .card .foot{font-size:9.5px}
 }

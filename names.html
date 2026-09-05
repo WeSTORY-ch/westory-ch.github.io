@@ -18,17 +18,23 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905131743">
 </head>
 <body>
 <div class="wrap">
 
   <h1 class="page">名前の募集</h1>
-  <p class="lead">
+  <p class="lead" style="margin-bottom:8px">
     新しく仲間になったモンスターの名前は、<b style="color:var(--gold)">動画のコメント欄</b>で募集します。
-    このサイトからは応募できません。<b>ひらがな・カタカナで<span id="leadChars"></span>文字まで</b>、
-    いいなと思った名前には<b>いいね</b>を押してください。
   </p>
+  <!-- ★2026-09-05 長い説明はたたむ -->
+  <details class="fold">
+    <summary>応募のしかた</summary>
+    <div class="fold-body">
+      <p>このサイトからは応募できません。<b>ひらがな・カタカナで<span id="leadChars"></span>文字まで</b>、
+      いいなと思った名前には<b>いいね</b>を押してください。</p>
+    </div>
+  </details>
 
   <div class="vote-box" style="margin-bottom:18px">
     <h3><span class="ic" data-ic="pen"></span>名前を送るところ</h3>
@@ -77,15 +83,15 @@
 
 </div>
 
-<script src="data/site.js?v=20260905120546"></script>
-<script src="data/monsters.js?v=20260905120546"></script>
-<script src="data/teri.js?v=20260905120546"></script>
-<script src="data/episodes.js?v=20260905120546"></script>
-<script src="data/goods.js?v=20260905120546"></script>
-<script src="data/news.js?v=20260905120546"></script>
-<script src="data/story.js?v=20260905120546"></script>
-<script src="data/names.js?v=20260905120546"></script>
-<script src="assets/js/app.js?v=20260905120546"></script>
+<script src="data/site.js?v=20260905131743"></script>
+<script src="data/monsters.js?v=20260905131743"></script>
+<script src="data/teri.js?v=20260905131743"></script>
+<script src="data/episodes.js?v=20260905131743"></script>
+<script src="data/goods.js?v=20260905131743"></script>
+<script src="data/news.js?v=20260905131743"></script>
+<script src="data/story.js?v=20260905131743"></script>
+<script src="data/names.js?v=20260905131743"></script>
+<script src="assets/js/app.js?v=20260905131743"></script>
 <script>
 // 募集中の回の動画へ。無ければチャンネルのトップへ送る。
 function ctaHtml(){

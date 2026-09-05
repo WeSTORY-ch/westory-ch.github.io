@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905131743">
 </head>
 <body>
 <div class="wrap">
@@ -49,11 +49,16 @@
       <h2 class="sec">いまのパーティ（<span id="pCount"></span>／<span id="pMax"></span>体）</h2>
       <a class="btn ghost sm" href="rules.html#party">パーティのルール</a>
     </div>
-    <p class="small muted" style="margin:0 0 10px">
-      この3体だけが動画のバトルに出ます。<b>レベルが上がるのもこの3体だけ</b>で、負けた回は経験値がもらえません。
-      さらに負けると、この3体から<b>ランダムで1体</b>がモンスター病院へ送られます。
-    </p>
-    <div class="grid g4" id="partyList"></div>
+    <!-- ★2026-09-05 長い説明はたたむ -->
+    <details class="fold" style="margin-bottom:10px">
+      <summary>パーティのしくみ</summary>
+      <div class="fold-body">
+        <p>この3体だけが動画のバトルに出ます。<b>レベルが上がるのもこの3体だけ</b>で、負けた回は経験値がもらえません。
+        さらに負けると、この3体から<b>ランダムで1体</b>がモンスター病院へ送られます。</p>
+      </div>
+    </details>
+    <!-- ★2026-09-05 パーティは3体固定＝常に3列（party3） -->
+    <div class="grid g4 party3" id="partyList"></div>
     <div class="vote-box" style="margin-top:14px">
       <h3><span class="ic" data-ic="party"></span>パーティの決め方</h3>
       <p class="small" style="margin:0 0 10px" id="partyRuleNote"></p>
@@ -101,14 +106,14 @@
 
 </div>
 
-<script src="data/site.js?v=20260905120546"></script>
-<script src="data/monsters.js?v=20260905120546"></script>
-<script src="data/teri.js?v=20260905120546"></script>
-<script src="data/episodes.js?v=20260905120546"></script>
-<script src="data/goods.js?v=20260905120546"></script>
-<script src="data/news.js?v=20260905120546"></script>
-<script src="data/story.js?v=20260905120546"></script>
-<script src="assets/js/app.js?v=20260905120546"></script>
+<script src="data/site.js?v=20260905131743"></script>
+<script src="data/monsters.js?v=20260905131743"></script>
+<script src="data/teri.js?v=20260905131743"></script>
+<script src="data/episodes.js?v=20260905131743"></script>
+<script src="data/goods.js?v=20260905131743"></script>
+<script src="data/news.js?v=20260905131743"></script>
+<script src="data/story.js?v=20260905131743"></script>
+<script src="assets/js/app.js?v=20260905131743"></script>
 <script>
 var RANK_ORDER={SS:-1,S:0,A:1,B:2,C:3,D:4,E:5,F:6};
 // 検索と並べ替えは4つのセクション共通で使う
@@ -137,8 +142,13 @@ function renderRanch(){
   // パーティだけは枠の順（1・2・3）を崩さないので並べ替えの対象にしない
   var q=(App.$('#q').value||'').trim();
   var party=App.partyMons();
-  if(q) party=applyQS(party);
-  fill('#partyList',party,'パーティがまだ決まっていません。');
+  if(q){
+    // しぼりこみ中は「空き」枠を出さない（検索結果として紛らわしいため）
+    fill('#partyList',applyQS(party),'パーティがまだ決まっていません。');
+  }else{
+    // ★2026-09-05 常に3枠。足りないぶんは「空き」で埋める
+    App.$('#partyList').innerHTML = App.partySlotsHtml(party);
+  }
   fill('#benchList',applyQS(App.benchMons()),'お留守番している仲間はいません。');
   fill('#hospList',applyQS(App.hospitalMons()),'いまモンスター病院にいる子はいません。みんな無事です。');
   fill('#retiredList',applyQS(App.retiredMons()),'まだ配合で旅立った仲間はいません。');

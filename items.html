@@ -18,17 +18,23 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260905120546">
+<link rel="stylesheet" href="assets/css/style.css?v=20260905131743">
 </head>
 <body>
 <div class="wrap">
 
   <h1 class="page">アイテム</h1>
-  <p class="lead">
+  <p class="lead" style="margin-bottom:8px">
     アイテムは<b>ショート動画の合計再生数</b>でもらえます。
-    動画1本ごとではなく、これまでの再生数を全部足した数で判定します。
-    いま何を何個持っているかは、このページでいつでも確認できます。
   </p>
+  <!-- ★2026-09-05 長い説明はたたむ -->
+  <details class="fold">
+    <summary>もらえる条件のくわしい説明</summary>
+    <div class="fold-body">
+      <p>動画1本ごとではなく、これまでの再生数を全部足した数で判定します。
+      いま何を何個持っているかは、このページでいつでも確認できます。</p>
+    </div>
+  </details>
 
   <div class="grid g3" id="itemStats" style="margin-bottom:16px"></div>
 
@@ -69,15 +75,15 @@
 
 </div>
 
-<script src="data/site.js?v=20260905120546"></script>
-<script src="data/monsters.js?v=20260905120546"></script>
-<script src="data/teri.js?v=20260905120546"></script>
-<script src="data/episodes.js?v=20260905120546"></script>
-<script src="data/goods.js?v=20260905120546"></script>
-<script src="data/news.js?v=20260905120546"></script>
-<script src="data/story.js?v=20260905120546"></script>
-<script src="data/scout.js?v=20260905120546"></script>
-<script src="assets/js/app.js?v=20260905120546"></script>
+<script src="data/site.js?v=20260905131743"></script>
+<script src="data/monsters.js?v=20260905131743"></script>
+<script src="data/teri.js?v=20260905131743"></script>
+<script src="data/episodes.js?v=20260905131743"></script>
+<script src="data/goods.js?v=20260905131743"></script>
+<script src="data/news.js?v=20260905131743"></script>
+<script src="data/story.js?v=20260905131743"></script>
+<script src="data/scout.js?v=20260905131743"></script>
+<script src="assets/js/app.js?v=20260905131743"></script>
 <script>
 function box(t,n,u){
   return '<div class="panel soft"><div class="small muted">'+t+'</div>'+
