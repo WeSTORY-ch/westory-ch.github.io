@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <meta name="theme-color" content="#b08850">
 <!-- seo:end -->
-<link rel="stylesheet" href="assets/css/style.css?v=20260905131743">
+<link rel="stylesheet" href="assets/css/style.css?v=20260908110812">
 </head>
 <body>
 
@@ -108,15 +108,15 @@
 
 </div>
 
-<script src="data/site.js?v=20260905131743"></script>
-<script src="data/monsters.js?v=20260905131743"></script>
-<script src="data/teri.js?v=20260905131743"></script>
-<script src="data/episodes.js?v=20260905131743"></script>
-<script src="data/scout.js?v=20260905131743"></script>
-<script src="data/goods.js?v=20260905131743"></script>
-<script src="data/news.js?v=20260905131743"></script>
-<script src="data/story.js?v=20260905131743"></script>
-<script src="assets/js/app.js?v=20260905131743"></script>
+<script src="data/site.js?v=20260908110812"></script>
+<script src="data/monsters.js?v=20260908110812"></script>
+<script src="data/teri.js?v=20260908110812"></script>
+<script src="data/episodes.js?v=20260908110812"></script>
+<script src="data/scout.js?v=20260908110812"></script>
+<script src="data/goods.js?v=20260908110812"></script>
+<script src="data/news.js?v=20260908110812"></script>
+<script src="data/story.js?v=20260908110812"></script>
+<script src="assets/js/app.js?v=20260908110812"></script>
 <script>
 // 募集の種類ごとに「どこで決めるか」（site.js の polls と対応）
 var VOTE_TYPE = {
@@ -197,7 +197,16 @@ function pageInit(){
   }
 
   // 受付中の件数バー
-  var open = App.EPISODES.filter(function(e){return e.voteStatus==='受付中'});
+  // ★2026-09-08 同じ募集が古い回にも「受付中」で出ていて、トップに6枠
+  // （EP002/EP004/EP005 × 2種類）並んでいた。募集は締め切らない方針なので
+  // データはどの回も受付中のまま置き、表示だけ「いちばん新しい受付中の回」に絞る。
+  // 受付先は scout.js current.ep（＝最新話）のコメント欄なので、
+  // 古い回の枠を出すと視聴者を古い動画へ誘導してしまうため。
+  var openAll = App.EPISODES.filter(function(e){return e.voteStatus==='受付中'});
+  var newest = openAll.slice().sort(function(a,b){
+    return (b.date||'').localeCompare(a.date||'') || (b.no||0)-(a.no||0);
+  })[0];
+  var open = newest ? [newest] : [];
   var kinds = [];
   open.forEach(function(e){ App.voteTypesOf(e).forEach(function(k){ kinds.push(k); }); });
   App.$('#liveBar').innerHTML = kinds.length

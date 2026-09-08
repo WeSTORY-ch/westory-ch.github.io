@@ -877,3 +877,35 @@ a.vm:hover{border-color:var(--gold)}
   .grid.party3 .rank{font-size:9px;padding:0 5px}
   .grid.party3 .card .foot{font-size:9.5px}
 }
+
+/* ---------- ★2026-09-06 スマホのヒーロー（最新話の動画）をコンパクトに ----------
+   ユーザー指示:「スマホで動画表示がまだ枠が少し大きいので、もう少し全体的に
+   小さくコンパクトに。動画はそのままの感じでいいけど、上と下の余白をどちらも
+   縮め、文字も小さくレイアウト」。
+   動画の見え方（9:16のまま）は変えず、枠の幅・上下の余白・文字だけを詰める。
+   実測(390px幅・変更前): .hero 全体 809.7px
+     内訳 = 上パディング16 + 文章列380.2 + すき間16 + 動画枠389.5 + 下パディング8
+   ファイル末尾に置いて、後勝ちで @media(max-width:860px/720px) を上書きする。 */
+@media(max-width:860px){
+  .hero{gap:12px}
+  .hero-video .frame{max-width:210px}
+}
+@media(max-width:720px){
+  .hero{padding:10px 0 4px;gap:10px}
+  .hero .kicker{font-size:10.5px;letter-spacing:.18em;margin-bottom:6px}
+  .hero h1{font-size:23px;line-height:1.24;margin:0 0 8px}
+  .hero .sub{font-size:11.5px;margin:0 0 10px}
+  .hero .cta{gap:6px;margin-bottom:10px}
+  .hero .cta .btn,.hero .cta .yt-btn{padding:6px 12px;font-size:11.5px}
+  .hero-stats span{padding:5px 4px}
+  .hero-stats b{font-size:17px}
+  .hero-stats i{font-size:9.5px;letter-spacing:.05em}
+  .hero-video .frame{max-width:196px;border-radius:14px}
+  .hero-video .tag{font-size:10px;padding:2px 11px;top:-9px}
+}
+@media(max-width:390px){
+  .hero{gap:8px}
+  .hero h1{font-size:21px}
+  .hero .sub{font-size:11px;margin:0 0 8px}
+  .hero-video .frame{max-width:182px}
+}

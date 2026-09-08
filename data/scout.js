@@ -56,7 +56,7 @@ window.DB_SCOUT = {
      受付は2話のコメント欄で「番号」を書く方式です。
      結果は投票で決まるので、ここには書きません。 */
   current: {
-    ep: "EP002",
+    ep: "EP005",
     pollUrl: "",
     status: "vote",
     choices: [
